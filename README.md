@@ -63,22 +63,35 @@
 │       ├── COM_Objects/            # COM interface abuse
 │       └── Kernel_Exploits/        # PrintNightmare, Zerologon, CVE-based escalations
 |_____________________________________________________________________
-├── 📂 ACTIVE_DIRECTORY/             # OSCP / PEN-200 focused
-│   ├── Enumeration/
-│   │   ├── BloodHound.md           # Basic BloodHound usage & queries
-│   │   ├── PowerView.md            # Enumeration with PowerView scripts
-│   │   ├── LDAP_Queries.md         # Manual LDAP enumeration with ldapsearch
-│   │   └── User_Enumeration.md     # Finding domain users & SPNs
-│   ├── Attacks/
-│   │   ├── Kerberoasting.md        # Extracting service tickets with Rubeus / kerberoast
-│   │   ├── NTLM_Relay.md           # Responder + ntlmrelayx setup for relaying
-│   │   ├── AS_REP_Roasting.md      # Attacking accounts without Kerberos preauth
-│   │   └── ACL_Abuse.md            # Simple ACL abuse for privilege escalation
-│   └── Lateral/
-│       ├── Pass_the_Hash.md        # Using CrackMapExec / wmiexec for lateral movement
-│       ├── Pass_the_Ticket.md      # Kerberos ticket reuse with Mimikatz / Rubeus
-│       ├── DCSync.md               # Using secretsdump.py for syncing secrets
-│       └── RDP_Access.md           # Basic RDP connection for lateral
+├── 📂 ACTIVE_DIRECTORY/
+│   ├── 📂 Breaching_AD/                          # Initial access / breaching AD
+│   │   ├── AS_REP_Roasting.md                    # Accounts w/o Kerberos preauth
+│   │   ├── Kerberoasting.md                      # Service ticket extraction
+│   │   ├── NTLM_Relay.md                         # Responder + ntlmrelayx setup
+│
+│   ├── 📂 Enumerating_AD/                        # Enumeration phase
+│   │   ├── BloodHound.md                         # Visual AD enumeration
+│   │   ├── PowerView.md                          # PowerView scripts for recon
+│   │   ├── LDAP_Queries.md                       # Manual LDAP enumeration
+│   │   ├── User_Enumeration.md                   # User & SPN discovery
+│
+│   ├── 📂 Exploiting_AD/                         # AD exploitation techniques
+│   │   ├── Exploiting_Permission_Delegation.md   # Placeholder or custom content
+│   │   ├── Exploiting_Kerberos_Delegation.md     # Add S4U / unconstrained examples
+│   │   ├── Exploiting_Automated_Relays.md        # NTLM_Relay.md can be linked here too
+│   │   ├── Exploiting_AD_Users.md                # AS_REP / Kerberoast link again
+│   │   ├── Exploiting_GPOs.md                    # Add GPO abuse techniques
+│   │   ├── Exploiting_Certificates.md            # Add AD CS misconfigurations
+│   │   ├── Exploiting_Domain_Trusts.md           # Add cross-domain trust abuse
+│
+│   ├── 📂 Persisting_AD/                         # Persistence techniques
+│   │   ├── ACL_Abuse.md                          # Maintain access via ACLs
+│   │   ├── DCSync.md                             # Use secretsdump for persistence
+│   │   ├── RDP_Access.md                         # RDP backdoors
+│
+│   └── 📂 Lateral_Movement/                      # Lateral movement within AD
+│       ├── Pass_the_Hash.md                      # Lateral with hashes
+│       ├── Pass_the_Ticket.md                    # Kerberos ticket reuse
 |___________________________________________
 ├── 📁 Post_Exploitation/
 │   ├── Stabilization/
