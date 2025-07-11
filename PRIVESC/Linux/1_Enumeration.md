@@ -1,6 +1,8 @@
 
 ## Sensitive Files with Given Keywords
 
+ 
+
 ```bash
 find / -name "*.txt" 2>/dev/null
 find /opt -name "*.txt" 2>/dev/null
@@ -45,6 +47,11 @@ find / -group www-data 2>/dev/null
 # Executable files
 find / -type f -executable 2>/dev/null
 
+# Search for the keyword 'username' in all files recursively, showing line numbers
+grep -nr "username" /
+
+# Search for the keyword 'password' recursively
+grep -nr "password" /
 # ----------------------------------------
 # Find more faster than `find` command.
 locate data
