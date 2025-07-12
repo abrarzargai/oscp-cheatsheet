@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "privsec printspoofer.md",
+                "file": "PRIVESC/Linux/Exploiting_Docker.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "privsec printspoofer"
+              "title": "Exploiting_Docker"
             }
           }
         ],
@@ -137,7 +137,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "privsec printspoofer.md",
+                "file": "Reverse Shell.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -147,7 +147,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for privsec printspoofer"
+              "title": "Backlinks for Reverse Shell"
             }
           },
           {
@@ -156,12 +156,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "privsec printspoofer.md",
+                "file": "Reverse Shell.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from privsec printspoofer"
+              "title": "Outgoing links from Reverse Shell"
             }
           },
           {
@@ -185,13 +185,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "privsec printspoofer.md",
+                "file": "Reverse Shell.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of privsec printspoofer"
+              "title": "Outline of Reverse Shell"
             }
           }
         ]
@@ -213,9 +213,42 @@
   },
   "active": "2513912c71ce8dd7",
   "lastOpenFiles": [
+    "Pasted image 20250712164006.png",
+    "Pasted image 20250712163946.png",
+    "PRIVESC/Linux/6_CronJobs.md",
+    "PRIVESC/Linux/5_Capabilities.md",
+    "PRIVESC/Linux/4_Writable_Files.md",
+    "PRIVESC/Linux/3_SUID_Binaries.md",
+    "SERVICES/WEB/Web vurnabilities.md",
+    "SERVICES/WEB/HTTP (80, 443, 8080).md",
+    "SERVICES/WEB/HTTPS (443).md",
+    "Post_Exploitation/Stabilization/Linux_TTY_Upgrade.md",
+    "privsec.md",
     "Process.md",
     "SMB 445.md",
-    "privsec printspoofer.md",
-    "Reverse Shell.md"
+    "Reverse Shell.md",
+    "README.md",
+    "SERVICES/WEB/CMS/phpMyAdmin.md",
+    "SERVICES/WEB/CMS/WordPress.md",
+    "SERVICES/WEB/CMS/Mambo.md",
+    "SERVICES/WEB/CMS/Magento.md",
+    "SERVICES/WEB/CMS/Joomla.md",
+    "SERVICES/WEB/CMS/Jenkins.md",
+    "SERVICES/WEB/CMS/Elastix.md",
+    "SERVICES/WEB/CMS/Drupal.md",
+    "SERVICES/WEB/CMS/Adobe_old_Fusion.md",
+    "SERVICES/WEB/CMS",
+    "SERVICES/REMOTE_ACCESS/VNC (5900).md",
+    "SERVICES/REMOTE_ACCESS/Telnet (23).md",
+    "SERVICES/REMOTE_ACCESS/SSH (22).md",
+    "SERVICES/WEB",
+    "SERVICES/REMOTE_ACCESS",
+    "SERVICES/FILE_SHARING",
+    "SERVICES/EMAIL",
+    "SERVICES/DATABASES",
+    "SERVICES",
+    "Post_Exploitation/Stabilization",
+    "Post_Exploitation/File_Transfers",
+    "Post_Exploitation/Credential_Harvesting"
   ]
 }
