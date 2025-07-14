@@ -1,3 +1,5 @@
+https://cheatsheet.haax.fr/network/services-enumeration/139_445_smb/
+
 # OSCP Cheatsheet
 
 ```md

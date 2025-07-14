@@ -29,3 +29,10 @@ netstat -ano | findstr :4444
 ```bash
 taskkill /PID <PID> /F
 ```
+
+
+___
+
+If we run **ss -tulpn** it will tell us what socket connections are running
+
+`ss -tulpn`

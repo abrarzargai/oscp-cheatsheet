@@ -34,7 +34,7 @@ We’ll focus on the **LD_PRELOAD** method in this example.
 First, check what commands you can run as `sudo`:
 
 ```bash
-sudo -
+sudo -l
 ```
 
 **Explanation**:
