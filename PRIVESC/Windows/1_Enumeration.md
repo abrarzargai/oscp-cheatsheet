@@ -1,5 +1,21 @@
 
 
+## **Check User Permissions and Group Info (Filtered View)**
+
+```bash
+whoami /all | Select-String -Pattern "username" -Context 2,0
+
+# example
+whoami /all | Select-String -Pattern "wade" -Context 2,0
+```
+This command helps you **find out what groups or permissions a specific user (like `jareth`) has** on a Windows system. It searches through the detailed `whoami /all` output and shows any lines related to the user, along with 2 lines above it for extra context. Useful during **privilege escalation** to check if a user has powerful roles or tokens.
+
+# Show folders recursive 
+
+```bash
+tree /f
+```
+
 # Dumping NTLM Hashes
 #### Step 1: Save the Registry Hives
 📝 Make sure you have administrative or SYSTEM privileges to run these commands.
