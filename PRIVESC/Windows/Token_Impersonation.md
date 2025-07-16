@@ -85,7 +85,7 @@ You should now be running as the impersonated user!
 ### ✅ Requirements
 
 - You already have **a shell** (or Meterpreter session) on the **target machine**
-- The user must have the `SeImpersonatePrivilege` **enabled**
+- The user must have the `SeImpersonatePrivilege` and `SeAssignPrimaryTokenPrivilege` **enabled**
 
 ### 🧪 Step-by-Step Guide
 
