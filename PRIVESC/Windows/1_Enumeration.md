@@ -1,4 +1,18 @@
+### System Information
 
+- `systeminfo`: Displays detailed configuration information about the computer.
+- `hostname`: Shows the system's hostname.
+- `wmic qfe get Caption,Description,HotFixID,InstalledOn`: Lists installed hotfixes.
+- `wmic logicaldisk get name`: Displays logical drives.
+- `net user`: Lists user accounts.
+- `net user [username]`: Displays detailed information about a specific user.
+- `whoami`: Shows the current user.
+- `whoami /priv`: Displays the privileges of the current user.
+
+### Network Information
+
+- `ipconfig /all`: Displays all IP configuration information.
+- `netstat -ano`: Shows active connections and listening ports.
 
 ## **Check User Permissions and Group Info (Filtered View)**
 
