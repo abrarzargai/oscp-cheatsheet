@@ -6,11 +6,11 @@ Some Windows services allow users to change their executable path (BinPath). If 
 
 Run **WinPEAS** or **PowerUp.ps1** to find services with weak permissions:
 
-![image.png](attachment:6b549a01-c392-4b79-8677-9d442b0cea98:image.png)
+<img width="1124" height="95" alt="image" src="https://github.com/user-attachments/assets/df1185df-d5f6-4c91-938c-ffbd916b36a8" />
 
 OR
 
-![image.png](attachment:cfbfa851-4550-4cf9-ad72-355bd6ae5558:image.png)
+<img width="962" height="71" alt="image" src="https://github.com/user-attachments/assets/4adb4cc2-0f89-42dd-8cd4-d013c2b6c810" />
 
 Look for services with:
 
@@ -28,7 +28,7 @@ Use **AccessChk** to confirm you can modify the service:
 .\accesschk.exe /accepteula -uwcqv user dsclavc
 ```
 
-![image.png](attachment:7fd4980a-3e40-44da-af78-d324486d25e7:image.png)
+<img width="973" height="263" alt="image" src="https://github.com/user-attachments/assets/0db2af6e-3309-4b0c-8402-bfe547b5d526" />
 
 ✅ **You need these permissions:**
 
@@ -48,7 +48,7 @@ sc query dsclavc     # Check if service is running
 
 Here you can see the `SERVICE_START_NAME` is LocalSystem it means the service runs with **very high privileges** and the `BINARY_PATH_NAME`  which you are going to modify
 
-![image.png](attachment:29b89f99-fa34-4f79-b063-cd66955adbbb:image.png)
+<img width="1241" height="482" alt="image" src="https://github.com/user-attachments/assets/ca6be8b8-a465-48ca-9b63-0ab47ac25b86" />
 
 ### **4. Generate a Reverse Shell**
 
