@@ -87,3 +87,110 @@ Run specific check categories:
 ```
 .\winPEASany.exe quiet cmd systeminfo
 ```
+
+
+# **📁 Automated Tools for Privilege Escalation**
+
+### 🛠 EXE Tools (Run as .exe files)
+
+You upload these `.exe` files to the target system and run them. They show you where the system might be weak.
+
+### ✅ winPEAS.exe
+
+- **Job:** Checks for many weaknesses: services, passwords, file access, registry, etc.
+- **Download:** https://github.com/carlospolop/PEASS-ng/releases
+- **Run it:**
+
+```
+winPEAS.exe
+```
+
+### ✅ Seatbelt.exe
+
+- **Job:** Shows security info like saved passwords, browser history, installed apps.
+- **Source:** https://github.com/GhostPack/Seatbelt
+- ⚠️ You must compile it  before use.
+
+### ✅ SharpUp.exe
+
+- **Job:** Looks for ways to become admin, like bad file or service permissions.
+- **Source:** https://github.com/GhostPack/SharpUp
+- ⚠️ Needs to be compiled.
+
+### ✅ Watson.exe
+
+- **Job:** Finds known Windows bugs (CVEs) that work on this system.
+- **Source:** https://github.com/rasta-mouse/Watson
+- ⚠️ Compile before use.
+
+---
+
+### 💻 PowerShell Scripts (.ps1 files)
+
+These are text files you run in PowerShell to look for weak spots.
+
+### ✅ PowerUp.ps1
+
+- **Job:** Checks services, registry, DLLs, paths, etc. for privilege issues.
+- **Download:** https://github.com/PowerShellMafia/PowerSploit
+- **Use it:**
+
+```
+Import-Module .\PowerUp.ps1
+Invoke-AllChecks
+```
+
+### ✅ Sherlock.ps1
+
+- **Job:** Finds missing Windows updates that attackers can use.
+- **Download:** https://github.com/rasta-mouse/Sherlock
+- **Use it:**
+
+```
+Import-Module .\Sherlock.ps1
+Find-AllVulnerabilities
+```
+
+### ✅ JAWS-enum.ps1
+
+- **Job:** Checks logs, users, firewall, AV, and more.
+- **Download:** https://github.com/411Hall/JAWS
+- **Use it:**
+
+```
+.\JAWS-enum.ps1
+```
+
+---
+
+### 🐍 Python Tools (Run on your system)
+
+These tools read Windows version info and suggest known bugs.
+
+### ✅ windows-exploit-suggester.py
+
+- **Job:** Shows possible Windows bugs based on system info.
+- **Download:** https://github.com/AonCyberLabs/Windows-Exploit-Suggester
+- **Steps:**
+
+```
+systeminfo > sysinfo.txt          # Get system info from target
+./windows-exploit-suggester.py -i sysinfo.txt
+```
+
+### ✅ Windows Exploit Suggester - NG (WES-NG)
+
+- **Job:** Updated version of the above tool.
+- **Download:** https://github.com/bitsadmin/wesng
+- **Steps:**
+
+```
+./wes.py --update                 # Update CVE list
+systeminfo > sysinfo.txt          # Get system info
+./wes.py sysinfo.txt              # Get exploit suggestions
+```
+
+### ✅ Metasploit Exploit Suggester
+
+- **Job:** Shows escalation options in Meterpreter session.
+- **Module: `post/multi/recon/local_exploit_suggester`**
