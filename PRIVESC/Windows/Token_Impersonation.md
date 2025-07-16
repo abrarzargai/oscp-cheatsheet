@@ -13,6 +13,14 @@ A **token** in Windows is like a **web cookie** — it temporarily grants access
     - Created during **non-interactive logins**
     - Example: When you map a network drive or run a logon script
 
+The following are the privileges that are required for a successful impersonation attack
+
+- **SeAssignPrimaryToken:** This allows a user to impersonate token
+- **SeCreateToken:** This allows a user to create an arbitrary token with administrative privileges
+- **SeImpersonatePrivilege:**  This allows a user to create a process under the security context of another user typically with administrative privilaeges
+
+`token presist until a reboot. When a user logs off, their delegate token is reported as an impersonate token but will still hold all of the rights of a delegate token`
+
 ## **Step-by-Step Exploitation**
 
 ### **1. Get a Meterpreter Shell**
@@ -71,6 +79,8 @@ getuid
 ```
 shell
 whoami
+# This runs a new shell as the impersonated user.
+execute -f cmd.exe -i -t
 ```
 
 You should now be running as the impersonated user!
