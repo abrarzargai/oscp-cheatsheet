@@ -1,13 +1,5 @@
 
+https://github.com/missteek/cpts-quick-references/blob/main/module/command%20injection.md
 
-# Command Injection
 
-- `;ls`
-- `$(ls)`
-- `` `ls` ``
-- `&ls`
-- `&&ls`
-- ` |ls`
-
-## SQL Injection
-
+ 

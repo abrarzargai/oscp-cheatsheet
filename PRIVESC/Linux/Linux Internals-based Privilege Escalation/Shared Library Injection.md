@@ -1,4 +1,4 @@
-# Shared Library Injection
+
 
 ### 📚 What Is a Shared Library?
 
@@ -109,3 +109,5 @@ sudo LD_PRELOAD=/full/path/to/shell.so /usr/sbin/apache2
 - **`/usr/sbin/apache2`**: This is the target binary that you’re running as root.
 
 Once you run this command, it will load your malicious library, and the `_init()` function will run. This gives you a **root shell**.
+___
+

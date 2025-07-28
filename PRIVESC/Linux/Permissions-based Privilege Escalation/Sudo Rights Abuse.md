@@ -1,3 +1,9 @@
+
+### What is "Sudo"?
+
+- **`sudo`** lets a normal user run **specific commands** as **root** (super powerful admin). 
+- This is **not full root access**, just permission to do certain tasks like running one command with more power.
+
 # Misconfigured SUDO Privileges
 
 Sometimes, users are allowed to run certain commands with `sudo` **without a password**, which can be abused to gain **root access**.

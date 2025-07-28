@@ -4,53 +4,25 @@
     "type": "split",
     "children": [
       {
-        "id": "2553ab0e889f51ca",
+        "id": "c9ac537004ed6e10",
         "type": "tabs",
         "children": [
           {
-            "id": "252f32b53fe789be",
+            "id": "ce2e91469fcba23f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "SMB 445.md",
+                "file": "PRIVESC/Linux/3_SUID_Binaries.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "SMB 445"
+              "title": "3_SUID_Binaries"
             }
           },
           {
-            "id": "54d6ccf546cf3534",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Process.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Process"
-            }
-          },
-          {
-            "id": "5e5a80c76f3f0327",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Reverse Shell.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Reverse Shell"
-            }
-          },
-          {
-            "id": "2513912c71ce8dd7",
+            "id": "b54267d479be3d30",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -64,49 +36,21 @@
             }
           },
           {
-            "id": "10c8c795fab3234b",
+            "id": "0949b41d8b8df2be",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "SERVICES/FILE_SHARING/NFS (2049).md",
+                "file": "PRIVESC/Linux/Linux Internals-based Privilege Escalation/Shared Object Hijacking.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "NFS (2049)"
-            }
-          },
-          {
-            "id": "ae241d8c6ada064c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "PRIVESC/Windows/Kernel_Exploits.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Kernel_Exploits"
-            }
-          },
-          {
-            "id": "e5736ae1a944518e",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Post_Exploitation/File_Transfers/Windows_Upload_Download.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Windows_Upload_Download"
+              "title": "Shared Object Hijacking"
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -163,7 +107,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 328.5
   },
   "right": {
     "id": "2575e061c425fd25",
@@ -253,45 +197,46 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "ae241d8c6ada064c",
+  "active": "0949b41d8b8df2be",
   "lastOpenFiles": [
-    "PRIVESC/Windows/Registry_Exploits.md",
-    "PRIVESC/Windows/Token_Manipulation.md",
-    "PRIVESC/Windows/Untitled.md",
-    "PRIVESC/Windows/Windows_Update_Bypass.md",
-    "PRIVESC/Windows/Kernel_Exploits.md",
-    "PRIVESC/Windows/2_Automation.md",
-    "PRIVESC/Windows/1_Enumeration.md",
-    "SERVICES/WEB/CMS/WordPress.md",
-    "SERVICES/FILE_SHARING/SNMP (161).md",
-    "SERVICES/WEB/CMS/BlogEngine.NET.md",
-    "SERVICES/WEB/CMS/Joomla.md",
-    "Untitled.md",
-    "SERVICES/FILE_SHARING/NFS (2049).md",
-    "SERVICES/WEB/CMS/Drupal.md",
-    "SERVICES/WEB/CMS/Adobe_old_Fusion.md",
-    "PRIVESC/Linux/2_Exploiting_Sudo.md",
-    "PRIVESC/Linux/3_SUID_Binaries.md",
-    "PRIVESC/Linux/5_Capabilities.md",
-    "PRIVESC/Linux/1_Enumeration.md",
-    "PRIVESC/Linux/6_CronJobs.md",
-    "GENERIC/Hashing(Decripption or encryption).md",
-    "SERVICES/WEB/Web vurnabilities.md",
-    "SERVICES/WEB/CMS/Magento.md",
+    "PRIVESC/Linux/Linux Internals-based Privilege Escalation/Shared Library Injection.md",
+    "PRIVESC/Linux/Linux Internals-based Privilege Escalation/Shared Object Hijacking.md",
+    "Untitled.canvas",
+    "PRIVESC/Linux/Linux Internals-based Privilege Escalation/Kernel Exploits.md",
     "PRIVESC/Linux/4_Writable_Files.md",
-    "Post_Exploitation/Stabilization/Linux_TTY_Upgrade.md",
-    "Post_Exploitation/Stabilization/Windows_TTY_Upgrade.md",
+    "PRIVESC/Linux/Permissions-based Privilege Escalation/Sudo Rights Abuse.md",
+    "PRIVESC/Linux/Recent 0-Days",
+    "PRIVESC/Linux/9_Kernel_Exploits.md",
+    "PRIVESC/Linux/1_Enumeration.md",
+    "PRIVESC/Linux/Service-based Privilege Escalation/Docker.md",
+    "PRIVESC/Linux/8_Exploiting_Docker.md",
+    "Post_Exploitation/File_Transfers/Linux_Upload_Download.md",
+    "PRIVESC/Linux/Linux Internals-based Privilege Escalation",
+    "Post_Exploitation/File_Transfers/Windows_Upload_Download.md",
+    "PRIVESC/Linux/Service-based Privilege Escalation/Logrotate.md",
+    "PRIVESC/Linux/Service-based Privilege Escalation/Kubernetes.md",
+    "PRIVESC/Linux/Service-based Privilege Escalation/LXD or LXC.md",
+    "PRIVESC/Linux/Permissions-based Privilege Escalation/Privileged Groups.md",
+    "PRIVESC/Linux/Service-based Privilege Escalation/CronJobs.md",
+    "PRIVESC/Linux/Service-based Privilege Escalation/Vulnerable Services.md",
+    "PRIVESC/Linux/Permissions-based Privilege Escalation/Capabilities.md",
+    "PRIVESC/Linux/Service-based Privilege Escalation",
+    "PRIVESC/Linux/2_Exploiting_Sudo.md",
+    "PRIVESC/Linux/Permissions-based Privilege Escalation/Special Permissions (SUID, SGID).md",
+    "PRIVESC/Linux/3_SUID_Binaries.md",
+    "PRIVESC/Linux/Environment-based Privilege Escalation/Escaping Restricted Shells.md",
+    "PRIVESC/Linux/Permissions-based Privilege Escalation",
+    "PRIVESC/Linux/Environment-based Privilege Escalation/Wildcard Abuse.md",
+    "PRIVESC/Linux/Environment-based Privilege Escalation/Path Abuse.md",
+    "PRIVESC/Linux/Environment-based Privilege Escalation",
+    "SERVICES/DATABASES/MSSQL (1433, 4022, 135, 1434).md",
+    "SERVICES/FILE_SHARING/SMB (139, 445).md",
+    "SERVICES/OTHERS",
+    "SERVICES/WEB/WEB_VUNLABILITIES",
+    "TOOLS",
     "Post_Exploitation/Tunneling",
     "Pasted image 20250712164006.png",
     "Pasted image 20250712163946.png",
-    "SERVICES/WEB/CMS",
-    "SERVICES/WEB",
-    "SERVICES/REMOTE_ACCESS",
-    "SERVICES/FILE_SHARING",
-    "SERVICES/EMAIL",
-    "SERVICES/DATABASES",
-    "SERVICES",
-    "Post_Exploitation/Stabilization",
-    "Post_Exploitation/File_Transfers"
+    "SERVICES/WEB/CMS"
   ]
 }

