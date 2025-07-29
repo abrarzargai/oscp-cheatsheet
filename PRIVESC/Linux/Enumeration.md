@@ -10,9 +10,6 @@
 # Environment Enumeration 
 
 ```bash
-# finding the flag
-grep -R "HTB{" / 2>/dev/null
-
 # Operating System Version
 cat /etc/os-release
 
@@ -91,6 +88,13 @@ find / -name "*.sh" 2>/dev/null
 # Credential Hunting
 
 ```bash
+
+# finding the flags file
+find / -type f -name "flag*.txt" 2>/dev/null
+# finding the flag
+grep -R "HTB{" / 2>/dev/null
+
+find / -type f -name "*flag*.txt" 2>/dev/null
 
 # wordpress passsword
 grep 'DB_USER\|DB_PASSWORD' wp-config.php
