@@ -1,2 +1,0 @@
-- `droopescan scan drupal -u http://example.org/ -t 32`
-- `find version > /CHANGELOG.txt`
