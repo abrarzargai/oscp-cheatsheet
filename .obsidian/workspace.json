@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "0d51cfe3bd50d54e",
+        "id": "b1f8dafd7c1ad7fe",
         "type": "tabs",
         "children": [
           {
-            "id": "6712d8f96f574f71",
+            "id": "0762a38d6b4c7195",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "ACTIVE_DIRECTORY/Tools.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Tools"
             }
           }
         ]
@@ -74,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 328.5
+    "width": 393.5
   },
   "right": {
     "id": "2575e061c425fd25",
@@ -164,45 +168,49 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6712d8f96f574f71",
+  "active": "0762a38d6b4c7195",
   "lastOpenFiles": [
-    "SERVICES/WEB/WEB_VUNLABILITIES/XXE.md",
-    "SERVICES/WEB/WEB_VUNLABILITIES/IDOR.md",
-    "SERVICES/WEB/WEB_VUNLABILITIES/HTTP Verb Tampering.md",
-    "Pasted image 20250731120624.png",
-    "SERVICES/WEB/Common Applications/phpMyAdmin.md",
-    "SERVICES/WEB/Common Applications/gitlab.md",
-    "SERVICES/WEB/Common Applications/WordPress.md",
-    "SERVICES/WEB/Common Applications/Tomcat.md",
-    "SERVICES/WEB/Common Applications/SPLUNK.md",
-    "SERVICES/WEB/Common Applications/PRTG Network Monitor.md",
-    "SERVICES/WEB/Common Applications/Mambo.md",
-    "SERVICES/WEB/Common Applications/Magento.md",
-    "SERVICES/WEB/Common Applications/Joomla.md",
-    "SERVICES/WEB/Common Applications/Jenkin.md",
-    "SERVICES/WEB/Common Applications/Elastix.md",
-    "SERVICES/WEB/Common Applications/Drupal.md",
-    "SERVICES/WEB/Common Applications/ColdFusion.md",
-    "SERVICES/WEB/Common Applications/BlogEngine.NET.md",
-    "SERVICES/WEB/Common Applications/Adobe_old_Fusion.md",
-    "SERVICES/WEB/Common Applications/(CGI) Applications - Shellshock.md",
-    "SERVICES/WEB/Common Applications",
-    "PRIVESC/Windows/Token_Impersonation.md",
-    "PRIVESC/Windows/Scheduled_Tasks.md",
-    "PRIVESC/Windows/Kernel_Exploits.md",
-    "PRIVESC/Windows/Bypassing_UAC.md",
-    "PRIVESC/Windows/Windows User Privileges/SeTakeOwnershipPrivilege.md",
-    "PRIVESC/Windows/Windows User Privileges/SeDebugPrivilege.md",
-    "PRIVESC/Windows/Windows User Privileges",
+    "ACTIVE_DIRECTORY/Active_Directory.md",
+    "Post_Exploitation/Port Forwarding/Port Forwarding with Windows Netsh.md",
+    "Post_Exploitation/Port Forwarding/Port Forwarding With SSH.md",
+    "Post_Exploitation/Port Forwarding/Port Forwarding.md",
     "Untitled.canvas",
+    "Untitled.md",
+    "Untitled 1.md",
+    "images/Pasted image 20250804162549.png",
+    "images/Pasted image 20250731120624.png",
+    "images",
+    "images/Pasted image 20250804153829.png",
+    "images/Pasted image 20250804154330.png",
+    "images/Pasted image 20250804155921.png",
+    "TOOLS/Tools List.md",
+    "TOOLS/Tools.md",
+    "ACTIVE_DIRECTORY/Tools.md",
+    "Post_Exploitation/Definations.md",
+    "Post_Exploitation/Tunneling/RDP and SOCKS Tunneling with SocksOverRDP.md",
+    "Post_Exploitation/Tunneling/Tunneling.md",
+    "Post_Exploitation/Port Forwarding/1_Introduction.md",
+    "Post_Exploitation/Tunneling/SOCKS Tunneling.md",
+    "Post_Exploitation/Tunneling/ICMP Tunneling with SOCKS.md",
+    "Post_Exploitation/Tunneling/SOCKS5 Tunneling with Chisel.md",
+    "Post_Exploitation/Tunneling/DNS Tunneling with Dnscat2.md",
+    "Post_Exploitation/Pivoting/Pivoting.md",
+    "Post_Exploitation/Pivoting/Web Server Pivoting with Rpivot.md",
+    "Post_Exploitation/Pivoting/SSH Pivoting with Sshuttle.md",
+    "Post_Exploitation/Port Forwarding/SSH for Windows -  plink.exe.md",
+    "Post_Exploitation/Port Forwarding/Socat Redirection with a Reverse Shell.md",
+    "Post_Exploitation/Tunneling/Meterpreter Tunneling & Port Forwarding.md",
+    "Post_Exploitation/Port Forwarding/Socat Redirection with a Bind Shell.md",
+    "Post_Exploitation/Port Forwarding/Remote or Reverse Port Forwarding with SSH.md",
+    "Post_Exploitation/Lateral Movement",
+    "Post_Exploitation/Port Forwarding",
+    "Post_Exploitation/Pivoting",
+    "SERVICES/WEB/Common Applications",
+    "PRIVESC/Windows/Windows User Privileges",
     "PRIVESC/Linux/Recent 0-Days",
     "PRIVESC/Linux/Linux Internals-based Privilege Escalation",
     "PRIVESC/Linux/Service-based Privilege Escalation",
     "PRIVESC/Linux/Permissions-based Privilege Escalation",
-    "PRIVESC/Linux/Environment-based Privilege Escalation",
-    "SERVICES/OTHERS",
-    "SERVICES/WEB/WEB_VUNLABILITIES",
-    "TOOLS",
     "Pasted image 20250712164006.png",
     "Pasted image 20250712163946.png"
   ]

