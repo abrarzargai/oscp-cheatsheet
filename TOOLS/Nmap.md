@@ -79,3 +79,68 @@
 
 Firewall bypass
 - `sudo nmap -O -D RND:10 10.129.31.2`
+
+
+# Firewall and IDS/IPS Evasion
+
+# Firewall and IDS/IPS Evasion
+
+## Scan by Using Decoys  
+  
+```
+sudo nmap 10.129.2.47 -p 22,80,50000 -sV -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53 -e tun0 -D RND:10
+```
+- `-p` 22,80,50000 → Scan ports 22 (SSH), 80 (HTTP), and 50000.
+- `-sV` → Detect service versions (e.g., Apache 2.4.41).
+- `-sS` → Stealthy SYN scan (less likely to trigger alarms).
+- `-Pn` → Skip host discovery (assume host is up).
+- `-n` → Don’t do DNS lookups (faster & stealthier).
+- `--disable-arp-ping` → Don’t send ARP requests.
+- `--packet-trace` → Show each packet being sent.
+- `--source-port 53` → Make it look like the traffic is coming from DNS (port 53), which firewalls often allow.
+- `-e tun0` → Use the VPN interface.
+- `-D RND:10` → Use 10 random decoy IPs so the target won’t know which IP is yours.
+
+**Purpose:** Makes it harder for the target to figure out where the scan came from.  
+
+## Connect To The Filtered Port `50000` discovered, from a different source port of `53` to evade detection.
+
+```
+ncat -nv --source-port 53 10.129.2.47 50000
+
+# worked
+sudo nc -nv -p53 <target-ip> 50000
+```  
+- --source-port 53 → Pretend the traffic is coming from DNS port 53.
+- 50000 → The target’s port we’re trying to reach.
+
+**Purpose:** Some firewalls only block unknown ports but allow DNS (53), so we "sneak in" using 53.
+
+## Testing Firewall Rule  
+
+```
+sudo nmap 10.129.2.28 -n -Pn -p445 -O
+```
+- p445 → Check SMB file-sharing port.
+
+- O → Try to detect the OS.
+
+**Purpose:** See if port 445 is open and allowed through the firewall.
+
+## Scan by Using Different Source IP  
+
+```
+sudo nmap 10.129.2.28 -n -Pn -p 445 -O -S 10.129.2.200 -e tun0
+```
+- -S 10.129.2.200 → Pretend your IP is 10.129.2.200.
+- Needs special privileges and may only work in certain network setups.
+
+**Purpose:** Hide your real IP from logs.  
+
+## SYN-Scan From DNS Port  
+
+```
+sudo nmap 10.129.2.28 -p50000 -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53
+```  
+Same trick as before: pretend traffic is from DNS so it’s more likely to bypass filters.
+
