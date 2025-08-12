@@ -10,12 +10,12 @@
 |**[enum4linux](https://github.com/CiscoCXSecurity/enum4linux)**|Samba/Windows info|Lists shared folders, users, and OS details on Windows machines.|
 ### **2. Credential Attacks**
 
-|Tool|Purpose|Easy Explanation|
-|---|---|---|
-|**[Mimikatz](https://github.com/ParrotSec/mimikatz)**|Steal passwords|Extracts **plaintext passwords** from memory (like a digital pickpocket).|
-|**[Rubeus](https://github.com/GhostPack/Rubeus)**|Kerberos abuse|Steals or forges AD "tickets" (like fake IDs to access restricted areas).|
-|**[secretsdump.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/secretsdump.py)**|Dump password hashes|Grabs password hashes from AD (later cracked with Hashcat).|
-|**[DomainPasswordSpray](https://github.com/dafthack/DomainPasswordSpray)**|Password spraying|Tests **one password** against many users (e.g., "Summer2024!").|
+| Tool                                                                                                 | Purpose              | Easy Explanation                                                          |
+| ---------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------- |
+| **[Mimikatz](https://github.com/ParrotSec/mimikatz)**                                                | Steal passwords      | Extracts **plaintext passwords** from memory (like a digital pickpocket). |
+| **[Rubeus](https://github.com/GhostPack/Rubeus)**                                                    | Kerberos abuse       | Steals or forges AD "tickets" (like fake IDs to access restricted areas). |
+| **[secretsdump.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/secretsdump.py)** | Dump password hashes | Grabs password hashes from AD (later cracked with Hashcat).               |
+| **[DomainPasswordSpray](https://github.com/dafthack/DomainPasswordSpray)**                           | Password spraying    | Tests **one password** against many users (e.g., "Summer2024!").          |
 
 ### **3. Lateral Movement**
 

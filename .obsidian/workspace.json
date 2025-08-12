@@ -20,8 +20,23 @@
               "icon": "lucide-file",
               "title": "Tools"
             }
+          },
+          {
+            "id": "ade57e0efcfecbae",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ACTIVE_DIRECTORY/Initial Enumeration/Kerberoasting.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Kerberoasting"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -168,14 +183,25 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "0762a38d6b4c7195",
+  "active": "ade57e0efcfecbae",
   "lastOpenFiles": [
+    "ACTIVE_DIRECTORY/Enumerating_AD/User_Enumeration.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/User_Enumeration.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/Retrieving Password Policies.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/Making a Target User List.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/Internal Password Spraying.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/Kerberoasting.md",
+    "ACTIVE_DIRECTORY/Breaching_AD/AS_REP_Roasting.md",
     "ACTIVE_DIRECTORY/Active_Directory.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Kerberos_Delegation.md",
+    "ACTIVE_DIRECTORY/Tools.md",
+    "Untitled.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration",
     "Post_Exploitation/Port Forwarding/Port Forwarding with Windows Netsh.md",
     "Post_Exploitation/Port Forwarding/Port Forwarding With SSH.md",
     "Post_Exploitation/Port Forwarding/Port Forwarding.md",
     "Untitled.canvas",
-    "Untitled.md",
     "Untitled 1.md",
     "images/Pasted image 20250804162549.png",
     "images/Pasted image 20250731120624.png",
@@ -185,7 +211,6 @@
     "images/Pasted image 20250804155921.png",
     "TOOLS/Tools List.md",
     "TOOLS/Tools.md",
-    "ACTIVE_DIRECTORY/Tools.md",
     "Post_Exploitation/Definations.md",
     "Post_Exploitation/Tunneling/RDP and SOCKS Tunneling with SocksOverRDP.md",
     "Post_Exploitation/Tunneling/Tunneling.md",
@@ -194,14 +219,6 @@
     "Post_Exploitation/Tunneling/ICMP Tunneling with SOCKS.md",
     "Post_Exploitation/Tunneling/SOCKS5 Tunneling with Chisel.md",
     "Post_Exploitation/Tunneling/DNS Tunneling with Dnscat2.md",
-    "Post_Exploitation/Pivoting/Pivoting.md",
-    "Post_Exploitation/Pivoting/Web Server Pivoting with Rpivot.md",
-    "Post_Exploitation/Pivoting/SSH Pivoting with Sshuttle.md",
-    "Post_Exploitation/Port Forwarding/SSH for Windows -  plink.exe.md",
-    "Post_Exploitation/Port Forwarding/Socat Redirection with a Reverse Shell.md",
-    "Post_Exploitation/Tunneling/Meterpreter Tunneling & Port Forwarding.md",
-    "Post_Exploitation/Port Forwarding/Socat Redirection with a Bind Shell.md",
-    "Post_Exploitation/Port Forwarding/Remote or Reverse Port Forwarding with SSH.md",
     "Post_Exploitation/Lateral Movement",
     "Post_Exploitation/Port Forwarding",
     "Post_Exploitation/Pivoting",
@@ -210,7 +227,6 @@
     "PRIVESC/Linux/Recent 0-Days",
     "PRIVESC/Linux/Linux Internals-based Privilege Escalation",
     "PRIVESC/Linux/Service-based Privilege Escalation",
-    "PRIVESC/Linux/Permissions-based Privilege Escalation",
     "Pasted image 20250712164006.png",
     "Pasted image 20250712163946.png"
   ]
