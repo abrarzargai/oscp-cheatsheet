@@ -168,3 +168,10 @@ systeminfo > sysinfo.txt          # Get system info
 
 - **Job:** Shows escalation options in Meterpreter session.
 - **Module: `post/multi/recon/local_exploit_suggester`**
+
+
+---
+winPEASany.exe
+Seatbelt.exe
+PowerUp.ps1
+SharpUp.exe

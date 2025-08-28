@@ -13,12 +13,54 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ACTIVE_DIRECTORY/Tools.md",
+                "file": "ACTIVE_DIRECTORY/Breaching_AD/AS_REP_Roasting.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Tools"
+              "title": "AS_REP_Roasting"
+            }
+          },
+          {
+            "id": "bc96ed236bdd92f1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "PRIVESC/Windows/2_Automation.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2_Automation"
+            }
+          },
+          {
+            "id": "425083e38c08b031",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "PRIVESC/Windows/Kernel_Exploits.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Kernel_Exploits"
+            }
+          },
+          {
+            "id": "f48e414cfe041944",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Post_Exploitation/Port Forwarding/Port Forwarding with Windows Netsh (good for rdp).md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Port Forwarding with Windows Netsh (good for rdp)"
             }
           },
           {
@@ -27,12 +69,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ACTIVE_DIRECTORY/Initial Enumeration/Kerberoasting.md",
+                "file": "ENUMERATION/Network_Scanning.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Kerberoasting"
+              "title": "Network_Scanning"
+            }
+          },
+          {
+            "id": "bd7ad0647052e142",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Others.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Others"
             }
           }
         ],
@@ -175,6 +231,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -183,42 +240,42 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "ade57e0efcfecbae",
+  "active": "bc96ed236bdd92f1",
   "lastOpenFiles": [
-    "ACTIVE_DIRECTORY/Enumerating_AD/User_Enumeration.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/User_Enumeration.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/Retrieving Password Policies.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/Making a Target User List.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/Internal Password Spraying.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/Kerberoasting.md",
-    "ACTIVE_DIRECTORY/Breaching_AD/AS_REP_Roasting.md",
-    "ACTIVE_DIRECTORY/Active_Directory.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Kerberos_Delegation.md",
-    "ACTIVE_DIRECTORY/Tools.md",
-    "Untitled.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration",
-    "Post_Exploitation/Port Forwarding/Port Forwarding with Windows Netsh.md",
-    "Post_Exploitation/Port Forwarding/Port Forwarding With SSH.md",
+    "PRIVESC/Windows/1_Enumeration.md",
+    "Post_Exploitation/File_Transfers/Windows_Upload_Download.md",
+    "TOOLS/RDP.md",
+    "ACTIVE_DIRECTORY/Enumerating_AD/BloodHound.md",
+    "Post_Exploitation/Tunneling/SOCKS5 Tunneling with Chisel.md",
+    "Post_Exploitation/Port Forwarding/Port Forwarding with Windows Netsh (good for rdp).md",
+    "Post_Exploitation/Port Forwarding/Port Forwarding With SSH (good).md",
+    "Post_Exploitation/Pivoting/Web Server Pivoting with Rpivot.md",
+    "Post_Exploitation/Port Forwarding/Remote or Reverse Port Forwarding with SSH.md",
+    "Post_Exploitation/Port Forwarding/Socat Redirection with a Bind Shell.md",
+    "Post_Exploitation/Port Forwarding/Socat Redirection with a Reverse Shell.md",
+    "Post_Exploitation/Port Forwarding/SSH for Windows -  plink.exe.md",
+    "Post_Exploitation/Tunneling/ICMP Tunneling with SOCKS.md",
+    "Post_Exploitation/Tunneling/Meterpreter Tunneling & Port Forwarding.md",
+    "Post_Exploitation/Tunneling/SOCKS Tunneling.md",
+    "Post_Exploitation/Pivoting/SSH Pivoting with Sshuttle (good).md",
+    "Post_Exploitation/Pivoting/Pivoting.md",
     "Post_Exploitation/Port Forwarding/Port Forwarding.md",
+    "PRIVESC/Windows/Credential Theft/Credential Hunting.md",
+    "PRIVESC/Windows/Kernel_Exploits.md",
+    "ACTIVE_DIRECTORY/Breaching_AD/AS_REP_Roasting.md",
+    "ACTIVE_DIRECTORY/Breaching_AD/NTLM_Relay.md",
+    "ACTIVE_DIRECTORY/Enumerating_AD/User_Enumeration.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_AD_Users.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Automated_Relays.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Certificates.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration",
     "Untitled.canvas",
-    "Untitled 1.md",
     "images/Pasted image 20250804162549.png",
     "images/Pasted image 20250731120624.png",
     "images",
     "images/Pasted image 20250804153829.png",
     "images/Pasted image 20250804154330.png",
     "images/Pasted image 20250804155921.png",
-    "TOOLS/Tools List.md",
-    "TOOLS/Tools.md",
-    "Post_Exploitation/Definations.md",
-    "Post_Exploitation/Tunneling/RDP and SOCKS Tunneling with SocksOverRDP.md",
-    "Post_Exploitation/Tunneling/Tunneling.md",
-    "Post_Exploitation/Port Forwarding/1_Introduction.md",
-    "Post_Exploitation/Tunneling/SOCKS Tunneling.md",
-    "Post_Exploitation/Tunneling/ICMP Tunneling with SOCKS.md",
-    "Post_Exploitation/Tunneling/SOCKS5 Tunneling with Chisel.md",
-    "Post_Exploitation/Tunneling/DNS Tunneling with Dnscat2.md",
     "Post_Exploitation/Lateral Movement",
     "Post_Exploitation/Port Forwarding",
     "Post_Exploitation/Pivoting",
