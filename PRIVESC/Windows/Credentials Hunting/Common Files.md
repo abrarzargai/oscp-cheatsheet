@@ -1,52 +1,40 @@
-### Using Command Prompt (findstr)
+# Using Command Prompt (findstr)
 Search for the word "password" inside common text files:
 
 ```cmd
 cd C:\Users\htb-student\Documents
 findstr /SI /M "password" *.xml *.ini *.txt
 ```
-
 Search for "password" recursively with line numbers and file names:
-
 ```cmd
 findstr /spin "password" .
 ```
-
 Search for "password" inside multiple file types:
-
 ```cmd
 findstr /si password *.xml *.ini *.txt *.config
 ```
 
-### Using PowerShell
+# Using PowerShell
 Search text files for "password":
-
 ```powershell
 Select-String -Path C:\Users\htb-student\Documents*.txt -Pattern password
 ```
-
 Search recursively for files with specific extensions:
-
 ```powershell
 Get-ChildItem C:\ -Recurse -Include *.rdp, *.config, *.vnc, *.cred -ErrorAction Ignore
 ```
-
 ### Search for Files by Extension or Name
 Find files with "pass" or "cred" in their name:
-
 ```cmd
 dir /S /B pass.txt pass.xml pass.ini cred .config
 ```
-
 Find all .config files recursively:
-
 ```cmd
 where /R C:\ *.config
 ```
 
 ### Sticky Notes Passwords (SQLite Database)
 Windows Sticky Notes saves data in a SQLite database file.
-
 #### Location:
 ```
 C:\Users\<user>\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\

