@@ -7,6 +7,9 @@
 - https://docs.google.com/spreadsheets/d/18weuz_Eeynr6sXFQ87Cd5F0slOj9Z6rt/edit?gid=487240997#gid=487240997
 - https://docs.google.com/spreadsheets/u/1/d/1dwSMIAPIam0PuRBkCiDI88pU3yzrqqHkDtBngUHNCw8/htmlview
 
+## AD
+- https://activedirectoryplaybook.notion.site/Active-Directory-1ffab78f23d480a4983ec5f98da22c58
+
 # OSCP Cheatsheet
 
 ```md
