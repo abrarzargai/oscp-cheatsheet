@@ -8,7 +8,63 @@
         "type": "tabs",
         "children": [
           {
-            "id": "53e708190cc3bc7b",
+            "id": "37442f721aa994f5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "TOOLS/Python Eniorment.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Python Eniorment"
+            }
+          },
+          {
+            "id": "626ff997e6cbb545",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ENUMERATION/Network_Scanning.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Network_Scanning"
+            }
+          },
+          {
+            "id": "08539e8cc3ba404d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "GENERIC/Web Shell.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Web Shell"
+            }
+          },
+          {
+            "id": "c0650caaefd520c9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Post_Exploitation/Pivoting/ligolo-ng.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ligolo-ng"
+            }
+          },
+          {
+            "id": "57e4d67dd63f6a95",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -22,21 +78,35 @@
             }
           },
           {
+            "id": "53e708190cc3bc7b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "PRIVESC/Linux/Permissions-based Privilege Escalation/Capabilities.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Capabilities"
+            }
+          },
+          {
             "id": "a745285c13069a94",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TOOLS/Python Eniorment.md",
+                "file": "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/GenericAll.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Python Eniorment"
+              "title": "GenericAll"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -68,7 +138,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "cmdkey ",
+                "query": "ling",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -184,54 +254,54 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "a745285c13069a94",
+  "active": "c0650caaefd520c9",
   "lastOpenFiles": [
-    "TOOLS/Nmap.md",
-    "GENERIC/CTF Notes.md",
-    "PRIVESC/Information Gathering.md",
-    "Post_Exploitation/Stabilization/Linux_TTY_Upgrade.md",
-    "Post_Exploitation/Stabilization/Windows_TTY_Upgrade.md",
-    "PRIVESC/Windows/Credentials Hunting/Passwords.md",
-    "PRIVESC/Windows/Basic Enumeration.md",
-    "PRIVESC/Windows/Credentials Hunting/Credential Hunting.md",
-    "GENERIC/Web Shell.md",
-    "GENERIC/Common.md",
-    "SERVICES/WEB/Common Applications/Magento.md",
-    "SERVICES/WEB/Common Applications/Untitled.md",
-    "PRIVESC/Linux/Permissions-based Privilege Escalation/Special Permissions (SUID, SGID).md",
-    "PRIVESC/Linux/Service-based Privilege Escalation/Image Magick. (CVE-2024-41817).md",
-    "PRIVESC/Linux/Permissions-based Privilege Escalation/Capabilities.md",
-    "PRIVESC/Linux/Permissions-based Privilege Escalation/Privileged Groups.md",
-    "GENERIC/Reverse Shell.md",
-    "PRIVESC/Windows/Automated Tools for Privilege Escalation.md",
+    "Others.md",
     "Post_Exploitation/Pivoting/ligolo-ng.md",
-    "PRIVESC/Windows/Others/TeamViewer (privilege escalation).md",
+    "ENUMERATION/Network_Scanning.md",
+    "ACTIVE_DIRECTORY/AD Cheatsheet.md",
+    "ACTIVE_DIRECTORY/Definations.md",
+    "ACTIVE_DIRECTORY/Tools.md",
+    "TOOLS/Nmap.md",
+    "TOOLS/Tools List.md",
+    "TOOLS/Tools.md",
+    "TOOLS/RDP.md",
+    "TOOLS/Python Eniorment.md",
     "GENERIC/Directory buster.md",
-    "SERVICES/WEB/Common Applications/Umbraco.md",
-    "PRIVESC/Windows/Windows Group Privileges/AD Recycle Bin.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/AD CS/ESC1.md",
-    "Post_Exploitation/File_Transfers/Windows_Upload_Download.md",
-    "UseFullCommands/Password Cracking/VNC Decrypt Password.md",
+    "GENERIC/pfx file.md",
+    "GENERIC/CTF Notes.md",
+    "GENERIC/Common.md",
+    "ENUMERATION/DNS Record.md",
+    "ENUMERATION/Subdomain_Enumeration.md",
+    "GENERIC/Web Shell.md",
+    "GENERIC/UserFull File.md",
+    "GENERIC/User name generator.md",
+    "GENERIC/Reverse Shell.md",
+    "Post_Exploitation/Stabilization/Linux_TTY_Upgrade.md",
+    "PRIVESC/Linux/Permissions-based Privilege Escalation/Capabilities.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/DCSync.md",
+    "PRIVESC/Information Gathering.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/WriteOwner.md",
+    "Pasted image 20251011105127.png",
+    "Pasted image 20251011104909.png",
+    "Pasted image 20251011104903.png",
+    "Pasted image 20251011104858.png",
+    "Pasted image 20251011104847.png",
+    "Pasted image 20251011104838.png",
+    "Pasted image 20251011104801.png",
+    "Pasted image 20251011104752.png",
+    "Pasted image 20251011104743.png",
+    "Pasted image 20251011104731.png",
+    "PRIVESC/Linux/Exploits",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation",
+    "Untitled",
     "UseFullCommands/Password Cracking",
     "UseFullCommands",
-    "Pasted image 20250929002810.png",
-    "Pasted image 20250929002746.png",
-    "Pasted image 20250927171148.png",
-    "Pasted image 20250927171143.png",
-    "Pasted image 20250927171127.png",
     "PRIVESC/Windows/Untitled",
     "Untitled 1",
     "ACTIVE_DIRECTORY/Exploiting_AD/AD CS",
     "PRIVESC/Windows/Others",
     "PRIVESC/Windows/Registry",
-    "Pasted image 20250828071448.png",
-    "Pasted image 20250828070632.png",
-    "PRIVESC/Windows/Kernel_Exploits",
-    "PRIVESC/Windows/Service Exploits",
-    "Pasted image 20250828064001.png",
-    "ACTIVE_DIRECTORY/Initial Enumeration",
-    "Untitled.canvas",
-    "images/Pasted image 20250804162549.png",
-    "images/Pasted image 20250731120624.png"
+    "Untitled.canvas"
   ]
 }

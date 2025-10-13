@@ -81,3 +81,10 @@ If successful, it uploads a PHP shell to:
 # You can run commands using:
 curl http://blog.inlanefreight.local/wp-content/uploads/2021/08/<filename>.php?cmd=id
 ```
+
+
+## CVE-2021-29447 
+
+when you logged in to admin panel then you can upload media files but its restricted in wordpress 5.6 version so you can use this exploit 
+
+https://github.com/0xRar/CVE-2021-29447-PoC

