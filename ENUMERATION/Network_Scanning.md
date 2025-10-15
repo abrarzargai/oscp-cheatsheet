@@ -16,6 +16,8 @@ sudo nmap -sU --min-rate 10000 $t
 nmap -p- -T4 -v --min-rate 10000 -Pn $t 
 
 nmap -sCV -T4 -v --min-rate 10000 -Pn $t
+
+nmap -sCV -T4 -v --min-rate 10000 -Pn $t --script vuln
 ```
 
 

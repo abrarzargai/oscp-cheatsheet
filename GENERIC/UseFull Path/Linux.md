@@ -1,0 +1,3 @@
+```bash
+/etc/hosts
+```

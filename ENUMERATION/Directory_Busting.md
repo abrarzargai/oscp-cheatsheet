@@ -1,6 +1,6 @@
 
 ```bash
-dirb http://192.168.80.1/
+dirb http://$t
 
 
 ffuf -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-large-directories-lowercase.txt -u http://$t/FUZZ

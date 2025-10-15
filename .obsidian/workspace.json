@@ -27,12 +27,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ENUMERATION/Network_Scanning.md",
+                "file": "ACTIVE_DIRECTORY/AD Cheatsheet.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Network_Scanning"
+              "title": "AD Cheatsheet"
+            }
+          },
+          {
+            "id": "8d13a10bca20e23f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "GENERIC/CTF Notes.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "CTF Notes"
             }
           },
           {
@@ -41,12 +55,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "GENERIC/Web Shell.md",
+                "file": "PRIVESC/Windows/Windows User Privileges/SeDebugPrivilege.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Web Shell"
+              "title": "SeDebugPrivilege"
+            }
+          },
+          {
+            "id": "b84e66d3cff5698b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ACTIVE_DIRECTORY/AD Cheatsheet.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "AD Cheatsheet"
             }
           },
           {
@@ -55,12 +83,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Post_Exploitation/Pivoting/ligolo-ng.md",
+                "file": "ENUMERATION/Network_Scanning.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ligolo-ng"
+              "title": "Network_Scanning"
             }
           },
           {
@@ -106,7 +134,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -138,7 +166,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "ling",
+                "query": "asp.",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -254,13 +282,26 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c0650caaefd520c9",
+  "active": "626ff997e6cbb545",
   "lastOpenFiles": [
-    "Others.md",
-    "Post_Exploitation/Pivoting/ligolo-ng.md",
+    "GENERIC/CTF Notes.md",
     "ENUMERATION/Network_Scanning.md",
+    "Post_Exploitation/Pivoting/ligolo-ng.md",
     "ACTIVE_DIRECTORY/AD Cheatsheet.md",
+    "ENUMERATION/DNS Record.md",
+    "GENERIC/UseFull Path/Windows.md",
+    "PRIVESC/Windows/Windows User Privileges/SeDebugPrivilege.md",
+    "SERVICES/WEB/Common Applications/ASP.net/VIEWSTATE Insecure Deserialization.md",
+    "GENERIC/UseFull Path/Linux.md",
+    "SERVICES/WEB/Common Applications/ASP.net",
+    "GENERIC/UseFull Path",
+    "GENERIC/Reverse Shell.md",
+    "ENUMERATION/Directory_Busting.md",
+    "ENUMERATION/Subdomain_Enumeration.md",
+    "GENERIC/Web Shell.md",
     "ACTIVE_DIRECTORY/Definations.md",
+    "GENERIC/Common.md",
+    "Others.md",
     "ACTIVE_DIRECTORY/Tools.md",
     "TOOLS/Nmap.md",
     "TOOLS/Tools List.md",
@@ -269,19 +310,8 @@
     "TOOLS/Python Eniorment.md",
     "GENERIC/Directory buster.md",
     "GENERIC/pfx file.md",
-    "GENERIC/CTF Notes.md",
-    "GENERIC/Common.md",
-    "ENUMERATION/DNS Record.md",
-    "ENUMERATION/Subdomain_Enumeration.md",
-    "GENERIC/Web Shell.md",
     "GENERIC/UserFull File.md",
     "GENERIC/User name generator.md",
-    "GENERIC/Reverse Shell.md",
-    "Post_Exploitation/Stabilization/Linux_TTY_Upgrade.md",
-    "PRIVESC/Linux/Permissions-based Privilege Escalation/Capabilities.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/DCSync.md",
-    "PRIVESC/Information Gathering.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/WriteOwner.md",
     "Pasted image 20251011105127.png",
     "Pasted image 20251011104909.png",
     "Pasted image 20251011104903.png",
@@ -300,8 +330,6 @@
     "PRIVESC/Windows/Untitled",
     "Untitled 1",
     "ACTIVE_DIRECTORY/Exploiting_AD/AD CS",
-    "PRIVESC/Windows/Others",
-    "PRIVESC/Windows/Registry",
     "Untitled.canvas"
   ]
 }
