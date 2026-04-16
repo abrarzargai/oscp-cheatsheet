@@ -1,4 +1,4 @@
-Need to read this
+erNeed to read this
 
 [https://benheater.com/my-ctf-methodology/](https://benheater.com/my-ctf-methodology/)
 
@@ -177,10 +177,18 @@ OR
 ### sharpHound.PS1
 
 ```bash
-powershell -ev bypass
-. .\\sharpHound.PS1
-Import-Module .\\SharpHound.ps1
-Invoke-BloodHound -CollectionMethod All -Domain bear.local -zipFileName loot.zip
+# Start PowerShell with execution bypass
+# -ep bypass = Bypasses PowerShell's security restrictions (allows running unsigned scripts)
+powershell -ep bypass
+
+# Load SharpHound
+. .\SharpHound.ps1
+
+# Collect ALL Active Directory data and save to zip file
+# -CollectionMethod All      = Groups, users, computers, ACLs, sessions, SPNs, trusts
+# -Domain bear.local         = Target domain (only collects from this domain)
+# -ZipFileName loot.zip      = Output file name (easy to exfiltrate and import to BloodHound)
+Invoke-BloodHound -CollectionMethod All -Domain bear.local -ZipFileName loot.zip
 ```
 
 ### Using Bloodhound python:

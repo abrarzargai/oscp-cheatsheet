@@ -4,25 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "0dc02dadfe5f6d96",
+        "id": "3aab37df976b9212",
         "type": "tabs",
         "children": [
           {
-            "id": "37442f721aa994f5",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "TOOLS/Python Eniorment.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Python Eniorment"
-            }
-          },
-          {
-            "id": "626ff997e6cbb545",
+            "id": "5e1b00dfecf6b871",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -36,101 +22,53 @@
             }
           },
           {
-            "id": "8d13a10bca20e23f",
+            "id": "1acf181d3513d1c9",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "GENERIC/CTF Notes.md",
+                "file": "ACTIVE_DIRECTORY/Persistance/Golden Ticket.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "CTF Notes"
+              "title": "Golden Ticket"
             }
           },
           {
-            "id": "08539e8cc3ba404d",
+            "id": "906fc3a9e16d9e00",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "PRIVESC/Windows/Windows User Privileges/SeDebugPrivilege.md",
-                "mode": "source",
-                "source": false
+                "file": "images/Pasted image 20250828064001.png"
               },
-              "icon": "lucide-file",
-              "title": "SeDebugPrivilege"
+              "icon": "lucide-image",
+              "title": "Pasted image 20250828064001"
             }
           },
           {
-            "id": "b84e66d3cff5698b",
+            "id": "40b1214fe1399329",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "ACTIVE_DIRECTORY/AD Cheatsheet.md",
-                "mode": "source",
-                "source": false
+                "file": "images/Pasted image 20250828070632.png"
               },
-              "icon": "lucide-file",
-              "title": "AD Cheatsheet"
+              "icon": "lucide-image",
+              "title": "Pasted image 20250828070632"
             }
           },
           {
-            "id": "c0650caaefd520c9",
+            "id": "5af25bcc360cbb5b",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "ENUMERATION/Network_Scanning.md",
-                "mode": "source",
-                "source": false
+                "file": "images/Pasted image 20260416093323.png"
               },
-              "icon": "lucide-file",
-              "title": "Network_Scanning"
-            }
-          },
-          {
-            "id": "57e4d67dd63f6a95",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Post_Exploitation/Stabilization/Linux_TTY_Upgrade.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Linux_TTY_Upgrade"
-            }
-          },
-          {
-            "id": "53e708190cc3bc7b",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "PRIVESC/Linux/Permissions-based Privilege Escalation/Capabilities.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Capabilities"
-            }
-          },
-          {
-            "id": "a745285c13069a94",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/GenericAll.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "GenericAll"
+              "icon": "lucide-image",
+              "title": "Pasted image 20260416093323"
             }
           }
         ],
@@ -166,7 +104,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "asp.",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -282,54 +220,53 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "626ff997e6cbb545",
+  "active": "1acf181d3513d1c9",
   "lastOpenFiles": [
-    "GENERIC/CTF Notes.md",
-    "ENUMERATION/Network_Scanning.md",
-    "Post_Exploitation/Pivoting/ligolo-ng.md",
+    "images/Pasted image 20260416093323.png",
+    "ACTIVE_DIRECTORY/Persistance/Golden Ticket.md",
+    "images/Pasted image 20260416095826.png",
+    "images/Pasted image 20260416095758.png",
+    "images/Pasted image 20260416094213.png",
+    "images/Pasted image 20260416094102.png",
+    "images/Pasted image 20260416094009.png",
+    "images/Pasted image 20260416093826.png",
+    "images/Pasted image 20260416093755.png",
+    "images/Pasted image 20260416093506.png",
+    "images/Pasted image 20260416093356.png",
+    "Others.md",
+    "README.md",
+    "Untitled.md",
+    "Methodology/Methodology.md",
+    "Methodology",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc/Local-Priv-Esc.md",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc.md",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc",
+    "ACTIVE_DIRECTORY/Breaching_AD (done)/LLMNR_NBT_NS Poisoning.md",
+    "ACTIVE_DIRECTORY/Breaching_AD (done)/AS-REP Roasting.md",
+    "ACTIVE_DIRECTORY/Breaching_AD (done)/NTLM_Relay.md",
+    "ACTIVE_DIRECTORY/Definations/Active Directory Basics.md",
+    "ACTIVE_DIRECTORY/Definations/Kerberose.md",
+    "ACTIVE_DIRECTORY/Enumerating_AD (done)/2_GPO Enumeration.md",
+    "ACTIVE_DIRECTORY/Enumerating_AD (done)/0_Enumeration.md",
+    "ACTIVE_DIRECTORY/Enumerating_AD (done)/5_BloodHound Enumeration.md",
+    "ACTIVE_DIRECTORY/Enumerating_AD (done)/3_ACL Enumeration.md",
+    "ACTIVE_DIRECTORY/Enumerating_AD (done)/1_Domain Enumeration [ Basic ].md",
+    "ACTIVE_DIRECTORY/Enumerating_AD (done)/4_Trusts Enumeration.md",
     "ACTIVE_DIRECTORY/AD Cheatsheet.md",
-    "ENUMERATION/DNS Record.md",
-    "GENERIC/UseFull Path/Windows.md",
-    "PRIVESC/Windows/Windows User Privileges/SeDebugPrivilege.md",
-    "SERVICES/WEB/Common Applications/ASP.net/VIEWSTATE Insecure Deserialization.md",
-    "GENERIC/UseFull Path/Linux.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/User Enumeration.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/Retrieving Password Policies.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/Internal Password Spraying.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/Making a Target User List.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration/Kerberoasting.md",
+    "ACTIVE_DIRECTORY/Definations",
+    "ACTIVE_DIRECTORY/Tools.md",
+    "ACTIVE_DIRECTORY/Persistance",
     "SERVICES/WEB/Common Applications/ASP.net",
     "GENERIC/UseFull Path",
-    "GENERIC/Reverse Shell.md",
-    "ENUMERATION/Directory_Busting.md",
-    "ENUMERATION/Subdomain_Enumeration.md",
-    "GENERIC/Web Shell.md",
-    "ACTIVE_DIRECTORY/Definations.md",
-    "GENERIC/Common.md",
-    "Others.md",
-    "ACTIVE_DIRECTORY/Tools.md",
-    "TOOLS/Nmap.md",
-    "TOOLS/Tools List.md",
-    "TOOLS/Tools.md",
-    "TOOLS/RDP.md",
-    "TOOLS/Python Eniorment.md",
-    "GENERIC/Directory buster.md",
-    "GENERIC/pfx file.md",
-    "GENERIC/UserFull File.md",
-    "GENERIC/User name generator.md",
-    "Pasted image 20251011105127.png",
-    "Pasted image 20251011104909.png",
-    "Pasted image 20251011104903.png",
-    "Pasted image 20251011104858.png",
-    "Pasted image 20251011104847.png",
-    "Pasted image 20251011104838.png",
-    "Pasted image 20251011104801.png",
-    "Pasted image 20251011104752.png",
-    "Pasted image 20251011104743.png",
-    "Pasted image 20251011104731.png",
     "PRIVESC/Linux/Exploits",
     "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation",
     "Untitled",
     "UseFullCommands/Password Cracking",
-    "UseFullCommands",
-    "PRIVESC/Windows/Untitled",
-    "Untitled 1",
-    "ACTIVE_DIRECTORY/Exploiting_AD/AD CS",
     "Untitled.canvas"
   ]
 }

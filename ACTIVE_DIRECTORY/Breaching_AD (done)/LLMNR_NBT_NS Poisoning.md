@@ -1,4 +1,4 @@
-## **LLMNR/NBT-NS poisoning**
+
 
 LLMNR/NBT-NS These are old Windows features used when a computer can't find another one by name.
 
@@ -6,14 +6,14 @@ LLMNR/NBT-NS These are old Windows features used when a computer can't find anot
 
 Your Windows tries to access a shared folder `\\fileserver\share`But if it **can’t find "fileserver"**, it asks:
 
-> ❓ "Hey network, who is fileserver?"
+>  "Hey network, who is fileserver?"
 > 
 
 Anyone on the network can reply...
 
 So you can use a tool like **Responder** to Trick a user into connecting to our fake server and say:
 
-> 🧑‍💻 "I’m fileserver! Send me your login info!"
+> "I’m fileserver! Send me your login info!"
 > 
 
 Windows believes you and sends you Username and NTLM hash
