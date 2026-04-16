@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ACTIVE_DIRECTORY/Persistance/Golden Ticket.md",
+                "file": "ACTIVE_DIRECTORY/Initial Enumeration (done)/Internal Password Spraying.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Golden Ticket"
+              "title": "Internal Password Spraying"
             }
           },
           {
@@ -41,7 +41,7 @@
             "state": {
               "type": "image",
               "state": {
-                "file": "images/Pasted image 20250828064001.png"
+                "file": "IMAGES/Pasted image 20250828064001.png"
               },
               "icon": "lucide-image",
               "title": "Pasted image 20250828064001"
@@ -53,7 +53,7 @@
             "state": {
               "type": "image",
               "state": {
-                "file": "images/Pasted image 20250828070632.png"
+                "file": "IMAGES/Pasted image 20250828070632.png"
               },
               "icon": "lucide-image",
               "title": "Pasted image 20250828070632"
@@ -65,7 +65,7 @@
             "state": {
               "type": "image",
               "state": {
-                "file": "images/Pasted image 20260416093323.png"
+                "file": "IMAGES/Pasted image 20260416093323.png"
               },
               "icon": "lucide-image",
               "title": "Pasted image 20260416093323"
@@ -222,45 +222,46 @@
   },
   "active": "1acf181d3513d1c9",
   "lastOpenFiles": [
-    "images/Pasted image 20260416093323.png",
-    "ACTIVE_DIRECTORY/Persistance/Golden Ticket.md",
-    "images/Pasted image 20260416095826.png",
-    "images/Pasted image 20260416095758.png",
-    "images/Pasted image 20260416094213.png",
-    "images/Pasted image 20260416094102.png",
-    "images/Pasted image 20260416094009.png",
-    "images/Pasted image 20260416093826.png",
-    "images/Pasted image 20260416093755.png",
-    "images/Pasted image 20260416093506.png",
-    "images/Pasted image 20260416093356.png",
-    "Others.md",
-    "README.md",
-    "Untitled.md",
-    "Methodology/Methodology.md",
-    "Methodology",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc/Local-Priv-Esc.md",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc.md",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc",
+    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Untitled.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Internal Password Spraying.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Kerberoasting.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Making a Target User List.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Retrieving Password Policies.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration (done)/User Enumeration.md",
+    "ACTIVE_DIRECTORY/Enumerating_AD (done)/4_Trusts Enumeration.md",
+    "ACTIVE_DIRECTORY/Enumerating_AD (done)/5_BloodHound Enumeration.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/DCSync.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Kerberos_Delegation.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_GPOs.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Domain_Trusts.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Certificates.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Automated_Relays.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_AD_Users.md",
+    "ACTIVE_DIRECTORY/Tools.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/_.md",
+    "ACL_Mindmap - [ @redblock_team ].png",
+    "ACTIVE_DIRECTORY/Definations/Active Directory Basics.md",
     "ACTIVE_DIRECTORY/Breaching_AD (done)/LLMNR_NBT_NS Poisoning.md",
     "ACTIVE_DIRECTORY/Breaching_AD (done)/AS-REP Roasting.md",
-    "ACTIVE_DIRECTORY/Breaching_AD (done)/NTLM_Relay.md",
-    "ACTIVE_DIRECTORY/Definations/Active Directory Basics.md",
-    "ACTIVE_DIRECTORY/Definations/Kerberose.md",
-    "ACTIVE_DIRECTORY/Enumerating_AD (done)/2_GPO Enumeration.md",
-    "ACTIVE_DIRECTORY/Enumerating_AD (done)/0_Enumeration.md",
-    "ACTIVE_DIRECTORY/Enumerating_AD (done)/5_BloodHound Enumeration.md",
-    "ACTIVE_DIRECTORY/Enumerating_AD (done)/3_ACL Enumeration.md",
-    "ACTIVE_DIRECTORY/Enumerating_AD (done)/1_Domain Enumeration [ Basic ].md",
-    "ACTIVE_DIRECTORY/Enumerating_AD (done)/4_Trusts Enumeration.md",
-    "ACTIVE_DIRECTORY/AD Cheatsheet.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/User Enumeration.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/Retrieving Password Policies.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/Internal Password Spraying.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/Making a Target User List.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration/Kerberoasting.md",
+    "IMAGES/Pasted image 20260416104750.png",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)/Autorun.md",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc.md",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc/Local-Priv-Esc.md",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)/AlwaysInstallElevated.md",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)/Service Registry.md",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)/Executable Files.md",
+    "IMAGES/Pasted image 20260416105509.png",
+    "IMAGES/Pasted image 20260416105408.png",
+    "IMAGES/Pasted image 20260416105353.png",
+    "IMAGES/Pasted image 20260416105339.png",
+    "IMAGES/Pasted image 20260416105225.png",
+    "IMAGES/Pasted image 20260416093323.png",
+    "IMAGES/Pasted image 20260416095826.png",
+    "IMAGES/Pasted image 20260416095758.png",
+    "METHODOLOGY",
+    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)",
     "ACTIVE_DIRECTORY/Definations",
-    "ACTIVE_DIRECTORY/Tools.md",
-    "ACTIVE_DIRECTORY/Persistance",
+    "ACTIVE_DIRECTORY/Persistance (done)",
     "SERVICES/WEB/Common Applications/ASP.net",
     "GENERIC/UseFull Path",
     "PRIVESC/Linux/Exploits",

