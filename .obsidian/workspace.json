@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ACTIVE_DIRECTORY/AD Cheatsheet.md",
+                "file": "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Certificates.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AD Cheatsheet"
+              "title": "Exploiting_Certificates"
             }
           },
           {
@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ACTIVE_DIRECTORY/Initial Enumeration (done)/Internal Password Spraying.md",
+                "file": "ACTIVE_DIRECTORY/Checklist.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Internal Password Spraying"
+              "title": "Checklist"
             }
           },
           {
@@ -71,8 +71,7 @@
               "title": "Pasted image 20260416093323"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -220,25 +219,30 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "1acf181d3513d1c9",
+  "active": "5e1b00dfecf6b871",
   "lastOpenFiles": [
-    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Untitled.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Internal Password Spraying.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Domain_Trusts.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_GPOs.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Kerberos_Delegation.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Certificates.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Automated_Relays.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_AD_Users.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/_.md",
+    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/Exploiting_Permission_Delegation.md",
+    "TOOLS/Mimikatz.md",
+    "Others.md",
+    "IMAGES/Pasted image 20260416153103.png",
     "ACTIVE_DIRECTORY/Initial Enumeration (done)/Kerberoasting.md",
+    "ACTIVE_DIRECTORY/AD Cheatsheet.md",
+    "ACTIVE_DIRECTORY/Checklist.md",
+    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Internal Password Spraying.md",
     "ACTIVE_DIRECTORY/Initial Enumeration (done)/Making a Target User List.md",
     "ACTIVE_DIRECTORY/Initial Enumeration (done)/Retrieving Password Policies.md",
     "ACTIVE_DIRECTORY/Initial Enumeration (done)/User Enumeration.md",
     "ACTIVE_DIRECTORY/Enumerating_AD (done)/4_Trusts Enumeration.md",
     "ACTIVE_DIRECTORY/Enumerating_AD (done)/5_BloodHound Enumeration.md",
     "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/DCSync.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Kerberos_Delegation.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_GPOs.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Domain_Trusts.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Certificates.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Automated_Relays.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_AD_Users.md",
     "ACTIVE_DIRECTORY/Tools.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/_.md",
     "ACL_Mindmap - [ @redblock_team ].png",
     "ACTIVE_DIRECTORY/Definations/Active Directory Basics.md",
     "ACTIVE_DIRECTORY/Breaching_AD (done)/LLMNR_NBT_NS Poisoning.md",
@@ -246,10 +250,6 @@
     "IMAGES/Pasted image 20260416104750.png",
     "ACTIVE_DIRECTORY/Local-Priv-Esc (done)/Autorun.md",
     "ACTIVE_DIRECTORY/Local-Priv-Esc.md",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc/Local-Priv-Esc.md",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)/AlwaysInstallElevated.md",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)/Service Registry.md",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)/Executable Files.md",
     "IMAGES/Pasted image 20260416105509.png",
     "IMAGES/Pasted image 20260416105408.png",
     "IMAGES/Pasted image 20260416105353.png",
@@ -257,7 +257,6 @@
     "IMAGES/Pasted image 20260416105225.png",
     "IMAGES/Pasted image 20260416093323.png",
     "IMAGES/Pasted image 20260416095826.png",
-    "IMAGES/Pasted image 20260416095758.png",
     "METHODOLOGY",
     "ACTIVE_DIRECTORY/Local-Priv-Esc (done)",
     "ACTIVE_DIRECTORY/Definations",
