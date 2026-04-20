@@ -4,74 +4,137 @@
     "type": "split",
     "children": [
       {
-        "id": "3aab37df976b9212",
+        "id": "7d6faccd4f142b55",
         "type": "tabs",
         "children": [
           {
-            "id": "5e1b00dfecf6b871",
+            "id": "741703d194b236f4",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Certificates.md",
+                "file": "ACTIVE_DIRECTORY/1_Initial_Enumeration/2_User Enumeration.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Exploiting_Certificates"
+              "title": "2_User Enumeration"
             }
           },
           {
-            "id": "1acf181d3513d1c9",
+            "id": "511bd0928b815ff4",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ACTIVE_DIRECTORY/Checklist.md",
+                "file": "ACTIVE_DIRECTORY/1_Initial_Enumeration/2_User Enumeration.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Checklist"
+              "title": "2_User Enumeration"
             }
           },
           {
-            "id": "906fc3a9e16d9e00",
+            "id": "b83c69646671518e",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "IMAGES/Pasted image 20250828064001.png"
+                "file": "ACTIVE_DIRECTORY/Checklist (AD).md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "Pasted image 20250828064001"
+              "icon": "lucide-file",
+              "title": "Checklist (AD)"
             }
           },
           {
-            "id": "40b1214fe1399329",
+            "id": "c2ed624b7c80605f",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "IMAGES/Pasted image 20250828070632.png"
+                "file": "ACTIVE_DIRECTORY/0_Generic/Protocol-Based Access.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "Pasted image 20250828070632"
+              "icon": "lucide-file",
+              "title": "Protocol-Based Access"
             }
           },
           {
-            "id": "5af25bcc360cbb5b",
+            "id": "10befde7046bc1ed",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "IMAGES/Pasted image 20260416093323.png"
+                "file": "ACTIVE_DIRECTORY/0_Generic/Protocol-Based Access.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "Pasted image 20260416093323"
+              "icon": "lucide-file",
+              "title": "Protocol-Based Access"
+            }
+          },
+          {
+            "id": "8ae47538582a200c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ACTIVE_DIRECTORY/1_Initial_Enumeration/1_Anonymous Access.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1_Anonymous Access"
+            }
+          },
+          {
+            "id": "6df3873ccc415402",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ACTIVE_DIRECTORY/1_Initial_Enumeration/1_Anonymous Access.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1_Anonymous Access"
+            }
+          },
+          {
+            "id": "2f84531df1cd8164",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ACTIVE_DIRECTORY/2_Breaching_AD/Kerberoasting.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Kerberoasting"
+            }
+          },
+          {
+            "id": "e16360f792d5dd70",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ACTIVE_DIRECTORY/2_Breaching_AD/Kerberoasting.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Kerberoasting"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -103,7 +166,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:#LLMNR-NBT-NS_Poisoning",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -219,37 +282,38 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "5e1b00dfecf6b871",
+  "active": "630cbe5c37bd6183",
   "lastOpenFiles": [
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Domain_Trusts.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_GPOs.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Kerberos_Delegation.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Certificates.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Automated_Relays.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_AD_Users.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/_.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/Exploiting_Permission_Delegation.md",
-    "TOOLS/Mimikatz.md",
-    "Others.md",
-    "IMAGES/Pasted image 20260416153103.png",
-    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Kerberoasting.md",
+    "ACTIVE_DIRECTORY/6_Persistance/5_DSRM.md",
+    "ACTIVE_DIRECTORY/6_Persistance/4 _Skeleton Key.md",
+    "ACTIVE_DIRECTORY/6_Persistance/3_Diamond Ticket.md",
+    "ACTIVE_DIRECTORY/6_Persistance/2_Silver Ticket.md",
+    "ACTIVE_DIRECTORY/6_Persistance/1_Golden Ticket.md",
+    "ACTIVE_DIRECTORY/3_Enumerating_AD/0_Enumeration.md",
+    "ACTIVE_DIRECTORY/2_Breaching_AD/LLMNR_NBT_NS Poisoning.md",
+    "ACTIVE_DIRECTORY/2_Breaching_AD/Kerberos TGT.md",
+    "ACTIVE_DIRECTORY/2_Breaching_AD/Kerberoasting.md",
+    "ACTIVE_DIRECTORY/2_Breaching_AD/AS-REP Roasting.md",
+    "ACTIVE_DIRECTORY/1_Initial_Enumeration/Internal Password Spraying.md",
+    "ACTIVE_DIRECTORY/1_Initial_Enumeration/3_Retrieving Password Policies.md",
+    "ACTIVE_DIRECTORY/1_Initial_Enumeration/2_User Enumeration.md",
+    "ACTIVE_DIRECTORY/1_Initial_Enumeration/1_Anonymous Access.md",
+    "ACTIVE_DIRECTORY/0_Generic/Tools.md",
+    "ACTIVE_DIRECTORY/0_Generic/Protocol-Based Access.md",
+    "ACTIVE_DIRECTORY/0_Generic/Generic.md",
+    "ACTIVE_DIRECTORY/0_Generic/AV Evasion.md",
+    "ACTIVE_DIRECTORY/Checklist (AD).md",
     "ACTIVE_DIRECTORY/AD Cheatsheet.md",
-    "ACTIVE_DIRECTORY/Checklist.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Internal Password Spraying.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Making a Target User List.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration (done)/Retrieving Password Policies.md",
-    "ACTIVE_DIRECTORY/Initial Enumeration (done)/User Enumeration.md",
-    "ACTIVE_DIRECTORY/Enumerating_AD (done)/4_Trusts Enumeration.md",
-    "ACTIVE_DIRECTORY/Enumerating_AD (done)/5_BloodHound Enumeration.md",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation/DCSync.md",
-    "ACTIVE_DIRECTORY/Tools.md",
+    "ACTIVE_DIRECTORY/1_Initial_Enumeration/Making a Target User List.md",
+    "ACTIVE_DIRECTORY/3_Enumerating_AD/5_BloodHound Enumeration.md",
+    "PRIVESC/Linux/Linux Internals-based Privilege Escalation/Kernel Exploits.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Certificates.md",
+    "ACTIVE_DIRECTORY/0_Generic",
+    "ACTIVE_DIRECTORY/AV Evasion.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Domain_Trusts.md",
+    "IMAGES/Pasted image 20260416153103.png",
     "ACL_Mindmap - [ @redblock_team ].png",
-    "ACTIVE_DIRECTORY/Definations/Active Directory Basics.md",
-    "ACTIVE_DIRECTORY/Breaching_AD (done)/LLMNR_NBT_NS Poisoning.md",
-    "ACTIVE_DIRECTORY/Breaching_AD (done)/AS-REP Roasting.md",
     "IMAGES/Pasted image 20260416104750.png",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)/Autorun.md",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc.md",
     "IMAGES/Pasted image 20260416105509.png",
     "IMAGES/Pasted image 20260416105408.png",
     "IMAGES/Pasted image 20260416105353.png",
@@ -258,15 +322,14 @@
     "IMAGES/Pasted image 20260416093323.png",
     "IMAGES/Pasted image 20260416095826.png",
     "METHODOLOGY",
-    "ACTIVE_DIRECTORY/Local-Priv-Esc (done)",
-    "ACTIVE_DIRECTORY/Definations",
-    "ACTIVE_DIRECTORY/Persistance (done)",
+    "ACTIVE_DIRECTORY/5_Local_Priv_Esc",
+    "ACTIVE_DIRECTORY/0_Definations",
+    "ACTIVE_DIRECTORY/6_Persistance",
     "SERVICES/WEB/Common Applications/ASP.net",
     "GENERIC/UseFull Path",
     "PRIVESC/Linux/Exploits",
-    "ACTIVE_DIRECTORY/Exploiting_AD/Exploiting_Permission_Delegation",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation",
     "Untitled",
-    "UseFullCommands/Password Cracking",
     "Untitled.canvas"
   ]
 }

@@ -1,3 +1,6 @@
+#AD_Diamond_Ticket
+
+
 > A **Diamond Ticket** is a modified version of a legitimate **TGT (Ticket Granting Ticket)**. Unlike Golden Tickets, which are completely forged from scratch, Diamond Tickets are based on **real TGTs** that are **decrypted, modified, and re-encrypted** using the **krbtgt account key**.
 
 A Diamond Ticket is a **modified real TGT (Ticket Granting Ticket)** where:

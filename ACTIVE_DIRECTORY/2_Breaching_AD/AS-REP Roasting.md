@@ -1,4 +1,4 @@
-
+#AD_AS-REP_Roasting
 
 AS-REP Roasting is a **Kerberos-based attack** in Active Directory that allows you to get **password hashes of users** **without needing any login access** — if certain conditions are met.
 ###  Why Does It Work?

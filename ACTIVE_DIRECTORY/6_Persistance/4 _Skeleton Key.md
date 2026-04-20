@@ -1,3 +1,4 @@
+#AD_Skeleton_Key
 
 **Skeleton Key** is a Domain Controller (DC) post-exploitation persistence technique where the `lsass.exe` process is **patched in memory** to accept a **master password** for all us
 

@@ -1,3 +1,5 @@
+#AD_golden_ticket
+
 > KRBTGT is a service account whose hash is used to sign and encrypt Kerberos Ticket Granting Tickets (TGTs).
 
 > A **Golden Ticket** is a fake master key that lets an attacker impersonate ANY user in a Windows domain without needing a password.

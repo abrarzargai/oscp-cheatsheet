@@ -1,3 +1,5 @@
+#AD_Silver_Ticket
+
 A **Silver Ticket** is a fake service ticket (TGS) that lets you access ONE specific service (like file shares, remote desktop, etc.) without contacting Domain Controller
 
 # Golden vs Silver Ticket

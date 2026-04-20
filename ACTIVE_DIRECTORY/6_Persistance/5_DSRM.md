@@ -1,3 +1,5 @@
+#AD_DSRM
+
 **Directory Services Restore Mode** is a **special local administrator account** on every Domain Controller used for disaster recovery when Active Directory won't start.
 
 > _"DSRM is a special local administrator account that exists on every Domain Controller, primarily used for recovery."_
