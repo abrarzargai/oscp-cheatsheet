@@ -11,14 +11,12 @@
             "id": "1ad5896397c8e3ad",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/AllowedToAct.md",
-                "mode": "source",
-                "source": false
+                "file": "OTHERS/ASSETS/IMAGES/Pasted image 20260908141455.png"
               },
-              "icon": "lucide-file",
-              "title": "AllowedToAct"
+              "icon": "lucide-image",
+              "title": "Pasted image 20260908141455"
             }
           }
         ]
@@ -171,16 +169,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "1ad5896397c8e3ad",
+  "active": "630cbe5c37bd6183",
   "lastOpenFiles": [
-    "Pasted image 20260908160311.png",
-    "Pasted image 20260908155856.png",
     "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/AllowedToAct.md",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260908160311.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260908155856.png",
     "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/AddSelf.md",
-    "Pasted image 20260908153946.png",
-    "Pasted image 20260908153930.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260908153946.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260908153930.png",
     "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/ReadGMSAPassword.md",
-    "Pasted image 20260908141455.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260908141455.png",
     "ACTIVE_DIRECTORY/4_Exploiting_AD/Groups/Pre-Windows 2000 Compatible Access.md",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260908135315.png",
     "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_GPOs.md",
@@ -215,7 +213,6 @@
     "OTHERS/ASSETS/IMAGES/Pasted image 20260416153103.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260416104750.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260416105509.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260416105408.png",
     "OTHERS/METHODOLOGY",
     "ACTIVE_DIRECTORY/5_Local_Priv_Esc",
     "ACTIVE_DIRECTORY/0_Definations",
