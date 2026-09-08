@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "466dfa899cf7fc57",
+        "id": "e7e715fb7b1b5aca",
         "type": "tabs",
         "children": [
           {
-            "id": "64f2a1534b251fcb",
+            "id": "1ad5896397c8e3ad",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/AllowedToAct.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "AllowedToAct"
             }
           }
         ]
@@ -167,8 +171,25 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "630cbe5c37bd6183",
+  "active": "1ad5896397c8e3ad",
   "lastOpenFiles": [
+    "Pasted image 20260908160311.png",
+    "Pasted image 20260908155856.png",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/AllowedToAct.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/AddSelf.md",
+    "Pasted image 20260908153946.png",
+    "Pasted image 20260908153930.png",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/ReadGMSAPassword.md",
+    "Pasted image 20260908141455.png",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Groups/Pre-Windows 2000 Compatible Access.md",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260908135315.png",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_GPOs.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Groups",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Untitled.md",
+    "ACTIVE_DIRECTORY/1_Initial_Enumeration/1_Anonymous Access.md",
+    "WEB_PENETESTING/ENUMERATION/Network_Scanning.md",
+    "WEB_PENETESTING/ENUMERATION/DNS Record.md",
+    "ACTIVE_DIRECTORY/3_Enumerating_AD/5_BloodHound Enumeration.md",
     "README.md",
     "OTHERS/TOOLS/Tools List.md",
     "OTHERS/TOOLS/Tools.md",
@@ -186,35 +207,18 @@
     "OTHERS/GENERIC/UseFull Path/UserFull File.md",
     "OTHERS/GENERIC/UseFull Path/Windows.md",
     "OTHERS/GENERIC/UseFull Path/Linux.md",
-    "OTHERS/Others.md",
-    "OTHERS/METHODOLOGY/Methodology.md",
     "WEB_PENETESTING",
     "OTHERS",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/_.md",
     "OTHERS/ASSETS/IMAGES/ACL_Mindmap - [ @redblock_team ].png",
-    "ACTIVE_DIRECTORY/Checklist/2. Lateral movement.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Kerberos_Delegation.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Automated_Relays.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_AD_Users.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Domain_Trusts.md",
-    "ACTIVE_DIRECTORY/Checklist/3. Persistence.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_GPOs.md",
-    "ACTIVE_DIRECTORY/Checklist/1. Initial Access.md",
     "ACTIVE_DIRECTORY/Checklist",
     "ACTIVE_DIRECTORY/0_Generic",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260416153103.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260416104750.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260416105509.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260416105408.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260416105353.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260416105339.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260416105225.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260416093323.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260416095826.png",
     "OTHERS/METHODOLOGY",
     "ACTIVE_DIRECTORY/5_Local_Priv_Esc",
     "ACTIVE_DIRECTORY/0_Definations",
-    "ACTIVE_DIRECTORY/6_Persistance",
     "Untitled.canvas"
   ]
 }

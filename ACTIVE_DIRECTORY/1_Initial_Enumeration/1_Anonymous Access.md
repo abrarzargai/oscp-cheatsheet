@@ -31,6 +31,12 @@ impacket-psexec active.htb/Administrator@Pass123123@192.168.98.12
 recurse
 prompt OFF
 mget *
+
+
+# Connect to SMB using Kerberos authentication (-k) instead of NTLM 
+# -k flag is required when NTLM is disabled on the target (STATUS_NOT_SUPPORTED) OR (NTLM:False)
+# Use FQDN (dc01.vintage.htb) not IP for Kerberos to work properly
+netexec smb dc01.vintage.htb -u P.Rosa -p Rosaisbest123 -k --shares
 ```
 
 # **LDAP anonymous bind**
