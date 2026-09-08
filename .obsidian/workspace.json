@@ -1,0 +1,220 @@
+{
+  "main": {
+    "id": "8ff11b1083801501",
+    "type": "split",
+    "children": [
+      {
+        "id": "466dfa899cf7fc57",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "64f2a1534b251fcb",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "eecb9f5c03fa6a34",
+    "type": "split",
+    "children": [
+      {
+        "id": "5eb9573f4cbf623b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "630cbe5c37bd6183",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "464915df5aecba51",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#Discoveringtag:#Discovering",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "5210b2e79964964d",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 393.5
+  },
+  "right": {
+    "id": "2575e061c425fd25",
+    "type": "split",
+    "children": [
+      {
+        "id": "6dd454180e0a8e44",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4c54b06a1a70a45d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Reverse Shell.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Reverse Shell"
+            }
+          },
+          {
+            "id": "6d9d7c10973bdc16",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Reverse Shell.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Reverse Shell"
+            }
+          },
+          {
+            "id": "37bdfd2173e847b5",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "af5754a9c9b31727",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Reverse Shell.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Reverse Shell"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "bases:Create new base": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "630cbe5c37bd6183",
+  "lastOpenFiles": [
+    "README.md",
+    "OTHERS/TOOLS/Tools List.md",
+    "OTHERS/TOOLS/Tools.md",
+    "OTHERS/GENERIC/SHELLS/Reverse Shell.md",
+    "OTHERS/GENERIC/CTF Notes.md",
+    "OTHERS/GENERIC/Common.md",
+    "OTHERS/USEFULLCOMMANDS/Finding the files.md",
+    "OTHERS/GENERIC/Directory buster.md",
+    "OTHERS/USEFULLCOMMANDS/Process_Running (PID).md",
+    "OTHERS/USEFULLCOMMANDS/User name generator.md",
+    "OTHERS/USEFULLCOMMANDS/PFX FILE.md",
+    "OTHERS/GENERIC/SHELLS/Web Shell.md",
+    "OTHERS/GENERIC/SHELLS",
+    "OTHERS/ASSETS",
+    "OTHERS/GENERIC/UseFull Path/UserFull File.md",
+    "OTHERS/GENERIC/UseFull Path/Windows.md",
+    "OTHERS/GENERIC/UseFull Path/Linux.md",
+    "OTHERS/Others.md",
+    "OTHERS/METHODOLOGY/Methodology.md",
+    "WEB_PENETESTING",
+    "OTHERS",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/_.md",
+    "OTHERS/ASSETS/IMAGES/ACL_Mindmap - [ @redblock_team ].png",
+    "ACTIVE_DIRECTORY/Checklist/2. Lateral movement.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Kerberos_Delegation.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Automated_Relays.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_AD_Users.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Domain_Trusts.md",
+    "ACTIVE_DIRECTORY/Checklist/3. Persistence.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_GPOs.md",
+    "ACTIVE_DIRECTORY/Checklist/1. Initial Access.md",
+    "ACTIVE_DIRECTORY/Checklist",
+    "ACTIVE_DIRECTORY/0_Generic",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260416153103.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260416104750.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260416105509.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260416105408.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260416105353.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260416105339.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260416105225.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260416093323.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260416095826.png",
+    "OTHERS/METHODOLOGY",
+    "ACTIVE_DIRECTORY/5_Local_Priv_Esc",
+    "ACTIVE_DIRECTORY/0_Definations",
+    "ACTIVE_DIRECTORY/6_Persistance",
+    "Untitled.canvas"
+  ]
+}
