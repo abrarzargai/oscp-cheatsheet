@@ -1,29 +1,32 @@
 #AD_retrieving_password_policies
-# If we have a **valid username + password**
+# <span style="color:#FF5555">If we have a **valid username + password**</span>
+
+> [!info] Variables used below
+> - `$VICTIM_IP` – target machine's IP
 
 ```bash
 # Checks password policy using valid credentials
-crackmapexec smb 172.16.5.5 -u avazquez -p Password123 --pass-pol
+crackmapexec smb $VICTIM_IP -u avazquez -p Password123 --pass-pol
 ```
 
-# SMB NULL SESSION
+# <span style="color:#FF5555">SMB NULL SESSION</span>
 
-- ### rpc Client
+- ### <span style="color:#50FA7B">rpc Client</span>
 ```bash
 # Connects to RPC anonymously (null session)
-rpcclient -U "" -N 172.16.5.5
+rpcclient -U "" -N $VICTIM_IP
 
 #Then Run
 # Gets password policy via null session
 getdompwinfo
 ```
-- ### enum4linux
+- ### <span style="color:#50FA7B">enum4linux</span>
 ```bash
 # Enumerates password policy anonymously (legacy tool)
-enum4linux -P 172.16.5.5
+enum4linux -P $VICTIM_IP
 ```
-- ### enum4linux-ng
+- ### <span style="color:#50FA7B">enum4linux-ng</span>
 ```bash
 # Enumerates password policy anonymously with file output
-enum4linux-ng -P 172.16.5.5 -oA ilfreight
+enum4linux-ng -P $VICTIM_IP -oA ilfreight
 ```

@@ -1,6 +1,6 @@
 
 
-### 🔍 Basic Terms
+### <span style="color:#50FA7B">🔍 Basic Terms</span>
 
 |Term|Meaning|
 |---|---|
@@ -10,7 +10,7 @@
 |**Dropped**|No response at all.|
 |**Rejected**|Response with error (e.g., RST, ICMP error).|
 
-### ⚙️ Common Scan Options
+### <span style="color:#50FA7B">⚙️ Common Scan Options</span>
 
 |Option|Description|
 |---|---|
@@ -23,20 +23,20 @@
 |`--disable-arp-ping`|Don’t use ARP ping|
 |`--packet-trace`|Show sent and received packets|
 
-### 🚧 Firewall Evasion
+### <span style="color:#50FA7B">🚧 Firewall Evasion</span>
 
 |Technique|Command|Notes|
 |---|---|---|
-|**ACK Scan**|`nmap -sA -p <PORT> <IP>`|Detects if firewall is dropping packets|
+|**ACK Scan**|`nmap -sA -p <PORT> $VICTIM_IP`|Detects if firewall is dropping packets|
 |**Use Trusted Port**|`--source-port 53`|Pretend traffic is DNS (often allowed)|
-|**Spoof Source IP**|`-S <IP> -e <interface>`|Tries to bypass IP-based blocks|
+|**Spoof Source IP**|`-S $VICTIM_IP -e <interface>`|Tries to bypass IP-based blocks|
 |**Random Decoys**|`-D RND:5`|Hides your real IP with 5 fake ones|
 |**Custom Decoys**|`-D 1.2.3.4,5.6.7.8,ME`|Mix fake IPs and your real one|
 |**Avoid Detection**|`--scan-delay 1s`|Slow scan to reduce noise|
 |**OS Detection Quietly**|`nmap -O -Pn -n -T2`|Detect OS with lower speed (less suspicious)|
 
 
-### 💾 **Output Formats**
+### <span style="color:#50FA7B">💾 **Output Formats**</span>
 
 |Option|Description|
 |---|---|
@@ -45,7 +45,7 @@
 |`-oX file`|XML output|
 |`-oA file`|All formats (file.nmap, .xml, .gnmap)|
 
-### ⚙️ **Performance & Timing**
+### <span style="color:#50FA7B">⚙️ **Performance & Timing**</span>
 
 |Option|Description|
 |---|---|
@@ -54,7 +54,7 @@
 |`--max-retries 2`|Limit retries (faster scans)|
 |`--stats-every=5s`|Show progress every 5 sec|
 
-### 📡 **Host Discovery**
+### <span style="color:#50FA7B">📡 **Host Discovery**</span>
 
 |Option|Description|
 |---|---|
@@ -64,7 +64,7 @@
 |`-PE`|ICMP Echo Request ping|
 |`--disable-arp-ping`|Disable ARP ping|
 
-### 🔎 **Scan Types**
+### <span style="color:#50FA7B">🔎 **Scan Types**</span>
 
 | Option     | Description                      |
 | ---------- | -------------------------------- |
@@ -78,17 +78,17 @@
 | `-A`       | Aggressive (OS, version, script) |
 
 Firewall bypass
-- `sudo nmap -O -D RND:10 10.129.31.2`
+- `sudo nmap -O -D RND:10 $VICTIM_IP`
 
 
-# Firewall and IDS/IPS Evasion
+# <span style="color:#FF5555">Firewall and IDS/IPS Evasion</span>
 
-# Firewall and IDS/IPS Evasion
+# <span style="color:#FF5555">Firewall and IDS/IPS Evasion</span>
 
-## Scan by Using Decoys  
+## <span style="color:#8BE9FD">Scan by Using Decoys</span>
   
 ```
-sudo nmap 10.129.2.47 -p 22,80,50000 -sV -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53 -e tun0 -D RND:10
+sudo nmap $VICTIM_IP -p 22,80,50000 -sV -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53 -e tun0 -D RND:10
 ```
 - `-p` 22,80,50000 → Scan ports 22 (SSH), 80 (HTTP), and 50000.
 - `-sV` → Detect service versions (e.g., Apache 2.4.41).
@@ -103,23 +103,23 @@ sudo nmap 10.129.2.47 -p 22,80,50000 -sV -sS -Pn -n --disable-arp-ping --packet-
 
 **Purpose:** Makes it harder for the target to figure out where the scan came from.  
 
-## Connect To The Filtered Port `50000` discovered, from a different source port of `53` to evade detection.
+## <span style="color:#8BE9FD">Connect To The Filtered Port `50000` discovered, from a different source port of `53` to evade detection.</span>
 
 ```
-ncat -nv --source-port 53 10.129.2.47 50000
+ncat -nv --source-port 53 $VICTIM_IP 50000
 
 # worked
-sudo nc -nv -p53 <target-ip> 50000
+sudo nc -nv -p53 $VICTIM_IP 50000
 ```  
 - --source-port 53 → Pretend the traffic is coming from DNS port 53.
 - 50000 → The target’s port we’re trying to reach.
 
 **Purpose:** Some firewalls only block unknown ports but allow DNS (53), so we "sneak in" using 53.
 
-## Testing Firewall Rule  
+## <span style="color:#8BE9FD">Testing Firewall Rule</span>
 
 ```
-sudo nmap 10.129.2.28 -n -Pn -p445 -O
+sudo nmap $VICTIM_IP -n -Pn -p445 -O
 ```
 - p445 → Check SMB file-sharing port.
 
@@ -127,20 +127,20 @@ sudo nmap 10.129.2.28 -n -Pn -p445 -O
 
 **Purpose:** See if port 445 is open and allowed through the firewall.
 
-## Scan by Using Different Source IP  
+## <span style="color:#8BE9FD">Scan by Using Different Source IP</span>
 
 ```
-sudo nmap 10.129.2.28 -n -Pn -p 445 -O -S 10.129.2.200 -e tun0
+sudo nmap $VICTIM_IP -n -Pn -p 445 -O -S $VICTIM_IP -e tun0
 ```
-- -S 10.129.2.200 → Pretend your IP is 10.129.2.200.
+- -S $VICTIM_IP → Pretend your IP is $VICTIM_IP.
 - Needs special privileges and may only work in certain network setups.
 
 **Purpose:** Hide your real IP from logs.  
 
-## SYN-Scan From DNS Port  
+## <span style="color:#8BE9FD">SYN-Scan From DNS Port</span>
 
 ```
-sudo nmap 10.129.2.28 -p50000 -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53
+sudo nmap $VICTIM_IP -p50000 -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53
 ```  
 Same trick as before: pretend traffic is from DNS so it’s more likely to bypass filters.
 

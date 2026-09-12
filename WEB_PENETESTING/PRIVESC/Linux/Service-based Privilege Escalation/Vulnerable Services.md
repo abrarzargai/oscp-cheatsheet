@@ -1,19 +1,19 @@
 
 Many services may be found, which have flaws that can be leveraged to escalate privileges. An example is the popular terminal multiplexer [Screen](https://linux.die.net/man/1/screen). Version 4.5.0 suffers from a privilege escalation vulnerability due to a lack of a permissions check when opening a log file.
-## What is this about?
+## <span style="color:#8BE9FD">What is this about?</span>
 
 This section teaches you how to **become root** (admin on Linux) by **exploiting a vulnerable service** — a program that is **running with too many privileges** and can be tricked into giving you full control.
 
 ---
 
-## 🛠️ Target Service: **`screen`**
+## <span style="color:#8BE9FD">🛠️ Target Service: **`screen`**</span>
 
 - `screen` is a program used to manage terminal sessions.
 - **Version 4.5.0** has a **security bug** (a vulnerability).
 - This bug lets a normal user **run code as root (admin)**.
 
 
-# steps
+# <span style="color:#FF5555">Steps</span>
 
 1. paste this code in a file `Screen_Exploit_POC.sh`
 ```bash

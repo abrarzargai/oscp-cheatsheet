@@ -1,62 +1,66 @@
 
-## Get a list of all domain trusts for the current domain 
+## <span style="color:#8BE9FD">Get a list of all domain trusts for the current domain</span>
+
+> [!info] Variables used below
+> - `$DOMAIN` – target domain name
+
 ```powershell
 Get-NetDomainTrust
-Get-NetDomainTrust -Domain us.dollarcorp.moneycorp.local
+Get-NetDomainTrust -Domain $DOMAIN
 ```
 
-## Get details about the current forest
+## <span style="color:#8BE9FD">Get details about the current forest</span>
 ```powershell
 Get-NetForest
-Get-NetForest -Forest eurocorp.local
+Get-NetForest -Forest $DOMAIN
 ```
 
-## Get all domains in the current forest
+## <span style="color:#8BE9FD">Get all domains in the current forest</span>
 ```powershell
 Get-NetForestDomain
-Get-NetForestDomain -Forest eurocorp.local
+Get-NetForestDomain -Forest $DOMAIN
 ```
 
-## Get all global catalogs for the current forest
+## <span style="color:#8BE9FD">Get all global catalogs for the current forest</span>
 ```powershell
 Get-NetForestCatalog
-Get-NetForestCatalog -Forest eurocorp.local
+Get-NetForestCatalog -Forest $DOMAIN
 ```
  
-## Map trusts of a forest
+## <span style="color:#8BE9FD">Map trusts of a forest</span>
 ```powershell
 Get-NetForestTrust
-Get-NetForestTrust -Forest eurocorp.local
+Get-NetForestTrust -Forest $DOMAIN
 ```
 
-# PowerView Enumeration
+# <span style="color:#FF5555">PowerView Enumeration</span>
 
-## Find all machines on the current domain where the current user has local admin access
+## <span style="color:#8BE9FD">Find all machines on the current domain where the current user has local admin access</span>
 ```powershell
 Find-LocalAdminAccess -Verbose
 ```
 
-## Find computers where a domain admin (or specified user/group) has sessions
+## <span style="color:#8BE9FD">Find computers where a domain admin (or specified user/group) has sessions</span>
 ```powershell
 Invoke-UserHunter
 Invoke-UserHunter -GroupName "RDPUsers"
 ```
 
-## To confirm admin access
+## <span style="color:#8BE9FD">To confirm admin access</span>
 ```powershell
 Invoke-UserHunter -CheckAccess
 ```
 
-## Find computers where a domain admin is logged-in
+## <span style="color:#8BE9FD">Find computers where a domain admin is logged-in</span>
 ```powershell
 Invoke-UserHunter -Stealth
 ```
 
-## Get users with privileges in other domains inside the forest
+## <span style="color:#8BE9FD">Get users with privileges in other domains inside the forest</span>
 ```
 Get-DomainForeingUser 
 ```
-## Get groups with privileges in other domains inside the forest
+## <span style="color:#8BE9FD">Get groups with privileges in other domains inside the forest</span>
 ```
 Get-DomainForeignGroupMember 
 ```

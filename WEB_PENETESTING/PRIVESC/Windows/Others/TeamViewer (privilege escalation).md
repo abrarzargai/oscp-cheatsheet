@@ -1,13 +1,13 @@
 
 
-Check the Teamviewr registery key bases on version and look for any password etc for example the key `SecurityPasswordAES` holds the value of password
+Check the TeamViewer registry key (based on the version) and look for any stored password. For example, the key `SecurityPasswordAES` holds the encrypted password value.
 
 ```bash
 reg query HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\TeamViewer\\Version7
 
 ```
 
-if found the key then use this script to decript it
+If you find the key, use this script to decrypt it:
 
 ```bash
 import sys, hexdump, binascii

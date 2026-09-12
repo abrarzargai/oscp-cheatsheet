@@ -1,4 +1,4 @@
-## What is LXD / LXC?
+## <span style="color:#8BE9FD">What is LXD / LXC?</span>
 
 - **LXC (Linux Containers)** and **LXD (Linux Daemon)** are tools that let you create **lightweight virtual environments** called **containers**.
 - Containers are **isolated** from the rest of the system, but they **share the same Linux kernel**.
@@ -6,15 +6,15 @@
 
 ---
 
-## 🧠 Why This Matters for Privilege Escalation?
+## <span style="color:#8BE9FD">🧠 Why This Matters for Privilege Escalation?</span>
 
 If your user is part of the **`lxd` group**, it means you can manage and create these containers.  
 But here's the trick:
 
 > You can make a special container that has access to the **host system’s files as root**, allowing you to **escape the container and become root** on the host!
 
-1. type `id` command and Make sure you're in the `lxd` group first:
-2. Import the Alpine image you can download it from internet for now we have this in target system `alpine-v3.18-x86_64-20230607_1234.tar.gz`
+1. Run the `id` command and make sure you're in the `lxd` group first:
+2. Import the Alpine image (you can download it from the internet; for now we already have it on the target system): `alpine-v3.18-x86_64-20230607_1234.tar.gz`
    
 ```bash
 lxc image import alpine-v3.18-x86_64-20230607_1234.tar.gz --alias alpescape

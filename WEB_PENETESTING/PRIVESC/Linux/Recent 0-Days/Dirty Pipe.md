@@ -1,12 +1,12 @@
 
-## What is Dirty Pipe?
+## <span style="color:#8BE9FD">What is Dirty Pipe?</span>
 
 **Dirty Pipe** is a security vulnerability in the **Linux kernel versions 5.8 to 5.17**.  
 It allows a **normal (low-privileged) user** to **write data into files they’re not supposed to write to** — including files owned by the **root user** like `/etc/passwd`.
 
 ---
 
-## 🧪 Why is it Dangerous?
+## <span style="color:#8BE9FD">🧪 Why is it Dangerous?</span>
 
 Normally:
 
@@ -31,11 +31,11 @@ git clone https://github.com/AlexisAhmed/CVE-2022-0847-DirtyPipe-Exploits.git
 cd CVE-2022-0847-DirtyPipe-Exploits
 bash compile.sh
 ```
-his gives you two files:
+This gives you two files:
 - `exploit-1`: modifies `/etc/passwd`
 - `exploit-2`: abuses SUID binaries
 ___
-### 3. Exploit 1 – Modify `/etc/passwd` to Get Root Access
+### <span style="color:#50FA7B">3. Exploit 1 – Modify `/etc/passwd` to Get Root Access</span>
 
 Run:
 ```bash
@@ -53,7 +53,7 @@ su
 ```
 You’ll become **root**!
 ___
-### 4. Exploit 2 – Abuse SUID Binaries
+### <span style="color:#50FA7B">4. Exploit 2 – Abuse SUID Binaries</span>
 
 First, find SUID binaries:
 ```bash
@@ -72,6 +72,6 @@ This does:
 - Pops a **root shell**
 - Restores the binary after use
 
-## Android Devices Also Affected
+## <span style="color:#8BE9FD">Android Devices Also Affected</span>
 
 Because Android is based on Linux, apps could abuse this vulnerability too and take full control of the phone.

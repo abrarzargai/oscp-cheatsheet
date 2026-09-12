@@ -1,5 +1,5 @@
 
-## Sensitive Files with Given Keywords
+## <span style="color:#8BE9FD">Sensitive Files with Given Keywords</span>
 
 - Check OPT folder for hints (some CTF have hints or creds there)
 
@@ -7,7 +7,7 @@
  ls -la /opt
 ```
 
-# Environment Enumeration 
+# <span style="color:#FF5555">Environment Enumeration</span>
 
 ```bash
 # Operating System Version
@@ -54,7 +54,7 @@ ls -l /tmp /var/tmp /dev/shm
 
 ```
 
-## Linux Services & Internals Enumeration
+## <span style="color:#8BE9FD">Linux Services & Internals Enumeration</span>
 
 
 ```bash
@@ -85,7 +85,7 @@ find / -name "*.sh" 2>/dev/null
 
 ```
 
-# Credential Hunting
+# <span style="color:#FF5555">Credential Hunting</span>
 
 ```bash
 
@@ -108,7 +108,7 @@ ls ~/.ssh
 
 ```
 
-# Extra
+# <span style="color:#FF5555">Extra</span>
 
 ```bash
 find / -name "*.txt" 2>/dev/null

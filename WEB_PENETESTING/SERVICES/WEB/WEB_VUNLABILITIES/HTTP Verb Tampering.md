@@ -1,5 +1,5 @@
 
-#  Bypassing Basic Authentication
+# <span style="color:#FF5555">Bypassing Basic Authentication</span>
 
 Some web pages are **protected with login popups**, called **Basic Authentication**.
 If you try to visit them, a box pops up asking for a **username and password**.
@@ -7,7 +7,7 @@ But sometimes, due to **bad server configuration or insecure coding**, it’s po
 
 ![[Pasted image 20250731120624.png]]
 
-#### What is HTTP Verb Tampering?
+#### <span style="color:#FFB86C">What is HTTP Verb Tampering?</span>
 Web servers support different **HTTP methods** (also called **verbs**) like:
 - `GET` → get a page
 - `POST` → send data
@@ -15,7 +15,7 @@ Web servers support different **HTTP methods** (also called **verbs**) like:
 - `OPTIONS` → ask the server what methods it allows
 **Some web apps only block GET/POST** but forget to protect HEAD, OPTIONS, etc.
 This means you can **send a different method**, like `HEAD`, to **bypass the login check**.
-#### How Did We Find the Vulnerability?
+#### <span style="color:#FFB86C">How Did We Find the Vulnerability?</span>
 1. **We tested a web app** that lets us add files, but the **Reset button** is protected.
 2. When we click Reset, it sends a **GET request to `/admin/reset.php`**.
 3. But that page is protected by **Basic Auth**, and we don’t have the password.
@@ -30,7 +30,7 @@ Allow: POST, OPTIONS, HEAD, GET
 ```
 So the server accepts **HEAD** requests.
 
-# # Bypassing Security Filters
+# <span style="color:#FF5555">Bypassing Security Filters</span>
 
 HTTP Verb Tampering is a web security vulnerability where an attacker **bypasses access controls or security filters** by changing the HTTP request method (e.g., from `GET` to `HEAD`, `POST` to `GET`, etc.).
 

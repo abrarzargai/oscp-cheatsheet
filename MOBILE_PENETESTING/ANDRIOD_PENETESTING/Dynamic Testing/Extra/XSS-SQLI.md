@@ -1,5 +1,5 @@
 
-### XSS & SQL Injection
+### <span style="color:#50FA7B">XSS & SQL Injection</span>
 
 XSS and SQL injection testing is similar to web application testing.
 

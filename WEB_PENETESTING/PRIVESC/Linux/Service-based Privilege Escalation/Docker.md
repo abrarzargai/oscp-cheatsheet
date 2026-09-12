@@ -1,5 +1,5 @@
 
-## 🐳 What is Docker?
+## <span style="color:#8BE9FD">🐳 What is Docker?</span>
 
 - **Docker** is like a lightweight virtual machine system.
 - It uses **containers** to run applications in **isolated environments**.
@@ -8,12 +8,12 @@
 
 ---
 
-## 🔓 Why Docker Can Be Dangerous
+## <span style="color:#8BE9FD">🔓 Why Docker Can Be Dangerous</span>
 
 If a user is allowed to **run Docker commands** (is in the `docker` group), **they can break out of the container** and get **root access on the host system**.
 
 ---
-## 🧠 Who Can Do This?
+## <span style="color:#8BE9FD">🧠 Who Can Do This?</span>
 
 You can try Docker privilege escalation if:
 ```bash
@@ -28,7 +28,7 @@ uid=1000(docker-user) gid=1000(docker-user) groups=1000(docker-user),116(docker)
 ___
 
 ![[Pasted image 20250712163946.png]]
-### Privilege Escalation
+### <span style="color:#50FA7B">Privilege Escalation</span>
 
 We will use the **[GTFOBIN](https://gtfobins.github.io/gtfobins/docker/)** to elevate privileges on the target machine. It tells us that in order to get out of the restricted environment of docker, we need to spawn an interactive shell inside the docker.
 
@@ -46,8 +46,8 @@ docker run -v /:/mnt --rm -it bash chroot /mnt sh
 
 
 ---
-## 💣 Privilege Escalation Techniques with Docker
-### 🛠 1. Run a container with access to the host system
+## <span style="color:#8BE9FD">💣 Privilege Escalation Techniques with Docker</span>
+### <span style="color:#50FA7B">🛠 1. Run a container with access to the host system</span>
 
 Use this command:
 ```bash
@@ -75,12 +75,12 @@ And find files like `.ssh/id_rsa` (private SSH key).
 Copy it, and then from your local machine:
 
 ```bash
-ssh cry0l1t3@<host-ip> -i cry0l1t3.priv
+ssh cry0l1t3@$VICTIM_IP -i cry0l1t3.priv
 ```
 ✅ You’re now logged in as that user.
 
 ___
-### 🧷 3. Docker socket abuse (`docker.sock`)
+### <span style="color:#50FA7B">🧷 3. Docker socket abuse (`docker.sock`)</span>
 
 You might find a file like:
 ```bash
@@ -109,6 +109,6 @@ cat /hostsystem/root/flag.txt
 
 💥 You now have root access to the host system via a Docker container!
 
-# 🧪 Bonus: Docker Compose or SUID Docker
+# <span style="color:#FF5555">🧪 Bonus: Docker Compose or SUID Docker</span>
 
 If docker is run with SUID (setuid permission), or you're in the sudoers file and allowed to run Docker, same idea applies. You can start privileged containers, mount the host, and escape.

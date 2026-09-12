@@ -1,5 +1,5 @@
 
-# **Method 1: The Native Zip/XAPK Approach (Recommended)**
+# <span style="color:#FF5555">**Method 1: The Native Zip/XAPK Approach (Recommended)**</span>
 
 ```bash
 

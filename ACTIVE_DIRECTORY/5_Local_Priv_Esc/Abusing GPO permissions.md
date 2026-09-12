@@ -1,6 +1,6 @@
-# <span style="color:lightblue">Abusing GPO permissions</span>
+# <span style="color:#FF5555">Abusing GPO permissions</span>
 
-## <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 We Abusing GPO by adding the user to the local Administrators group leveraging a tool called SharpGPOAbuse.
 
 Source : [https://github.com/FSecureLABS/SharpGPOAbuse](https://github.com/FSecureLABS/SharpGPOAbuse)

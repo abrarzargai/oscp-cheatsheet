@@ -1,21 +1,21 @@
 
-### 1. Applications
+### <span style="color:#50FA7B">1. Applications</span>
 
 The apps users interact with, such as Chrome, WhatsApp, Camera, and Settings.
 
-### 2. Android Framework
+### <span style="color:#50FA7B">2. Android Framework</span>
 
 Provides high-level APIs and system services that apps use, such as **Activity Manager, Package Manager, Window Manager, Power Manager, and Location Manager**.
 
-### 3. Android Runtime + Native Libraries
+### <span style="color:#50FA7B">3. Android Runtime + Native Libraries</span>
 
 **ART** executes Android applications, while native libraries provide low-level functionality such as graphics, media, databases, and C/C++ functionality.
 
-### 4. HAL — Hardware Abstraction Layer
+### <span style="color:#50FA7B">4. HAL — Hardware Abstraction Layer</span>
 
 Provides a standard interface between the Android framework and hardware-specific implementations, such as the **camera, audio, sensors, and Bluetooth**.
 
-### 5. Linux Kernel
+### <span style="color:#50FA7B">5. Linux Kernel</span>
 
 The lowest software layer. It manages **CPU, memory, processes, networking, power, security, drivers, and hardware communication**.
 
@@ -23,20 +23,20 @@ The lowest software layer. It manages **CPU, memory, processes, networking, powe
 
 > **Apps → Framework → Runtime/Libraries → HAL → Linux Kernel → Hardware**
 
-# Linux Kernal
+# <span style="color:#FF5555">Linux Kernel</span>
 
-### Binder
+### <span style="color:#50FA7B">Binder</span>
 
-### Ashmem
+### <span style="color:#50FA7B">Ashmem</span>
 
-### Logger (The kernal’s diary)
+### <span style="color:#50FA7B">Logger (the kernel’s diary)</span>
 
-### Ram Console
+### <span style="color:#50FA7B">Ram Console</span>
 
-### OOM (out of memory):
+### <span style="color:#50FA7B">OOM (out of memory):</span>
 
-when memory gets low OOM the killer decides which applications to shutdown, andriod made it [smarter.now](http://smarter.now) it proactively kills backlkground applications first so the user interace UI stays smooths and responseve
+When memory gets low, the OOM (Out-Of-Memory) killer decides which applications to shut down. Android made it smarter: it proactively kills background applications first, so the user interface (UI) stays smooth and responsive.
 
-### wakelocks
+### <span style="color:#50FA7B">wakelocks</span>
 
 When you turn the screen off, Android tries to put the device into a **low-power sleep state** to save battery. A **wakelock** allows an app or system service to tell Android, **“keep the CPU awake because I still have work to perform,”** such as downloading data, processing tasks, or handling scheduled operations.

@@ -1,11 +1,11 @@
-# <span style="color:lightblue">Export LAPS Passwords</span>
+# <span style="color:#FF5555">Export LAPS Passwords</span>
 
-## <span style="color:lightgreen">Methodology</span>
+## <span style="color:#8BE9FD">Methodology</span>
 The following script assumes that LAPS has already been configured into your environment & that your user account already has access to view LAPS passwords using the Fat Client UI or from Active Directory Users & Computers.
 
 This script loads the Active Directory module, finds the LAPS password fields, and then saves them to a CSV with the date appended to the file name. The only thing you’d need to change is the file path.
 
-## <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 
 1. Just Open Powershell and paste this script
 ```powershell

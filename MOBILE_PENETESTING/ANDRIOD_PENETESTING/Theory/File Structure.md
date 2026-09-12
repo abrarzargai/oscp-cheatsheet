@@ -1,4 +1,4 @@
-## 1. `AndroidManifest.xml`
+## <span style="color:#8BE9FD">1. `AndroidManifest.xml`</span>
 
 **Definition:**
 
@@ -22,13 +22,13 @@ It tells Android things like:
 
 ---
 
-## 2. `classes.dex`
+## <span style="color:#8BE9FD">2. `classes.dex`</span>
 
 **Definition:**
 
 A file containing the application's **compiled Java/Kotlin code** in Android's DEX format.
 
-`This file contains the hava source code of this applicattion compiled in some dalvik excutable format`
+`This file contains the Java source code of this application, compiled into the Dalvik Executable (DEX) format`
 
 **Purpose:**
 
@@ -44,7 +44,7 @@ This is the _logic_ of the app. Without it, the app is just an empty shell. (N
 
 ---
 
-## 3. `res/`
+## <span style="color:#8BE9FD">3. `res/`</span>
 
 **Definition:**
 
@@ -77,7 +77,7 @@ This is what you _see_ and _touch_. If you want to change a button's color or
 
 ---
 
-## 4. `assets/`
+## <span style="color:#8BE9FD">4. `assets/`</span>
 
 **Definition:**
 
@@ -103,7 +103,7 @@ assets/
 
 ---
 
-## 5. `lib/`
+## <span style="color:#8BE9FD">5. `lib/`</span>
 
 **Definition:**
 
@@ -133,7 +133,7 @@ This makes the app _fast_ for specific heavy jobs. If your phone's processor d
 
 ---
 
-## 6. `resources.arsc`
+## <span style="color:#8BE9FD">6. `resources.arsc`</span>
 
 **Definition:**
 
@@ -161,7 +161,7 @@ resources.arsc
 
 ---
 
-## 7. `META-INF/`
+## <span style="color:#8BE9FD">7. `META-INF/`</span>
 
 **Definition:**
 
@@ -184,7 +184,7 @@ META-INF/
 
 > **"Information used to verify the APK's signature/integrity."**
 
-### 8. `com/`
+### <span style="color:#50FA7B">8. `com/`</span>
 
 **Definition:**
 
@@ -192,4 +192,4 @@ A directory that represents the **Java/Kotlin package structure** of the Android
 
 **Purpose:**
 
-This has zero effect on how the app runs. it is used by developer to **organize application code into packages** and prevent naming conflicts between different applications and libraries.
+This has zero effect on how the app runs. it is used by developers to **organize application code into packages** and prevent naming conflicts between different applications and libraries.

@@ -1,7 +1,7 @@
 
-# Activity Component Exploiting
+# <span style="color:#FF5555">Activity Component Exploiting</span>
 
-An **Activity** is an Android application component that provides a user interface or screen. (Think of like a different web views/pages)
+An **Activity** is an Android application component that provides a user interface or screen. (Think of it like different web views/pages.)
 
 An exported=True activity can be accessed from outside the application
 
@@ -13,7 +13,7 @@ First identify exported Activities from the application's `AndroidManifest.xml`.
 android:exported="true"
 ```
 
-## Security Testing
+## <span style="color:#8BE9FD">Security Testing</span>
 
 ```bash
 # Open a shell on the Android device
@@ -24,27 +24,26 @@ am start -n <package_name>/<activity_name>
 ```
 
 
-# Intent Exploitation
+# <span style="color:#FF5555">Intent Exploitation</span>
 
 `more work need on this`
 
-Content Provider: it is used to serve data from your application to other applications sometimes used for sharing data between a bunch of realted apps think of it as share button that have opton of whatsapp messager ,email etc
+**Content Provider:** used to serve data from your application to other applications. It is sometimes used for sharing data between a group of related apps — think of it as a share button that offers options like WhatsApp, Messenger, email, etc.
 
-if content provder is exported this can be very dangours and exposes data to anyt user or app on the devices
+If a Content Provider is exported, this can be very dangerous and can expose data to any user or app on the device.
 
-what is intent
+**What is an Intent?**
 
-its simply the message object, think of it as a messsage that one comopnent of an andriod application sends to another component - either within the same application or even accross dufferent applicatinos
+It is simply a messaging object — think of it as a message that one component of an Android application sends to another component, either within the same application or even across different applications.
 
-means we cabnb interect wih other componnets of an applications based on intents
+This means we can interact with other components of an application based on Intents.
 
-when we say messageing we mean that this object carries some information such as an action to be perfromed data to be acted upaon
+When we say "messaging", we mean that this object carries some information, such as an action to be performed and data to be acted upon.
 
-types of inten
+**Types of Intents:**
 
-implicit intents
-
-explicit intents
+- Implicit Intents
+- Explicit Intents
 
 ![[Pasted image 20260909054155.png]]
 

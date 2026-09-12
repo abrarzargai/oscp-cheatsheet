@@ -1,5 +1,5 @@
 
-In my linux machine mobile devices was not launching sue to some error this worked for me I’ll check later what was the issue
+On my Linux machine, mobile devices were not launching due to some error. This worked for me; I’ll check later what the issue was.
 
 ```bash
 # tells Genymotion to use CPU/software rendering instead of your Intel GPU.

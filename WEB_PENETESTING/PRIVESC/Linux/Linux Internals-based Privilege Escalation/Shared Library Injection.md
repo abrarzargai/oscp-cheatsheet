@@ -1,6 +1,6 @@
 
 
-### 📚 What Is a Shared Library?
+### <span style="color:#50FA7B">📚 What Is a Shared Library?</span>
 
 A **shared library** is a file that contains **common code** that different programs can use without having to duplicate that code.
 
@@ -10,13 +10,13 @@ Instead of every program including the same code, it just uses the shared librar
 
 ---
 
-### 🧨 What Is Shared Library Injection?
+### <span style="color:#50FA7B">🧨 What Is Shared Library Injection?</span>
 
 **Shared library injection** is when we **force a program to load a malicious shared library** (a `.so` file) to **run code** we want, like opening a root shell, changing settings, or escalating privileges.
 
 For example, if we trick a program running with **root permissions** to load our malicious library, we can gain **root access**.
 
-### 🔧 Tools & Techniques for Injection
+### <span style="color:#50FA7B">🔧 Tools & Techniques for Injection</span>
 
 There are two common methods to inject a shared library:
 
@@ -27,9 +27,9 @@ We’ll focus on the **LD_PRELOAD** method in this example.
 
 ---
 
-## 🧑‍💻 Privilege Escalation Example: Using `LD_PRELOAD`
+## <span style="color:#8BE9FD">🧑‍💻 Privilege Escalation Example: Using `LD_PRELOAD`</span>
 
-### 1. **Check What You Can Do With Sudo**
+### <span style="color:#50FA7B">1. **Check What You Can Do With Sudo**</span>
 
 First, check what commands you can run as `sudo`:
 
@@ -42,7 +42,7 @@ sudo -l
 - `sudo -l`: This command lists all the commands you are allowed to run as root (administrator).
 - You’re looking for something that runs with `sudo` without asking for a password.
 
-### Example Output:
+### <span style="color:#50FA7B">Example Output:</span>
 
 ```
 (env_keep+=LD_PRELOAD)
@@ -54,7 +54,7 @@ sudo -l
 - You can run `/usr/sbin/apache2` as **root** (with full permissions) without password.
 - The `LD_PRELOAD` environment variable is not restricted, which means you can **inject your own shared library** into the running process.
 
-### 2. **Create a Malicious Shared Library**
+### <span style="color:#50FA7B">2. **Create a Malicious Shared Library**</span>
 
 Now, we’ll create a malicious shared library that, when loaded, will give us a **root shell**.
 
@@ -78,7 +78,7 @@ system("/bin/bash");  // Execute a root shell
 - **`setuid(0)` and `setgid(0)`**: These commands give us root privileges (UID and GID 0).
 - **`system("/bin/bash")`**: This command spawns a **root shell**.
 
-### 3. **Compile the Shared Library**
+### <span style="color:#50FA7B">3. **Compile the Shared Library**</span>
 
 Now, we need to compile the C code into a shared library file (the `.so` file).
 
@@ -94,7 +94,7 @@ gcc -fPIC -shared -o shell.so shell.c -nostartfiles
 - **`o shell.so`**: This specifies the output file name (`shell.so`).
 - **`nostartfiles`**: This tells the compiler to skip the default start-up code and use our custom `_init()` function.
 
-### 4. **Inject the Library and Gain Root Access**
+### <span style="color:#50FA7B">4. **Inject the Library and Gain Root Access**</span>
 
 Now, run the program (`apache2` in this case) with `sudo` and inject the malicious library using `LD_PRELOAD`:
 

@@ -1,5 +1,5 @@
 
-### What Are Linux Capabilities?
+### <span style="color:#50FA7B">What Are Linux Capabilities?</span>
 
 Traditionally in Linux, only the **root user** could do powerful system tasks (like changing system files or binding to ports below 1024).
 
@@ -23,7 +23,7 @@ getcap -r / 2>/dev/null
 go to [https://gtfobins.github.io/](https://gtfobins.github.io/) and find the exploit
 
 ___
-#  #vim
+# <span style="color:#FF5555">vim</span>
 
 suppose we have vim capabilities
 

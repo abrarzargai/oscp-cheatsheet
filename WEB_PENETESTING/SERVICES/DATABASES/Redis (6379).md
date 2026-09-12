@@ -1,18 +1,18 @@
-# Commands
-### Enumeration
+# <span style="color:#FF5555">Commands</span>
+### <span style="color:#50FA7B">Enumeration</span>
 ```bash
-nmap --script redis-info -p 6379 <target-ip>
-nmap --script redis-brute -p 6379 <target-ip>
+nmap --script redis-info -p 6379 $VICTIM_IP
+nmap --script redis-brute -p 6379 $VICTIM_IP
 
 msf> use auxiliary/scanner/redis/redis_server
 ```
 
-### Connect
+### <span style="color:#50FA7B">Connect</span>
 
 ```bash
-redis-cli -h <target-ip> -p 6379
+redis-cli -h $VICTIM_IP -p 6379
 # with password
-redis-cli -h <target-ip> -p 6379 -a password
+redis-cli -h $VICTIM_IP -p 6379 -a password
 
 # using socket
 redis-cli -s /path/to/redis.sock
@@ -30,7 +30,7 @@ If so, we need to authenticate to communicate with the redis server.
 > auth <username> <password>
 ```
 
-### Check Config File
+### <span style="color:#50FA7B">Check Config File</span>
 If we have access to target system, find the configuration file then we may be able to get passwords.
 ```bash
 find / -name "redis.conf" 2>/dev/null
@@ -46,7 +46,7 @@ We can set the password in a redis client.
 ```
 
 
-### Basic Commands
+### <span style="color:#50FA7B">Basic Commands</span>
 
 ```bash
 # Check credentials

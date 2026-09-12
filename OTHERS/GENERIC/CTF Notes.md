@@ -1,8 +1,8 @@
-preparing the target ip
+Preparing the target IP
 
 ```bash
 # append the export to your ~/.bashrc so every new interactive shell gets it
-echo 'export t="10.10.10.100"' >> ~/.bashrc
+echo 'export t="$VICTIM_IP"' >> ~/.bashrc
 
 # apply it now to current shell
 source ~/.bashrc
@@ -12,12 +12,12 @@ echo $t
 
 ```
 
-### IP in the terminal of parrot OS
+### <span style="color:#50FA7B">IP in the terminal of parrot OS</span>
 ```bash
 echo 'export PS1="\n\[\e[0;31m\]┌─[\[\e[0m\]\u@\[\e[0;36m\]\$(ip addr show tun0 | grep '\''inet '\'' | awk '\''{print \$2}'\'' | cut -d/ -f1)\[\e[0;31m\]]─[\[\e[0m\]\w\[\e[0;31m\]]\n└──╼ \[\e[0m\]\$ "' >> ~/.bashrc
 ```
 
-## Setting Attacker IP
+## <span style="color:#8BE9FD">Setting Attacker IP</span>
 
 - Open `~/.bashrc` in an editor
 ```bash
@@ -42,12 +42,12 @@ source ~/.bashrc
 ```
 
 
-## Setting Victim IP
+## <span style="color:#8BE9FD">Setting Victim IP</span>
 
 
 ```bash
-# saving ctim IP
-echo "10.10.10.1" > ~/.rhost
+# saving victim IP
+echo "$VICTIM_IP" > ~/.rhost
 
 # ~/.bashrc
 # Access it using $rhost

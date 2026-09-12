@@ -3,11 +3,11 @@ Use Android's manual proxy
 
 **Option 2 — If Android completely hides the proxy setting**
 
-In scenario IDK where to find the proxy setting in my phone so i use adb to do that
+In some cases you may not know where to find the proxy setting on the phone, so you can use ADB to do it:
 
 ```bash
 # add proxy
-adb -s 11318153CM001155 shell settings put global http_proxy 192.168.100.10:8080
+adb -s 11318153CM001155 shell settings put global http_proxy $ATTACKER_IP:8080
 
 # verify proxy
 adb -s 11318153CM001155 shell settings get global http_proxy
@@ -16,7 +16,7 @@ adb -s 11318153CM001155 shell settings get global http_proxy
 adb -s 11318153CM001155 shell settings put global http_proxy :0
 ```
 
-### Export Burp's CA certificate
+### <span style="color:#50FA7B">Export Burp's CA certificate</span>
 
 In Burp Suite:
 
@@ -32,15 +32,15 @@ Save it as:
 burp.der
 ```
 
-### 2. Transfer it to your phone
+### <span style="color:#50FA7B">2. Transfer it to your phone</span>
 
 For example:
 
 ```
-adb-s 11318153CM001155 push burp.der /sdcard/Download/
+adb -s 11318153CM001155 push burp.der /sdcard/Download/
 ```
 
-### 3. Install it on Android
+### <span style="color:#50FA7B">3. Install it on Android</span>
 
 On the phone, open:
 

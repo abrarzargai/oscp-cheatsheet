@@ -1,20 +1,20 @@
-# <span style="color:lightblue">Password Mining Escalation - Firefox</span>
+# <span style="color:#FF5555">Password Mining Escalation - Firefox</span>
 
-## <span style="color:lightgreen">Detection</span>
+## <span style="color:#8BE9FD">Detection</span>
 1. winpeas 
 2. Path location :
 ```console
 C:\Temp> C:\Users\usernamehere\AppData\Roaming\Mozilla\Firefox\Profiles
 ```
 
-## Requirements
+## <span style="color:#8BE9FD">Requirements</span>
 Copy the following files from the Windows VM to Kali VM:
 1. key4.db
 2. logins.json
 3. addons.json
 4. cert9.db
 
-## <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 1. Download the following
 ```console
 $ git clone https://github.com/lclevy/firepwd.git

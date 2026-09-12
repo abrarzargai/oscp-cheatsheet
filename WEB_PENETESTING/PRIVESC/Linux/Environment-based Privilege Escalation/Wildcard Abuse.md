@@ -1,5 +1,5 @@
 
-## What is a Wildcard?
+## <span style="color:#8BE9FD">What is a Wildcard?</span>
 
 A **wildcard** is a symbol that the shell uses to match filenames.
 
@@ -12,7 +12,7 @@ Some examples:
 |`[a-z]`|matches **one letter in that range**|
 |`~`|means **home directory**|
 
-## The Trick: Using Wildcards to Trick `tar`
+## <span style="color:#8BE9FD">The Trick: Using Wildcards to Trick `tar`</span>
 The `tar` command is used to compress files (make archives).
 
 It has a special hidden feature in its **manual (`man tar`)**:
@@ -29,7 +29,7 @@ If a cron job is using tar * to archive everything in a folder, we can abuse tha
 
 ___
 
-### 🧨 The Scenario: Cron Job Running as Root
+### <span style="color:#50FA7B">🧨 The Scenario: Cron Job Running as Root</span>
 
 There’s a cron job (automated task) like this:
 ```sh
@@ -41,7 +41,7 @@ You can sneak in fake files that:
 - Act like options: `--checkpoint`, `--checkpoint-action`
 - Run your script: `root.sh`
 
-### 🧪 The Attack Step-by-Step
+### <span style="color:#50FA7B">🧪 The Attack Step-by-Step</span>
 
 1. **Create a malicious script** (root.sh):
 ```sh
@@ -64,7 +64,7 @@ Now, in your folder you have:
 3. **Wait for the cron job to run again.**
 It sees `*`, so it includes all these "files". But really, they're treated as **options**, so the `tar` command ends up **running your script** as **root**!
 
-### 🧑‍💻 After the Cron Job Runs
+### <span style="color:#50FA7B">🧑‍💻 After the Cron Job Runs</span>
 
 You check your sudo permissions:
 ```bash

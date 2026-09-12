@@ -1,4 +1,4 @@
-## What Are Privileged Groups?
+## <span style="color:#8BE9FD">What Are Privileged Groups?</span>
 
 In Linux, some **groups** have **extra powers**.
 If your user is part of one of these special groups, you might be able to:
@@ -17,21 +17,21 @@ These groups include:
 Let’s look at what each one means and how it can help you **escalate privileges** (become root).
 
 ---
-## What is LXD / LXC?
+## <span style="color:#8BE9FD">What is LXD / LXC?</span>
 
 - **LXC (Linux Containers)** and **LXD (Linux Daemon)** are tools that let you create **lightweight virtual environments** called **containers**.
 - Containers are **isolated** from the rest of the system, but they **share the same Linux kernel**.
 - Think of it like running a mini Linux system inside a real one – like opening a new computer inside your current computer.
 
-## 🧠 Why This Matters for Privilege Escalation?
+## <span style="color:#8BE9FD">🧠 Why This Matters for Privilege Escalation?</span>
 
 If your user is part of the **`lxd` group**, it means you can manage and create these containers.  
 But here's the trick:
 
 > You can make a special container that has access to the **host system’s files as root**, allowing you to **escape the container and become root** on the host!
 
-1. type `id` command and Make sure you're in the `lxd` group first:
-2. Import the Alpine image you can download it from internet for now we have this in target system `alpine-v3.18-x86_64-20230607_1234.tar.gz`
+1. Run the `id` command and make sure you're in the `lxd` group first:
+2. Import the Alpine image (you can download it from the internet; for now we already have it on the target system): `alpine-v3.18-x86_64-20230607_1234.tar.gz`
    
 ```bash
 lxc image import alpine-v3.18-x86_64-20230607_1234.tar.gz --alias alpescape
@@ -74,7 +74,7 @@ cd /mnt/root/root
 cat flag.txt
 ```
 ___
-## 🐳 Docker Group – Almost Root Access
+## <span style="color:#8BE9FD">🐳 Docker Group – Almost Root Access</span>
 
 If you're in the `docker` group:
 
@@ -87,11 +87,11 @@ docker run -v /root:/mnt -it ubuntu
 This command:
 - Creates a new container
 - Mounts the host’s `/root` folder
-- Let’s you browse `/mnt` from inside the container and access `/root` on the host
+- Lets you browse `/mnt` from inside the container and access `/root` on the host
 
 ➡️ You can grab root's SSH keys or edit critical files.
 ---
-## 💽 Disk Group – Direct Access to Disks
+## <span style="color:#8BE9FD">💽 Disk Group – Direct Access to Disks</span>
 
 If you're in the `disk` group:
 
@@ -104,7 +104,7 @@ If you're in the `disk` group:
 
 ➡️ This group is dangerous. Total system access.
 ---
-## 📜 ADM Group – Read System Logs
+## <span style="color:#8BE9FD">📜 ADM Group – Read System Logs</span>
 
 If you're in the `adm` group:
 

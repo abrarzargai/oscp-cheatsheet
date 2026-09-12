@@ -1,12 +1,12 @@
 #AD_DEFINATION_SPN
 
-# <span style="color: purple;">What Is an SPN?:</span>
+# <span style="color:#FF5555">What Is an SPN?</span>
 
 Think of an **SPN (Service Principal Name)** as a **unique name, identifier for a specific service running on a network i.e MSSQL.
 
 When a user wants to access a service, such as a **SQL Server**, Kerberos needs to know **which AD account is running that service** so it can issue the appropriate **Service Ticket (TGS)**.
 
-### SPN Format:
+### <span style="color:#50FA7B">SPN Format</span>
 ```plain
 serviceclass/hostname:port/servicename
 ```
@@ -15,12 +15,12 @@ Examples:
 - `HTTP/webapp.corp.local` — Web application
 - `CIFS/fileserver.corp.local` — File share service
 
-> **Only Service Accounts Have SPNs**.  Regular user accounts do NOT have SPNs by default.** SPNs are specifically designed for **services**, not people.
+> [!info] Note
+> Only **Service Accounts** have SPNs. Regular user accounts do NOT have SPNs by default — SPNs are specifically designed for **services**, not people.
 
+# <span style="color:#FF5555">Flow for Understanding</span>
 
-# <span style="color: purple;">Flow for understanding:</span>
-
-## Example
+## <span style="color:#8BE9FD">Example</span>
 
 - **`CORP\sql_svc`** → Service Account
 - **`sql_svc`** → Account username
@@ -37,7 +37,7 @@ Active Directory User Object: "CORP\sql_svc"
                                   └── SPN belongs to CORP\sql_svc
 ```
 
-## Flow
+## <span style="color:#8BE9FD">Flow</span>
 
 - **User Requests a Service:** The client wants to access a service (e.g., a SQL Server) and sends a **TGS-REQ** to the KDC, including the **SPN** of the target service (e.g., `MSSQLSvc/db01.corp.local:1433`).
     

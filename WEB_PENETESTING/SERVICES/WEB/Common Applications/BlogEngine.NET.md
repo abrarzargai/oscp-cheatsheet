@@ -1,7 +1,7 @@
 ___
-### BlogEngine.net  version 3.3.6.0 (CVE-2019-6714 RCE)
+### <span style="color:#50FA7B">BlogEngine.net  version 3.3.6.0 (CVE-2019-6714 RCE)</span>
 
-### Reverse Shell
+### <span style="color:#50FA7B">Reverse Shell</span>
 
 - Log in to the **admin dashboard**.
 -  searchsploit -m 46353.cs

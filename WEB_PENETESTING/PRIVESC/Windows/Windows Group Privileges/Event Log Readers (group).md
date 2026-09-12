@@ -9,24 +9,24 @@ These tools help detect suspicious commands such as:whoami, netstat, tasklist et
 
 Organizations can also use AppLocker to block specific commands entirely.
 
-#### Real-World Example
+#### <span style="color:#FFB86C">Real-World Example</span>
 A pentester ran tasklist from a finance user's workstation.
 Since the organization had command-line auditing enabled, the security team spotted and stopped this activity — even without an enterprise EDR!.
 
 Admins sometimes add power users or developers to this group to provide visibility without granting full admin rights.
 
-### Check Group Membership
+### <span style="color:#50FA7B">Check Group Membership</span>
 ```cmd
 net localgroup "Event Log Readers"
 ```
 
 If you see your username listed, it means you have read access to event logs.
 
-### Why Is This Dangerous?
+### <span style="color:#50FA7B">Why Is This Dangerous?</span>
 Many Windows commands expose credentials in cleartext on the command line.
 If command-line logging is enabled, sensitive data may appear in Event ID 4688 logs, making it possible for attackers or defenders to extract passwords!
 
-### How to Search Security Logs
+### <span style="color:#50FA7B">How to Search Security Logs</span>
  Using wevtutil (Command Prompt or PowerShell)
 You can search for specific strings (like /user) in the Security logs:
 

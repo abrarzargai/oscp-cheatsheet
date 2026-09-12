@@ -1,19 +1,24 @@
 #AD_generic
-# links
+
+# <span style="color:#FF5555">Links</span>
 
 - [https://github.com/S1ckB0y1337/Active-Directory-Exploitation-Cheat-Sheet](https://github.com/S1ckB0y1337/Active-Directory-Exploitation-Cheat-Sheet)
 - [https://github.com/MariamTariq404/OSCP-Checklist](https://github.com/MariamTariq404/OSCP-Checklist)
 - [https://benheater.com/my-ctf-methodology/](https://benheater.com/my-ctf-methodology/)
 
+> [!info] Variables used below
+> - `$VICTIM_IP` – target machine's IP
+> - `$DC_IP` – Domain Controller's IP
+
 ____
-# Adding target IP
+# <span style="color:#FF5555">Adding Target IP</span>
 
 ```bash
-export target="10.10.11.69"
+export target="$VICTIM_IP"
 ```
 
 ___
-# Verifying the DC machine
+# <span style="color:#FF5555">Verifying the DC machine</span>
 If you have the machine access and you want to check if its the Domain controller or normal machine you can check if this folder found then its DC
 
 ```bash
@@ -21,8 +26,8 @@ dir C:\\Windows\\NTDS
 ```
 
 ---
-# Sync time with AD machine
+# <span style="color:#FF5555">Sync time with AD machine</span>
 
 ```bash
-while true; do ntpdate -s fluffy.htb; done
+while true; do ntpdate -s $DC_IP; done
 ```

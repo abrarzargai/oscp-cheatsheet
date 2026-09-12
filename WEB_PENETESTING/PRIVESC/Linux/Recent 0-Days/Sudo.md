@@ -1,12 +1,12 @@
 
-## What is `sudo`?
+## <span style="color:#8BE9FD">What is `sudo`?</span>
 - `sudo` = run commands as another user (usually root)
 - It's safer than giving full root access
 - What you can run with `sudo` is controlled by the `/etc/sudoers` file
 - Use this to check your sudo powers `sudo -l`
 
 ___
-# Method 1: CVE-2021-3156 (sudo bug)
+# <span style="color:#FF5555">Method 1: CVE-2021-3156 (sudo bug)</span>
 
 This is a **serious vulnerability** found in `sudo` that lets any user become **root**, even if they aren't allowed to run anything with `sudo`.
 
@@ -16,9 +16,9 @@ This is a **serious vulnerability** found in `sudo` that lets any user become **
 - `1.8.27` (Debian 10)
 - `1.9.2` (Fedora 33)
 
-### 🔍 Step-by-step:
+### <span style="color:#50FA7B">🔍 Step-by-step:</span>
 
-#### 1. Check sudo version:
+#### <span style="color:#FFB86C">1. Check sudo version:</span>
 ```bash
 sudo -V | head -n 1
 
@@ -49,12 +49,11 @@ You’ll see available targets like:
 Now you’re root!
 
 ___
-# Method 2: CVE-2019-14287 (`sudo -u#-1` trick)
+# <span style="color:#FF5555">Method 2: CVE-2019-14287 (`sudo -u#-1` trick)</span>
 
 If you're allowed to run **any command** as **any user**, you can **bypass root restrictions** with this trick.
 
-#### 1. Check sudo rights:
-1. Check sudo rights:
+#### <span style="color:#FFB86C">1. Check sudo rights:</span>
 
 ```bash
 sudo -l

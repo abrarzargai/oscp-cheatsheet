@@ -1,11 +1,10 @@
 
-### **1. Device Basics**
+### <span style="color:#50FA7B">**1. Device Basics**</span>
 
 **Purpose:** Verify connectivity and retrieve device information.
 
 **Common Commands:**
 
-bash
 
 ```bash
 # List all connected devices and their status
@@ -27,13 +26,12 @@ adb kill-server
 adb start-server
 ```
 
-### **2. Logcat — System Log Viewer**
+### <span style="color:#50FA7B">**2. Logcat — System Log Viewer**</span>
 
 **Purpose:** Capture and filter real-time system and application logs for debugging, crash analysis, and performance monitoring.
 
 **Common Commands:**
 
-bash
 
 ```bash
 # Stream all logs in real-time
@@ -56,13 +54,12 @@ adb logcat > logcat_output.txt
 adb logcat > "logcat_$(date +%Y%m%d_%H%M%S).txt"
 ```
 
-### **3. File Management — Push & Pull**
+### <span style="color:#50FA7B">**3. File Management — Push & Pull**</span>
 
 **Purpose:** Transfer files between the workstation and the Android device.
 
-#### **Push — Copy Files TO the Device**
+#### <span style="color:#FFB86C">**Push — Copy Files TO the Device**</span>
 
-bash
 
 ```bash
 # Syntax: adb push <local_file> <remote_destination>
@@ -75,9 +72,8 @@ adb push ./screenshot.png /sdcard/Pictures/
 adb push ./assets_folder/ /sdcard/MyApp/assets/
 ```
 
-#### **Pull — Copy Files FROM the Device**
+#### <span style="color:#FFB86C">**Pull — Copy Files FROM the Device**</span>
 
-bash
 
 ```bash
 # Syntax: adb pull <remote_file> <local_destination>
@@ -94,13 +90,12 @@ adb pull /system/app/Youtube/Youtube.apk ./youtube.apk
 adb pull /sdcard/DCIM/Camera/ ./camera_photos/
 ```
 
-### **4. Remote Shell — Execute Commands on Device**
+### <span style="color:#50FA7B">**4. Remote Shell — Execute Commands on Device**</span>
 
 **Purpose:** Open an interactive Unix shell on the Android device or execute single commands directly from the workstation.
 
-#### **Interactive Shell Session**
+#### <span style="color:#FFB86C">**Interactive Shell Session**</span>
 
-bash
 
 ```bash
 # Connect to device Use the -s option followed by the device ID:
@@ -116,9 +111,8 @@ adb shell
 exit
 ```
 
-#### **Execute Single Commands (Non-Interactive)**
+#### <span style="color:#FFB86C">**Execute Single Commands (Non-Interactive)**</span>
 
-bash
 
 ```bash
 # List all installed packages
@@ -151,9 +145,8 @@ adb shell ps -A
 adb shell screencap /sdcard/screen.png && adb pull /sdcard/screen.png ./
 ```
 
-#### **Package Manager (`pm`) Command Reference**
+#### <span style="color:#FFB86C">**Package Manager (`pm`) Command Reference**</span>
 
-bash
 
 ```bash
 # List all packages

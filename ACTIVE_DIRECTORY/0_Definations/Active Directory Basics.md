@@ -1,16 +1,17 @@
-# Active Directory (AD)
-###  What is **Active Directory (AD)**?
+# <span style="color:#FF5555">Active Directory (AD)</span>
+
+### <span style="color:#50FA7B">What is Active Directory (AD)?</span>
 
 Active Directory is a service from Microsoft used in Windows environments to **store and manage information about users, groups, computers, and other resources** on a network.
 
-- It’s like a big phonebook for everything in a company.
+- It's like a big phonebook for everything in a company.
 - It helps **centralize user login**, **apply rules**, and **control access** to files, folders, apps, and devices.
 
 ---
 
-##  Types of Operating Systems (OS)
+## <span style="color:#8BE9FD">Types of Operating Systems (OS)</span>
 
-### 1. **Client OS** (used by end-users)
+### <span style="color:#50FA7B">1. Client OS (used by end-users)</span>
 
 These are for **personal computers** (used at desks, at home, in schools, etc.)
 
@@ -21,7 +22,7 @@ Examples:
 - Windows 8
 - Windows 10
 
-### 2. **Network Operating System (NOS)** (used by servers)
+### <span style="color:#50FA7B">2. Network Operating System (NOS) (used by servers)</span>
 
 These are **server versions** of Windows used to manage networks.
 
@@ -34,19 +35,19 @@ Examples:
 - Windows Server 2016
 - Windows Server 2019
 
-> 💡 Servers run 24/7 and help manage things like logins, files, printers, websites, and more.
-> 
+> [!info] Note
+> Servers run 24/7 and help manage things like logins, files, printers, websites, and more.
 
 ---
 
-##  ADDS – Active Directory Domain Services
+## <span style="color:#8BE9FD">ADDS – Active Directory Domain Services</span>
 
-### What is it?
+### <span style="color:#50FA7B">What is it?</span>
 
 - A **role** you install on a Windows Server to make it act like a "brain" for a network.
 - It stores info about **users, passwords, computers**, and controls who can access what.
 
-### After Installing ADDS:
+### <span style="color:#50FA7B">After Installing ADDS</span>
 
 - The server becomes a **Domain Controller (DC)**.
 - DC = the boss of the domain.
@@ -54,20 +55,20 @@ Examples:
 
 ---
 
-##  Hostname
+## <span style="color:#8BE9FD">Hostname</span>
 
 - The **name** of a computer on a network.
 - Example: `CLIENT01`, `SERVER-DC1`, etc.
 
 ---
 
-##  **1. Domain** – "A Single House"
+## <span style="color:#8BE9FD">1. Domain – "A Single House"</span>
 
-###  What it means:
+### <span style="color:#50FA7B">What it means</span>
 
 A **domain** is like **one house** where everyone follows the same rules.
 
-###  Real-life example:
+### <span style="color:#50FA7B">Real-life example</span>
 
 Think of your home. Everyone in your house shares:
 
@@ -82,13 +83,13 @@ In Active Directory:
 
 ---
 
-##  **2. Tree** – "A Street with Houses from the Same Family"
+## <span style="color:#8BE9FD">2. Tree – "A Street with Houses from the Same Family"</span>
 
-###  What it means:
+### <span style="color:#50FA7B">What it means</span>
 
 A **tree** is like a **street full of houses** that all belong to the **same family**.
 
-###  Real-life example:
+### <span style="color:#50FA7B">Real-life example</span>
 
 Your house is `school.com`. Your cousins live at `math.school.com` and `science.school.com`. You all have the same last name (**school.com**) and you're all part of the same big family tree.
 
@@ -99,15 +100,15 @@ In Active Directory:
 
 ---
 
-##  **3. Forest** – "A Group of Different Families"
+## <span style="color:#8BE9FD">3. Forest – "A Group of Different Families"</span>
 
-###  What it means:
+### <span style="color:#50FA7B">What it means</span>
 
 A **forest** is like a **neighborhood with different families** who agree to help each other.
 
-###  Real-life example:
+### <span style="color:#50FA7B">Real-life example</span>
 
-You live on a street called `school.com`. Across the street lives the `hospital.com` family. You don’t have the same name, but you’re all friends and can visit each other’s houses because you trust each other.
+You live on a street called `school.com`. Across the street lives the `hospital.com` family. You don't have the same name, but you're all friends and can visit each other's houses because you trust each other.
 
 In Active Directory:
 
@@ -116,15 +117,15 @@ In Active Directory:
 
 ---
 
-##  **4. Trusts** – "Friendship Between Houses"
+## <span style="color:#8BE9FD">4. Trusts – "Friendship Between Houses"</span>
 
-###  What it means:
+### <span style="color:#50FA7B">What it means</span>
 
 A **trust** is like saying, "**I trust your family, so you can come into my house.**"
 
-### 🧸 Real-life example:
+### <span style="color:#50FA7B">🧸 Real-life example</span>
 
-If your parents say, “Your cousin can come in and use the fridge,” that’s a **trust**.
+If your parents say, "Your cousin can come in and use the fridge," that's a **trust**.
 
 In Active Directory:
 
@@ -132,50 +133,50 @@ In Active Directory:
 
 ---
 
-##  **5. Directional (One-Way or Two-Way Trusts)** – "Who Can Visit Whom?"
+## <span style="color:#8BE9FD">5. Directional Trusts (One-Way or Two-Way) – "Who Can Visit Whom?"</span>
 
-###  What it means:
+### <span style="color:#50FA7B">What it means</span>
 
 Trusts can go **one way** or **both ways**.
 
-### 🧸 Real-life example:
+### <span style="color:#50FA7B">🧸 Real-life example</span>
 
-- **One-way trust**: You can visit your cousin’s house, but they **can’t come to yours**.
-- **Two-way trust**: You can visit **each other’s** houses.
+- **One-way trust**: You can visit your cousin's house, but they **can't come to yours**.
+- **Two-way trust**: You can visit **each other's** houses.
 
 In Active Directory:
 
 - One-way: Only one side has access.
-- Two-way: Both sides can access each other’s stuff.
+- Two-way: Both sides can access each other's stuff.
 
 ---
 
-##  **6. Transitive vs Non-Transitive Trusts** – "Can Friends of Friends Come Over?"
+## <span style="color:#8BE9FD">6. Transitive vs Non-Transitive Trusts – "Can Friends of Friends Come Over?"</span>
 
-###  What it means:
+### <span style="color:#50FA7B">What it means</span>
 
 A **transitive trust** means "**my friend's friend can come in**."
 
 A **non-transitive trust** means "**only my direct friend can come in.**"
 
-###  Real-life example:
+### <span style="color:#50FA7B">Real-life example</span>
 
 - **Transitive**: You trust your cousin, and your cousin trusts their friend — so you also trust that friend.
 - **Non-transitive**: You trust your cousin, but **not their friend** — unless you say so.
 
 ---
 
-##  What is an **Organizational Unit (OU)**?
+## <span style="color:#8BE9FD">What is an Organizational Unit (OU)?</span>
 
 An **Organizational Unit** is like a **folder inside Active Directory** that helps **organize users, computers, and other objects**.
 
-###  Why use OUs?
+### <span style="color:#50FA7B">Why use OUs?</span>
 
 - To **organize** your AD better (by department, location, etc.)
 - To **apply policies** (like password rules, software installation) only to specific people or computers
 - To **delegate permissions** (give control to others without giving them full admin rights)
 
-###  Example:
+### <span style="color:#50FA7B">Example</span>
 
 Think of a company with 3 departments:
 
@@ -183,22 +184,22 @@ Think of a company with 3 departments:
 - IT
 - Finance
 
-##  What is a **Security Group**?
+## <span style="color:#8BE9FD">What is a Security Group?</span>
 
 A **Security Group** is a **collection of users** (or computers) used to manage **permissions** to resources.
 
-###  Why use security groups?
+### <span style="color:#50FA7B">Why use security groups?</span>
 
 - To **grant access** to shared folders, printers, applications, etc.
 - To **assign permissions** once to the group instead of each user
 
-###  Example:
+### <span style="color:#50FA7B">Example</span>
 
 - You create a group called `Finance_ReadAccess`
 - Add users: `finance_user1`, `finance_user2`
 - Grant that group **read access** to a finance folder
 
-##  **OU vs Security Group – What's the difference?**
+## <span style="color:#8BE9FD">OU vs Security Group – What's the Difference?</span>
 
 | Feature | Organizational Unit (OU) | Security Group |
 | --- | --- | --- |
@@ -210,19 +211,13 @@ A **Security Group** is a **collection of users** (or computers) used to manage 
 
 | PowerShell Command | What it does |
 | --- | --- |
-
 | `Get-ADGroup -Filter *` | Lists all groups |
-| --- | --- |
-
 | `Get-ADUser -Filter *` | Lists all users |
-| --- | --- |
-
 | `Get-ADOrganizationalUnit -Filter *` | Lists all OUs |
-| --- | --- |
 
 ---
 
-## What is **Active Directory Authentication**?
+## <span style="color:#8BE9FD">What is Active Directory Authentication?</span>
 
 **Active Directory (AD) Authentication** is the process of **verifying who a user is** when they log into a computer or access a network resource (like a file or printer).
 
@@ -233,25 +228,22 @@ A **Security Group** is a **collection of users** (or computers) used to manage 
 
 ---
 
-##  Authentication Protocols Used by Active Directory
+## <span style="color:#8BE9FD">Authentication Protocols Used by Active Directory</span>
 
 1. **Kerberos** (default & more secure)
 2. **NTLM** (older and less secure, used as fallback)
 
 ---
 
-#  **Kerberos** – Modern & Secure
+## <span style="color:#FFB86C">Kerberos – Modern & Secure</span>
 
-###  What is NTLM?
+### <span style="color:#50FA7B">What is Kerberos?</span>
 
-NTLM stands for **NT LAN Manager**. It’s an older authentication method that uses **challenge-response** instead of tickets.
-
-> 📅 Used in Windows NT 4.0 and still supported for backward compatibility.
-> 
+Kerberos is a **ticket-based authentication protocol** — instead of sending your password across the network, you exchange **tickets** that prove who you are.
 
 Think of **Kerberos** like this:
 
-###  Alice wants to enter a secure building (the network)
+### <span style="color:#50FA7B">Alice wants to enter a secure building (the network)</span>
 
 To get in:
 
@@ -262,13 +254,11 @@ To get in:
 5. The desk gives her a **room key (service ticket)** for that room.
 6. Alice uses the room key to go into that room — without needing to show her password again.
 
->  TGT = one-time pass
-> 
-> 
->  **Service Ticket = door key to a specific service**
-> 
+> [!info] Ticket Terms
+> - **TGT** = one-time pass
+> - **Service Ticket** = door key to a specific service
 
-###  Features of Kerberos:
+### <span style="color:#50FA7B">Features of Kerberos</span>
 
 - **No passwords are sent** over the network
 - **Tickets** are used to prove who you are
@@ -277,33 +267,33 @@ To get in:
 
 ---
 
-#  **NTLM** – Old & Weak
+## <span style="color:#FFB86C">NTLM – Old & Weak</span>
 
-###  What is NTLM?
+### <span style="color:#50FA7B">What is NTLM?</span>
 
-NTLM stands for **NT LAN Manager**. It’s an older authentication method that uses **challenge-response** instead of tickets.
+NTLM stands for **NT LAN Manager**. It's an older authentication method that uses **challenge-response** instead of tickets.
 
-> 📅 Used in Windows NT 4.0 and still supported for backward compatibility.
-> 
+> [!info] History
+> Used in Windows NT 4.0 and still supported for backward compatibility.
 
 Now think of **NTLM** like this:
 
-###  Bob wants to enter a room (a shared folder)
+### <span style="color:#50FA7B">Bob wants to enter a room (a shared folder)</span>
 
 1. He knocks on the door.
 2. The door gives him a **random question** (challenge).
 3. Bob **encrypts** the question using a secret (his password hash).
 4. He sends the **answer** back.
 5. The door calls the **Domain Controller** and asks:
-    - “Is Bob’s answer correct?”
+    - "Is Bob's answer correct?"
 6. If yes, Bob is let in.
 
-> 🚫 The problem: hackers can steal Bob’s encrypted answer and use it to pretend to be him (called a pass-the-hash or relay attack).
-> 
+> [!danger] Weakness
+> Hackers can steal Bob's encrypted answer and use it to pretend to be him (called a **pass-the-hash** or **relay attack**).
 
 ---
 
-# Side-by-Side Example
+## <span style="color:#FF5555">Side-by-Side Example</span>
 
 | Situation | Kerberos | NTLM |
 | --- | --- | --- |

@@ -1,10 +1,10 @@
-use search option that will serach in the whole project and look for variables
+Use the search option to search the whole project and look for variables
 
 like
 
 - http://
 - https://
-- [firbase.io](http://firbase.io)
+- firebase.io
 - clientID
 - clientSecret
 
@@ -15,7 +15,7 @@ Files to check
 - resources/strings.xml
 - resources.arsc/res/values/strings.xml
 
-Check all the .xmls file might contain some creds
+Check all the .xml files; they might contain some credentials
 
 Hardcoded strings can also be found in activity source code
 

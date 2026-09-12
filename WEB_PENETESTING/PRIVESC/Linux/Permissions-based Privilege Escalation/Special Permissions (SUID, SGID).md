@@ -1,8 +1,8 @@
-### What are Special Permissions?
+### <span style="color:#50FA7B">What are Special Permissions?</span>
 
 In Linux, **special permissions** like `setuid` and `setgid` allow a program to run with **someone else’s permissions**, usually a more powerful user like `root`. This can be **dangerous** if a program is insecure or misconfigured.
 
-### 1. **What is setuid?**
+### <span style="color:#50FA7B">1. **What is setuid?**</span>
 - **setuid** = _Set User ID_
 - If a file has the **setuid** bit set (`s` in place of `x`), it **runs as the file owner**, even if another user runs it.
 - This is usually used to let **regular users run root-owned programs as root**.
@@ -22,13 +22,15 @@ The `s` in `rwsr-xr-x` means setuid is set. This program runs as `root` even whe
 
 ---
 
-### 🧪 Why is setuid interesting for hacking?
+### <span style="color:#50FA7B">🧪 Why is setuid interesting for hacking?</span>
 
-If the program is **poorly written**, a hacker might trick it into doing something like **spawning a root shell**, giving **full control of the system**.---
+If the program is **poorly written**, a hacker might trick it into doing something like **spawning a root shell**, giving **full control of the system**.
 
 ---
 
-### 👥 2. **What is setgid?**
+---
+
+### <span style="color:#50FA7B">👥 2. **What is setgid?**</span>
 - **setgid** = _Set Group ID_
 - It works like setuid, but instead of running as the file's **owner**, it runs as the file's **group**.
 
@@ -43,7 +45,7 @@ find / -uid 0 -perm -6000 -type f 2>/dev/null
 The `s` in the **group section** means setgid is set.
 
 ___
-# Exploiting SUID Binaries
+# <span style="color:#FF5555">Exploiting SUID Binaries</span>
 
 ```bash
 # SUID
@@ -69,7 +71,7 @@ ____
 
 
 
-### SUID (doas)
+### <span style="color:#50FA7B">SUID (doas)</span>
 find the doas config file
 
 ```bash

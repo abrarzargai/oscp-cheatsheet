@@ -1,5 +1,5 @@
 
-### ping sweep
+### <span style="color:#50FA7B">ping sweep</span>
 ```bash
 fping -asgq 192.168.124.0/24
 

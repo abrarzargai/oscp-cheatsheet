@@ -6,7 +6,7 @@ source ~/venv/bin/activate
 ```
 
 
-### Converting Python2 code to Pyton3
+### <span style="color:#50FA7B">Converting Python2 code to Python3</span>
 ```bash
 pip install 2to3 
 

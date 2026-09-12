@@ -3,7 +3,7 @@ to scan it like wpscan
 
 [https://github.com/steverobbins/magescan](https://github.com/steverobbins/magescan)
 
-### exploit for version 1.9.0.0
+### <span style="color:#50FA7B">exploit for version 1.9.0.0</span>
 
 It will add the admin panel user with forme:forme creds
 
