@@ -4,19 +4,35 @@
     "type": "split",
     "children": [
       {
-        "id": "6b864757c364e797",
+        "id": "dbf6cbb5dc18d9c2",
         "type": "tabs",
         "children": [
           {
-            "id": "ea8ef473369e0502",
+            "id": "35c16a2513b05c5b",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "OTHERS/ASSETS/IMAGES/Pasted image 20260909054155.png"
+                "file": "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/Azure AD Sync.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "Pasted image 20260909054155"
+              "icon": "lucide-file",
+              "title": "Azure AD Sync"
+            }
+          },
+          {
+            "id": "6d56f2d85a41b501",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ACTIVE_DIRECTORY/0_Definations/SPN (Service Principal Name).md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "SPN (Service Principal Name)"
             }
           }
         ]
@@ -53,7 +69,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "rid-br",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -169,53 +185,54 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "630cbe5c37bd6183",
+  "active": "35c16a2513b05c5b",
   "lastOpenFiles": [
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing/SSL Pinning/SSL Pinning.md",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260909055405.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260909055353.png",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing/SSL Pinning/SSL Pinning (Multiple apks).md",
-    "README.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/DCSync.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Tools/_.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Theory/File Structure.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Untitled",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Basics/2 — Decompiling APK.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Basics/1 — Pulling APK.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Basics/0 — Proxy Connection.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Theory/Pulling or Pushing the APK.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Basics",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Basics.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Theory/Andriod archtechture.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Theory/Android Execution Ecosystem.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Theory",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing/Extra/XSS-SQLI.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing/SSL Pinning",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing/Extra/Logcat.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing/Extra/SQLite.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Static Testing/Hardcoded strings.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing/Extra",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Static Testing/Andriod Manifest.xml.md",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260909054224.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260909054155.png",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Tools/Drozer.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Static Testing",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Tools/ADB — Android Debug Bridge.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Tools/Fixes.md",
-    "Untitled.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Tools",
+    "Pasted image 20260911162047.png",
+    "ACTIVE_DIRECTORY/1_Initial_Enumeration/2_User Enumeration.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/Azure AD Sync.md",
+    "ACTIVE_DIRECTORY/2_Breaching_AD/AS-REP Roasting.md",
+    "OTHERS/METHODOLOGY/Methodology.md",
+    "ACTIVE_DIRECTORY/Checklist/1. Initial Access.md",
+    "ACTIVE_DIRECTORY/0_Generic/Username Generation.md",
+    "ACTIVE_DIRECTORY/1_Initial_Enumeration/Internal Password Spraying.md",
+    "ACTIVE_DIRECTORY/1_Initial_Enumeration/3_Retrieving Password Policies.md",
+    "Scripts/ports.md",
+    "ACTIVE_DIRECTORY/0_Definations/NTLM.md",
+    "Scripts",
+    "ACTIVE_DIRECTORY/0_Definations/KRBTGT.md",
+    "ACTIVE_DIRECTORY/0_Definations/Kerberose.md",
+    "ACTIVE_DIRECTORY/0_Definations/Active Directory Basics.md",
+    "ACTIVE_DIRECTORY/2_Breaching_AD/Kerberoasting.md",
+    "ACTIVE_DIRECTORY/2_Breaching_AD/Kerberos TGT.md",
+    "ACTIVE_DIRECTORY/2_Breaching_AD/LLMNR_NBT_NS Poisoning.md",
+    "ACTIVE_DIRECTORY/0_Definations/SPN (Service Principal Name).md",
     "ACTIVE_DIRECTORY/4_Exploiting_AD/AD CS/ESC16.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING",
-    "Untitled",
     "ACTIVE_DIRECTORY/4_Exploiting_AD/AD CS/ESC4.md",
     "ACTIVE_DIRECTORY/4_Exploiting_AD/AD CS/ESC1.md",
+    "WEB_PENETESTING/PRIVESC/Windows/Registry/AlwaysInstallElevated.md",
+    "ACTIVE_DIRECTORY/3_Enumerating_AD/5_BloodHound Enumeration.md",
+    "ACTIVE_DIRECTORY/Checklist/2. Lateral movement.md",
+    "ACTIVE_DIRECTORY/0_Generic/Generic.md",
+    "ACTIVE_DIRECTORY/0_Generic/AV Evasion.md",
+    "Pasted image 20260909115506.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260909054155.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260909055405.png",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260909055353.png",
+    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Untitled",
+    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Basics",
+    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Theory",
+    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing/SSL Pinning",
+    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing/Extra",
+    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Dynamic Testing",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260909054224.png",
+    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Static Testing",
+    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Tools",
+    "MOBILE_PENETESTING/ANDRIOD_PENETESTING",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260908141455.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260908160311.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260908155856.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260908153946.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260908153930.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260908135315.png",
     "Untitled.canvas"
   ]
 }

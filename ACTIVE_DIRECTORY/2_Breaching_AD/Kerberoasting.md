@@ -1,7 +1,11 @@
 #AD_Kerberoast
 
+____
 
-**Kerberoasting targets service accounts that have an SPN (a service identifier).**
+# Explanation
+
+**Kerberoasting targets service accounts that have an SPN (a service identifier).** #AD_DEFINATION_SPN
+
 - When a user asks to access a service, they receive a **Service Ticket (ST)**
 - This ticket is **encrypted using the service account’s password**
 
@@ -11,12 +15,14 @@
 
 > Kerberoasting requires valid domain user credentials to request a service ticket.
 
----
-#  What do you need before running Kerberoasting?
+
+###  What do you need before running Kerberoasting?
 
 -  You must have **valid domain user credentials**  
 -  You must be **able to query the domain controller**  
 -  You want to **find accounts that have SPNs set** (meaning they're running services
+
+____
 #  Step-by-Step Attack From Linux (Using Impacket)
 
 # 1.  Install Impacket

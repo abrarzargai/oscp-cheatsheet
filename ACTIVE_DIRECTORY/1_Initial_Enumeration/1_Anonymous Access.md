@@ -16,7 +16,8 @@ nxc smb $t -u '' -p '' --users
 nxc smb $t -u 'guest' -p '' --users
 
 # write all the files in your local system
-nxc smb $t -u '' -p '' --shares -M spider_plus -o DOWNLOAD_FLAG=True
+# EXCLUDE_FILTER : to exclude some shares, as some of shares contain rough/huge data
+nxc smb $t -u '' -p '' --shares -M spider_plus -o DOWNLOAD_FLAG=True EXCLUDE_FILTER='print$, ipc$'
 
 # for multiple ips
 nxc --verbose smb ./ips.txt -u corpmngr -p 'User4&*&*' --continue-on-success

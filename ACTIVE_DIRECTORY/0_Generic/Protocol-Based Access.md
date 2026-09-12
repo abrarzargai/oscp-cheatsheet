@@ -18,6 +18,10 @@ nxc rdp <IP> -u user -p pass
 nxc ssh <IP> -u user -p pass
 nxc ldap <IP> -u user -p pass
 nxc mssql <IP> -u user -p pass
+
+
+# --local-auth tells NetExec to authenticate using a local account instead of a domain account.
+nxc mssql <target-ip> --local-auth -u username -p passwords.txt
 ```
 
 ____

@@ -1,3 +1,5 @@
+#AD_DEFINATION_KERBEROSE
+
 **Kerberos** is a **network authentication protocol** used in Active Directory that verifies user identity securely using **tickets instead of passwords**.
 
 - **Client** → user or computer
@@ -41,26 +43,4 @@ The TGS validates the TGT and issues a **TGS-REP** containing:
 - Client shows the **service ticket**
 - Server verifies it and allows access
 
-____
-# KRBTGT 
-is a service account whose hash is used to sign and encrypt Kerberos Ticket Granting Tickets (TGTs) which we are sending to client (user).
 
-- If compromised → attackers can create **Golden Tickets**
-- It **is a real account** (like a service account)
-
-___
-
-# SPN (Service Principal Name)
-
-An **SPN** is a unique identifier that **links a service instance to a service account** in Active Directory. Think of it as a "service address" that tells Kerberos **“This is the exact service I want to access.”**
-(e.g., SQL Server, web application)
-### SPN Format:
-```plain
-serviceclass/hostname:port/servicename
-```
-Examples:
-- `MSSQLSvc/sql01.corp.local:1433` — SQL Server on port 1433
-- `HTTP/webapp.corp.local` — Web application
-- `CIFS/fileserver.corp.local` — File share service
-
-> **Only Service Accounts Have SPNs**.  Regular user accounts do NOT have SPNs by default.** SPNs are specifically designed for **services**, not people.
