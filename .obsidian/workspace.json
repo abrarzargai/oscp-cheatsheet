@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WEB_PENETESTING/SERVICES/OTHERS/DNS (53).md",
+                "file": "ACTIVE_DIRECTORY/4_Exploiting_AD/Groups/DnsAdmins.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "DNS (53)"
+              "title": "DnsAdmins"
             }
           }
         ]
@@ -173,20 +173,29 @@
   },
   "active": "630cbe5c37bd6183",
   "lastOpenFiles": [
+    "_code/index.html.tmp.7519.7eb041a788b6",
+    "_code/index.html.tmp.7519.5d8409b99005",
+    "_code/index.html.tmp.7519.e214827bd10e",
+    "_code/index.html.tmp.7519.104939b3d216",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Groups/Pre-Windows 2000 Compatible Access.md",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/Groups/DnsAdmins.md",
+    "OTHERS/ASSETS/IMAGES/Pasted image 20260912141545.png",
+    "_code/index.html.tmp.7519.7a766e9ee5a8",
+    "_code/index.html.tmp.7519.be7565ef33d7",
+    "ACTIVE_DIRECTORY/4_Exploiting_AD/AD CS/ESC1.md",
+    "ACTIVE_DIRECTORY/2_Breaching_AD/AS-REP Roasting.md",
+    "_code/index.html.tmp.7519.9d76c1e33555",
+    "_code/index.html.tmp.7519.2ca00a4ed742",
+    "_code/index.html.tmp.7519.40efc62fde18",
+    "_code/index.html.tmp.7519.2ecea989e8bf",
+    "_code/index.html.tmp.7519.f12bb7a8403b",
+    "ACTIVE_DIRECTORY/3_Enumerating_AD/2_GPO Enumeration.md",
+    "WEB_PENETESTING/SERVICES/OTHERS/DNS (53).md",
+    "_code/README.md",
     "CONFIGURATION.md",
     "WEB_PENETESTING/SERVICES/DATABASES/MySQL (3306).md",
     "WEB_PENETESTING/SERVICES/DATABASES/IPMI (623).md",
     "ACTIVE_DIRECTORY/6_Persistance/1_Golden Ticket.md",
-    "MOBILE_PENETESTING/ANDRIOD_PENETESTING/Basics/sedKc47Kb",
-    "OTHERS/METHODOLOGY/sedE8IK1K",
-    "ACTIVE_DIRECTORY/0_Generic/Tools.md.tmp.4067.7a07017ced41",
-    "ACTIVE_DIRECTORY/0_Generic/Tools.md.tmp.4067.8012b57bfb67",
-    "ACTIVE_DIRECTORY/0_Generic/Tools.md.tmp.4067.d01fc9bd6a0a",
-    "ACTIVE_DIRECTORY/0_Generic/Tools.md.tmp.4067.a50babf3d24e",
-    "ACTIVE_DIRECTORY/0_Generic/Tools.md.tmp.4067.7e65c7cf7ba7",
-    "ACTIVE_DIRECTORY/0_Generic/Protocol-Based Access.md.tmp.4067.ea4c7873fc50",
-    "ACTIVE_DIRECTORY/0_Generic/Generic.md.tmp.4067.da384d20d3e3",
-    "ACTIVE_DIRECTORY/0_Generic/AV Evasion.md.tmp.4067.9cc3202e801f",
     "ACTIVE_DIRECTORY/6_Persistance/3_Diamond Ticket.md",
     "ACTIVE_DIRECTORY/6_Persistance/2_Silver Ticket.md",
     "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/WriteDACL.md",
@@ -201,14 +210,6 @@
     "ACTIVE_DIRECTORY/5_Local_Priv_Esc/Startup Applications.md",
     "ACTIVE_DIRECTORY/5_Local_Priv_Esc/Service Registry.md",
     "ACTIVE_DIRECTORY/5_Local_Priv_Esc/BinPath.md",
-    "ACTIVE_DIRECTORY/5_Local_Priv_Esc/Autorun.md",
-    "ACTIVE_DIRECTORY/5_Local_Priv_Esc/Abusing GPO permissions.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/Exploiting_Permission_Delegation/AddSelf.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/AD CS/ESC16.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/AD CS/ESC4.md",
-    "ACTIVE_DIRECTORY/4_Exploiting_AD/AD CS/ESC1.md",
-    "ACTIVE_DIRECTORY/3_Enumerating_AD/5_BloodHound Enumeration.md",
-    "ACTIVE_DIRECTORY/3_Enumerating_AD/0_Enumeration.md",
     "Pasted image 20260911162047.png",
     "Pasted image 20260909115506.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260909054155.png",
@@ -218,7 +219,6 @@
     "OTHERS/ASSETS/IMAGES/Pasted image 20260908141455.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260908160311.png",
     "OTHERS/ASSETS/IMAGES/Pasted image 20260908155856.png",
-    "OTHERS/ASSETS/IMAGES/Pasted image 20260908153946.png",
     "Untitled.canvas"
   ]
 }
