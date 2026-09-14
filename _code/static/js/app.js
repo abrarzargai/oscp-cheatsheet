@@ -1,13 +1,50 @@
 "use strict";
 
+  /* ---------- Theme (dark/light) ----------
+     The actual color values live in theme.css as CSS custom properties;
+     this just flips the html element's data-theme attribute and persists
+     the choice. An inline script at the top of index.html applies any
+     saved choice before first paint (see there for why). No saved choice
+     means the OS-level prefers-color-scheme media query decides — this
+     code never has to know or care which one is currently in effect. */
+  var THEME_KEY = "CheatSheet-theme-v1";
+
+  function systemTheme(){
+    return (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  }
+
+  function activeTheme(){
+    return document.documentElement.getAttribute("data-theme") || systemTheme();
+  }
+
+  function updateThemeToggleLabel(){
+    var btn = document.getElementById("themeToggle");
+    if (btn) btn.textContent = activeTheme() === "light" ? "[light]" : "[dark]";
+  }
+
+  function initTheme(){
+    updateThemeToggleLabel();
+    var btn = document.getElementById("themeToggle");
+    if (!btn) return;
+    btn.addEventListener("click", function(){
+      var next = activeTheme() === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      try{ localStorage.setItem(THEME_KEY, next); }catch(e){}
+      updateThemeToggleLabel();
+    });
+  }
+
+  initTheme();
+
   var STORAGE_KEY = "CheatSheet-config-v1";
-  var FIELDS = ["attackerIp","attackerPort","victimIp","domain","dcIp"];
+  var FIELDS = ["attackerIp","attackerPort","victimIp","domain","dcIp","scheme"];
   var VAR_MAP = [
     ["ATTACKER_IP","attackerIp"],
     ["PORT","attackerPort"],
     ["VICTIM_IP","victimIp"],
     ["DOMAIN","domain"],
-    ["DC_IP","dcIp"]
+    ["DC_IP","dcIp"],
+    ["SCHEME","scheme"]
   ];
   var config = {};
   var tabs = [];
@@ -668,14 +705,131 @@
 
   function initConfigFields(){
     config = loadConfig();
+    if (!config.scheme) config.scheme = "http";
     FIELDS.forEach(function(f){
       var el = document.getElementById(f);
       if (!el) return;
       el.value = config[f] || "";
       el.addEventListener("input", onConfigInput);
+      el.addEventListener("change", onConfigInput);
     });
     wireConfigCopyButtons();
     refreshStatusDots();
+    initAttackerIpDetection();
+  }
+
+  /* ---------- Attacker IP dropdown (local interface IPs) ----------
+     A themed panel off /api/local-ips so the Attacker IP field can be
+     picked from a dropdown (e.g. your VPN's tun0 address) — the input
+     itself stays a normal free-text field the whole time, this is purely
+     a suggestion list on top of it. A native <input list=datalist> would
+     do the same job but can't be restyled at all in Chromium, hence a
+     hand-built dropdown instead (same shape as .search-dropdown). */
+  var attackerIpsCache = null; // null = not loaded yet (or last load failed)
+
+  function ipDropdownEls(){
+    return {
+      dd: document.getElementById("attackerIpDropdown"),
+      input: document.getElementById("attackerIp"),
+      list: document.getElementById("attackerIpList"),
+      refresh: document.getElementById("refetchIpsBtn")
+    };
+  }
+
+  function openIpDropdown(){
+    var els = ipDropdownEls();
+    if (!els.dd) return;
+    els.dd.hidden = false;
+    if (els.input) els.input.setAttribute("aria-expanded", "true");
+    if (!attackerIpsCache) loadIpOptions();
+  }
+
+  function closeIpDropdown(){
+    var els = ipDropdownEls();
+    if (!els.dd) return;
+    els.dd.hidden = true;
+    if (els.input) els.input.setAttribute("aria-expanded", "false");
+  }
+
+  function renderIpList(ips){
+    var list = ipDropdownEls().list;
+    if (!list) return;
+    list.innerHTML = "";
+    if (!ips || ips.length === 0){
+      list.innerHTML = '<div class="ip-dropdown-status">no network interfaces detected — type an IP manually.</div>';
+      return;
+    }
+    ips.forEach(function(entry){
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "ip-option";
+      btn.setAttribute("role", "option");
+
+      var ipSpan = document.createElement("span");
+      ipSpan.className = "ip-option-ip";
+      ipSpan.textContent = entry.ip;
+      btn.appendChild(ipSpan);
+
+      var ifaceSpan = document.createElement("span");
+      ifaceSpan.className = "ip-option-iface";
+      ifaceSpan.textContent = entry.iface;
+      btn.appendChild(ifaceSpan);
+
+      // mousedown (not click) fires before the input's blur, so selecting
+      // an option registers before blur's closeIpDropdown() would otherwise
+      // remove it out from under the click.
+      btn.addEventListener("mousedown", function(e){
+        e.preventDefault();
+        var input = ipDropdownEls().input;
+        if (!input) return;
+        input.value = entry.ip;
+        onConfigInput();
+        closeIpDropdown();
+      });
+      list.appendChild(btn);
+    });
+  }
+
+  function loadIpOptions(){
+    var els = ipDropdownEls();
+    if (els.list) els.list.innerHTML = '<div class="ip-dropdown-status">detecting interfaces…</div>';
+    if (els.refresh) els.refresh.classList.add("busy");
+    return apiFetch("/api/local-ips").then(function(res){
+      attackerIpsCache = res.ips || [];
+      renderIpList(attackerIpsCache);
+    }).catch(function(err){
+      attackerIpsCache = null;
+      if (els.list) els.list.innerHTML = '<div class="ip-dropdown-status err">could not detect interfaces — ' + escapeHtml(err.message) + '</div>';
+    }).finally(function(){
+      if (els.refresh) els.refresh.classList.remove("busy");
+    });
+  }
+
+  function initAttackerIpDetection(){
+    var els = ipDropdownEls();
+    if (!els.input || !els.dd) return;
+
+    loadIpOptions(); // pre-warm so the first focus opens instantly
+
+    els.input.addEventListener("focus", openIpDropdown);
+    // Also on click, not just focus: closing via the document-level
+    // outside-click listener below doesn't necessarily blur the input (a
+    // click on a non-focusable area like <body> can close the dropdown
+    // without moving focus away), so a plain "focus" listener would never
+    // fire again on the next click and the dropdown would stay stuck shut.
+    els.input.addEventListener("click", openIpDropdown);
+    els.input.addEventListener("blur", function(){ setTimeout(closeIpDropdown, 120); });
+    els.input.addEventListener("keydown", function(e){
+      if (e.key === "Escape") closeIpDropdown();
+    });
+    if (els.refresh){
+      els.refresh.addEventListener("mousedown", function(e){ e.preventDefault(); });
+      els.refresh.addEventListener("click", function(){ loadIpOptions(); });
+    }
+    document.addEventListener("click", function(e){
+      var els2 = ipDropdownEls();
+      if (!els2.dd.hidden && !els2.dd.contains(e.target) && e.target !== els2.input) closeIpDropdown();
+    });
   }
 
   /* ---------- Engagement workspace wiring ----------
@@ -695,20 +849,32 @@
     });
   }
 
-  /* ---------- Mode toggle (Notes / Engagement) ---------- */
+  /* ---------- Mode toggle (Notes / Engagement / Tools) ---------- */
   function setMode(mode){
     viewMode = mode;
-    document.getElementById("modeNotesBtn").classList.toggle("active", mode === "notes");
-    document.getElementById("modeEngageBtn").classList.toggle("active", mode === "engagement");
-    document.getElementById("tabbar").classList.toggle("mode-hidden", mode === "engagement");
-    document.getElementById("breadcrumb").classList.toggle("mode-hidden", mode === "engagement");
-    if (mode === "engagement") renderEngagementView();
+    var sel = document.getElementById("modeSelect");
+    if (sel && sel.value !== mode) sel.value = mode;
+
+    var isNotes = mode === "notes";
+    var isEngagement = mode === "engagement";
+    var isTools = mode === "tools";
+
+    document.getElementById("notesSidebarHead").classList.toggle("mode-hidden", !isNotes);
+    document.getElementById("tree").classList.toggle("mode-hidden", !isNotes);
+    document.getElementById("engagementTree").hidden = !isEngagement;
+    document.getElementById("toolsTree").hidden = !isTools;
+    document.getElementById("tabbar").classList.toggle("mode-hidden", !isNotes);
+    document.getElementById("breadcrumb").classList.toggle("mode-hidden", !isNotes);
+
+    if (isEngagement) renderEngagementView();
+    else if (isTools) renderToolsView();
     else renderActiveTab();
   }
 
   function wireModeToggle(){
-    document.getElementById("modeNotesBtn").addEventListener("click", function(){ setMode("notes"); });
-    document.getElementById("modeEngageBtn").addEventListener("click", function(){ setMode("engagement"); });
+    document.getElementById("modeSelect").addEventListener("change", function(e){
+      setMode(e.target.value);
+    });
   }
 
   /* ---------- Boot ---------- */

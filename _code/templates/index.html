@@ -1,3 +1,15 @@
+<script>
+  // Applied before the stylesheet/body render so a saved manual theme choice
+  // never flashes the other theme first. System-preference light/dark (no
+  // saved choice) needs no JS at all — theme.css's prefers-color-scheme
+  // media query handles that on its own.
+  (function(){
+    try{
+      var saved = localStorage.getItem("CheatSheet-theme-v1");
+      if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
+    }catch(e){}
+  })();
+</script>
 <title>Cheatsheet</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 
@@ -32,3 +44,4 @@
 <script src="{{ url_for('static', filename='js/runner.js') }}"></script>
 <script src="{{ url_for('static', filename='js/nmap.js') }}"></script>
 <script src="{{ url_for('static', filename='js/checklist.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tools.js') }}"></script>

@@ -10,17 +10,25 @@
         <div class="brand-name-neon">Xargai</div>
         <div class="brand-stats" id="brandStats">loading vault…</div>
       </div>
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">[dark]</button>
     </div>
 
     <div class="topbar-right card">
       <div class="cfg-groups">
-        <fieldset class="cfg-group">
+        <fieldset class="cfg-group attacker">
           <legend>Attacker</legend>
-          <div class="cfg-field">
+          <div class="cfg-field ip-detect">
             <label for="attackerIp"><span class="status-dot" id="dot-attackerIp">[ ] </span>IP</label>
             <div class="cfg-input-wrap">
-              <input id="attackerIp" type="text" placeholder="10.10.14.5" autocomplete="off" spellcheck="false">
+              <input id="attackerIp" type="text" placeholder="10.10.14.5" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="attackerIpDropdown" aria-autocomplete="list">
               <button type="button" class="cfg-copy" id="copy-attackerIp" title="Copy attacker IP" aria-label="Copy attacker IP value">[c]</button>
+            </div>
+            <div class="ip-dropdown" id="attackerIpDropdown" role="listbox" hidden>
+              <div class="ip-dropdown-head">
+                <span>Local interfaces</span>
+                <button type="button" class="ip-dropdown-refresh" id="refetchIpsBtn">[refetch]</button>
+              </div>
+              <div class="ip-dropdown-list" id="attackerIpList"></div>
             </div>
           </div>
           <div class="cfg-field port">
@@ -32,7 +40,7 @@
           </div>
         </fieldset>
 
-        <fieldset class="cfg-group">
+        <fieldset class="cfg-group victim">
           <legend>Victim</legend>
           <div class="cfg-field">
             <label for="victimIp"><span class="status-dot" id="dot-victimIp">[ ] </span>IP</label>
@@ -48,6 +56,13 @@
               <button type="button" class="cfg-copy" id="copy-domain" title="Copy domain" aria-label="Copy domain value">[c]</button>
             </div>
           </div>
+          <div class="cfg-field scheme">
+            <label for="scheme">SCHEME</label>
+            <select id="scheme" class="proj-select">
+              <option value="http">http</option>
+              <option value="https">https</option>
+            </select>
+          </div>
           <div class="cfg-field">
             <label for="dcIp"><span class="status-dot" id="dot-dcIp">[ ] </span>DC_IP</label>
             <div class="cfg-input-wrap">
@@ -60,7 +75,10 @@
         <fieldset class="cfg-group project">
           <legend>Project</legend>
           <div class="cfg-field project">
-            <label for="projectSelect">ACTIVE</label>
+            <div class="proj-label-row">
+              <label for="projectSelect">ACTIVE</label>
+              <div class="cfg-note" id="projectStatus">backend not checked yet</div>
+            </div>
             <select id="projectSelect" class="proj-select">
               <option value="">(none)</option>
             </select>
@@ -94,7 +112,6 @@
             </div>
           </div>
           <button type="button" class="proj-btn" id="newProjectBtn">[+ new]</button>
-          <div class="cfg-note" id="projectStatus">backend not checked yet</div>
         </fieldset>
       </div>
     </div>

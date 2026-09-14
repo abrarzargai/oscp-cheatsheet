@@ -10,3 +10,6 @@
 ## AD
 - https://activedirectoryplaybook.notion.site/Active-Directory-1ffab78f23d480a4983ec5f98da22c58
 
+## Mindmaps
+https://app.xmind.com/share/8sURaQx5 (AD)
+https://app.xmind.com/share/sQvl4BzR  (Standalone)

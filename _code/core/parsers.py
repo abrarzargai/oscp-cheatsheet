@@ -1,5 +1,7 @@
-"""core/parsers.py — nmap XML -> JSON parsing."""
+"""core/parsers.py — nmap XML, rustscan greppable-output, and nxc (NetExec)
+output -> JSON parsing."""
 
+import re
 import xml.etree.ElementTree as ET
 
 from core.checklists import checklist_for_service
@@ -44,3 +46,72 @@ def parse_nmap_xml(path):
             })
     ports_out.sort(key=lambda p: p["port"])
     return {"host": host_ip, "ports": ports_out}
+
+
+# rustscan's -g/--greppable format is one line per host:
+#   10.129.20.13 -> [22,80,443,8080]
+# It only finds open TCP ports and doesn't fingerprint services, so unlike
+# nmap's parse there's no state/service/version/scripts here — just the port
+# number, plus whatever checklist_for_service can guess from the port number
+# alone (PORT_FALLBACK).
+RUSTSCAN_LINE_RE = re.compile(r"^(?P<host>\S+)\s*->\s*\[(?P<ports>[^\]]*)\]\s*$")
+
+
+def parse_rustscan_output(path):
+    ports_out = []
+    host_ip = ""
+    with open(path) as f:
+        for line in f:
+            m = RUSTSCAN_LINE_RE.match(line.strip())
+            if not m:
+                continue
+            host_ip = m.group("host")
+            for raw in m.group("ports").split(","):
+                raw = raw.strip()
+                if not raw:
+                    continue
+                try:
+                    portid = int(raw)
+                except ValueError:
+                    continue
+                ports_out.append({
+                    "port": portid,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "checklist": checklist_for_service(None, portid),
+                })
+    ports_out.sort(key=lambda p: p["port"])
+    return {"host": host_ip, "ports": ports_out}
+
+
+# nxc (NetExec, the crackmapexec successor) prints one line per attempt:
+#   SMB    10.10.10.5   445   TARGET  [*] Windows 10 Build 19041 (name:TARGET) ...
+#   SMB    10.10.10.5   445   TARGET  [+] corp.local\jdoe:Password123
+#   SMB    10.10.10.5   445   TARGET  [+] corp.local\admin:Passw0rd! (Pwn3d!)
+#   SMB    10.10.10.5   445   TARGET  [-] corp.local\bob:wrongpass STATUS_LOGON_FAILURE
+# This format (PROTO  HOST  PORT  NAME  [flag] message) is consistent across
+# nxc's protocol modules, so one regex covers smb/ssh/winrm/rdp/ldap/etc.
+# [*] lines are banner/info, not a credential attempt, and are skipped here.
+NXC_LINE_RE = re.compile(r"^\S+\s+\S+\s+\S+\s+\S+\s+\[(?P<flag>[+\-*])\]\s+(?P<rest>.*)$")
+
+
+def parse_nxc_output(path):
+    results = []
+    with open(path, errors="replace") as f:
+        for raw in f:
+            line = raw.rstrip("\n")
+            m = NXC_LINE_RE.match(line.strip())
+            if not m or m.group("flag") == "*":
+                continue
+            rest = m.group("rest").strip()
+            pwned = "Pwn3d!" in rest
+            status = "pwned" if pwned else ("valid" if m.group("flag") == "+" else "failed")
+            cred_part = rest.replace("(Pwn3d!)", "").strip()
+            user, secret = "", ""
+            if ":" in cred_part:
+                user, secret = cred_part.split(":", 1)
+                user, secret = user.strip(), secret.strip()
+            else:
+                user = cred_part
+            results.append({"status": status, "user": user, "secret": secret, "raw": line})
+    return {"results": results}

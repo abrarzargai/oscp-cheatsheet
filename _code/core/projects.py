@@ -86,7 +86,8 @@ def get_active_project():
 
 def create_project(name, target_ip, domain, dc_ip):
     base = project_dir(name)
-    for sub in ("scans/nmap", "scans/smb", "scans/web", "loot", "www"):
+    for sub in ("scans/nmap", "scans/rustscan", "scans/smb", "scans/web",
+                "scans/dns", "scans/webtech", "scans/vhost", "loot", "www"):
         os.makedirs(os.path.join(base, sub), exist_ok=True)
 
     data = {

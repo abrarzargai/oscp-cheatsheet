@@ -20,6 +20,7 @@ fields):
   <DC_IP>         active project's dc_ip
   <ATTACKER_IP>   from the browser's Attacker IP field
   <PORT>          from the browser's Attacker Port field
+  <SCHEME>        from the browser's Scheme selector (http/https), default http
   <PROJECT_DIR>   absolute path to the active project's folder
   <NAME>          active project's name
 """
@@ -167,14 +168,221 @@ PORT_FALLBACK = {
 # -oA (the .nmap file already has everything the terminal shows, script
 # output included, so there's no separate tee'd .txt to keep in sync).
 # -v / --stats-every surface live progress instead of going silent until
-# the scan finishes.
+# the scan finishes. "mkdir -p" up front means this works even for a
+# project created before its scans/<x> subfolder existed — every preset in
+# this file follows the same pattern so its output always has somewhere to
+# land, whether or not core/projects.py's create_project() scaffolded it.
 NMAP_PRESETS = [
     {"id": "quick", "label": "Quick scan (top 1000, -sCV)",
-     "cmd": "nmap -v -sCV -oA <PROJECT_DIR>/scans/nmap/quick <IP>"},
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/nmap && nmap -v -sCV -oA <PROJECT_DIR>/scans/nmap/quick <IP>"},
     {"id": "full", "label": "Full TCP scan (-p- -sCV)",
-     "cmd": "nmap -v -p- -sCV --min-rate 3000 --stats-every 15s -oA <PROJECT_DIR>/scans/nmap/full <IP>"},
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/nmap && nmap -v -p- -sCV --min-rate 3000 --stats-every 15s -oA <PROJECT_DIR>/scans/nmap/full <IP>"},
     {"id": "udp", "label": "Top 100 UDP scan",
-     "cmd": "sudo nmap -v -sU --top-ports 100 --stats-every 15s -oA <PROJECT_DIR>/scans/nmap/udp <IP>"},
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/nmap && sudo nmap -v -sU --top-ports 100 --stats-every 15s -oA <PROJECT_DIR>/scans/nmap/udp <IP>"},
+]
+
+# Rustscan presets — fast raw port discovery. -g/--greppable is redirected
+# (shell '>') into a file under scans/rustscan/ so the frontend can list it
+# as a "saved scan" and parse it the same way -oA's .xml lets nmap's.
+RUSTSCAN_PRESETS = [
+    {"id": "quick", "label": "Quick scan (default top ports)",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/rustscan && rustscan -a <IP> -g > <PROJECT_DIR>/scans/rustscan/quick.txt"},
+    {"id": "full", "label": "Full port range (1-65535)",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/rustscan && rustscan -a <IP> --range 1-65535 -g > <PROJECT_DIR>/scans/rustscan/full.txt"},
+]
+
+# Port Scanning's tools, each with:
+#   quick_presets     fixed one-click commands (same shape as any other
+#                     category's "presets" list)
+#   builder.flags     checkboxes for the "build a command" bar — the
+#                     frontend joins whichever are checked and substitutes
+#                     them into builder.template's {FLAGS} placeholder.
+#                     builder.template's {PORTS} placeholder becomes
+#                     "-p <value>" from that same bar's free-text ports
+#                     field (fed by the results view's [copy ports]
+#                     button) or "" when left empty. The assembled string
+#                     then runs through the normal <IP>/<PROJECT_DIR>
+#                     template resolution like any preset.
+#   output            where this tool's result files live, for the
+#                     "saved scans" file tabs (see /api/playbook/outputs)
+#   results_endpoint / results_kind   which API to call for a saved scan's
+#                     parsed data, and which frontend renderer to feed it
+#                     to — each tool's output format gets its own parser
+#                     (parsers.py) and its own display, they're not forced
+#                     into one shared shape
+PORT_SCANNING_TOOLS = [
+    {
+        "id": "nmap",
+        "label": "nmap",
+        "quick_presets": NMAP_PRESETS,
+        "builder": {
+            "flags": [
+                {"id": "sc", "flag": "-sC", "label": "-sC (default scripts)", "default": True},
+                {"id": "sv", "flag": "-sV", "label": "-sV (version detection)", "default": True},
+                {"id": "verbose", "flag": "-v", "label": "-v (verbose)", "default": True},
+            ],
+            "template": "mkdir -p <PROJECT_DIR>/scans/nmap && nmap {FLAGS} {PORTS} -oA <PROJECT_DIR>/scans/nmap/custom <IP>",
+        },
+        "output": {"dir": "scans/nmap", "ext": ".xml"},
+        "results_endpoint": "/api/nmap",
+        "results_kind": "port_table",
+    },
+    {
+        "id": "rustscan",
+        "label": "rustscan",
+        "quick_presets": RUSTSCAN_PRESETS,
+        "builder": {
+            "flags": [
+                {"id": "ulimit", "flag": "--ulimit 5000", "label": "--ulimit 5000", "default": True},
+                {"id": "range", "flag": "--range 1-65535", "label": "--range 1-65535 (all ports)", "default": False},
+                {"id": "verbose", "flag": "-v", "label": "-v (verbose)", "default": False},
+            ],
+            "template": "mkdir -p <PROJECT_DIR>/scans/rustscan && rustscan -a <IP> {FLAGS} {PORTS} -g > <PROJECT_DIR>/scans/rustscan/custom.txt",
+        },
+        "output": {"dir": "scans/rustscan", "ext": ".txt"},
+        "results_endpoint": "/api/rustscan",
+        "results_kind": "port_list",
+    },
+]
+
+
+# Directory/vhost bruteforcing presets — Engagement sidebar's Enumeration >
+# Directory Bruteforce category. <SCHEME> follows the topbar's http/https
+# selector, so these presets target whichever protocol you've picked there.
+# Every preset writes to scans/web/<preset id>.txt — the category's "output"
+# spec (see PLAYBOOK below) points the "saved output" file tabs + raw
+# viewer at that same folder, keyed by preset id.
+DIR_BRUTEFORCE_PRESETS = [
+    {"id": "gobuster-common", "label": "gobuster dir (common.txt)",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/web && gobuster dir -u <SCHEME>://<IP>/ -w /usr/share/wordlists/dirb/common.txt -o <PROJECT_DIR>/scans/web/gobuster-common.txt"},
+    {"id": "gobuster-medium", "label": "gobuster dir (seclists medium)",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/web && gobuster dir -u <SCHEME>://<IP>/ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -o <PROJECT_DIR>/scans/web/gobuster-medium.txt"},
+    {"id": "feroxbuster", "label": "feroxbuster recursive",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/web && feroxbuster -u <SCHEME>://<IP>/ -w /usr/share/wordlists/dirb/common.txt -o <PROJECT_DIR>/scans/web/feroxbuster.txt"},
+]
+
+# SMB enumeration presets — Engagement sidebar's Enumeration > SMB Enum
+# category. None of these tools have their own "-o file" flag, so each is
+# piped through `tee` — that still shows live output in the terminal (tee's
+# whole job) while also saving it to scans/smb/<preset id>.txt for the
+# "saved output" viewer.
+SMB_ENUM_PRESETS = [
+    {"id": "smbmap", "label": "smbmap anonymous share listing",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/smb && smbmap -H <IP> | tee <PROJECT_DIR>/scans/smb/smbmap.txt"},
+    {"id": "enum4linux-ng", "label": "enum4linux-ng full enumeration",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/smb && enum4linux-ng -A <IP> | tee <PROJECT_DIR>/scans/smb/enum4linux-ng.txt"},
+    {"id": "smbclient-list", "label": "smbclient -L (list shares)",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/smb && smbclient -L //<IP>/ -N | tee <PROJECT_DIR>/scans/smb/smbclient-list.txt"},
+    {"id": "crackmapexec-smb", "label": "crackmapexec smb shares/sessions",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/smb && crackmapexec smb <IP> --shares --sessions | tee <PROJECT_DIR>/scans/smb/crackmapexec-smb.txt"},
+]
+
+# DNS enumeration presets — Engagement sidebar's Enumeration > DNS Enum
+# category. <DOMAIN> is the active project's domain field; output tee'd to
+# scans/dns/<preset id>.txt.
+DNS_ENUM_PRESETS = [
+    {"id": "dnsenum", "label": "dnsenum subdomain brute force",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/dns && dnsenum --dnsserver <IP> --enum -p 0 -s 0 -f /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt <DOMAIN> | tee <PROJECT_DIR>/scans/dns/dnsenum.txt"},
+    {"id": "dig-axfr", "label": "dig AXFR zone transfer",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/dns && dig axfr <DOMAIN> @<IP> | tee <PROJECT_DIR>/scans/dns/dig-axfr.txt"},
+    {"id": "dnsrecon", "label": "dnsrecon standard enumeration",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/dns && dnsrecon -d <DOMAIN> -n <IP> | tee <PROJECT_DIR>/scans/dns/dnsrecon.txt"},
+]
+
+# Web tech fingerprinting presets — Engagement sidebar's Enumeration >
+# Web Tech Fingerprint category. <SCHEME> follows the topbar's http/https
+# selector; output tee'd to scans/webtech/<preset id>.txt.
+WEB_TECH_FINGERPRINT_PRESETS = [
+    {"id": "whatweb", "label": "whatweb fingerprint",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/webtech && whatweb -a 3 <SCHEME>://<IP> | tee <PROJECT_DIR>/scans/webtech/whatweb.txt"},
+    {"id": "wafw00f", "label": "wafw00f WAF detection",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/webtech && wafw00f <SCHEME>://<IP> | tee <PROJECT_DIR>/scans/webtech/wafw00f.txt"},
+    {"id": "nikto", "label": "nikto vulnerability scan",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/webtech && nikto -h <SCHEME>://<IP> | tee <PROJECT_DIR>/scans/webtech/nikto.txt"},
+]
+
+# Subdomain / vhost enumeration presets — Engagement sidebar's Enumeration >
+# Subdomain / Vhost Enum category. <DOMAIN>/<SCHEME> come from the topbar;
+# output tee'd to scans/vhost/<preset id>.txt.
+SUBDOMAIN_VHOST_PRESETS = [
+    {"id": "ffuf-vhost", "label": "ffuf vhost fuzzing (Host header)",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/vhost && ffuf -u <SCHEME>://<IP>/ -H 'Host: FUZZ.<DOMAIN>' -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -mc 200 | tee <PROJECT_DIR>/scans/vhost/ffuf-vhost.txt"},
+    {"id": "gobuster-vhost", "label": "gobuster vhost enumeration",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/vhost && gobuster vhost -u <SCHEME>://<IP>/ --domain <DOMAIN> -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt --append-domain | tee <PROJECT_DIR>/scans/vhost/gobuster-vhost.txt"},
+    {"id": "host-header-fuzz", "label": "Host header fuzzing (curl loop)",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/vhost && (for sub in $(cat /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt); do curl -s -o /dev/null -w \"%{http_code} $sub\\n\" -H \"Host: $sub.<DOMAIN>\" <SCHEME>://<IP>/; done) | tee <PROJECT_DIR>/scans/vhost/host-header-fuzz.txt"},
+]
+
+# Credential Checking — services nxc (NetExec) can authenticate against.
+# The frontend builds the whole nxc command client-side (service + mode +
+# username/password fields -> a "mkdir -p ... && printf ... > users.txt &&
+# nxc <service> <IP> -u ... -p ... | tee <output>" one-liner, same as any
+# other module's command builder), so there's nothing to template here —
+# just the service list plus where results land for the saved-runs viewer.
+# /api/creds (app.py) + parse_nxc_output() (parsers.py) turn a saved run's
+# output into the valid/failed/pwned rows the results view filters on.
+CREDENTIAL_SERVICES = [
+    {"id": "smb", "label": "SMB"},
+    {"id": "ssh", "label": "SSH"},
+    {"id": "winrm", "label": "WinRM"},
+    {"id": "rdp", "label": "RDP"},
+    {"id": "ldap", "label": "LDAP"},
+    {"id": "mssql", "label": "MSSQL"},
+    {"id": "ftp", "label": "FTP"},
+    {"id": "vnc", "label": "VNC"},
+    {"id": "wmi", "label": "WMI"},
+    {"id": "nfs", "label": "NFS"},
+]
+
+# Looks up where a tool's (Port Scanning) or a flat category's (everything
+# else) result files live, by walking PLAYBOOK itself rather than keeping a
+# second list in sync — used by /api/playbook/outputs (list saved files)
+# and /api/playbook/raw (read one) in app.py.
+def find_output_spec(source_id):
+    for group in PLAYBOOK:
+        for cat in group.get("categories", []):
+            if cat.get("id") == source_id and cat.get("output"):
+                return cat["output"]
+            for tool in (cat.get("tools") or []):
+                if tool.get("id") == source_id and tool.get("output"):
+                    return tool["output"]
+    return None
+
+# Engagement sidebar nav: top-level groups, each with categories that carry
+# their own preset command list. Folder names under playbook/ (see repo root)
+# mirror these category ids 1:1 — add a new category here + a matching
+# playbook/<id>/ folder for reference notes on the technique.
+PLAYBOOK = [
+    {
+        "id": "enumeration",
+        "label": "Enumeration",
+        "categories": [
+            {"id": "port_scanning", "label": "Port Scanning", "tools": PORT_SCANNING_TOOLS},
+            {"id": "directory_bruteforce", "label": "Directory Bruteforce", "presets": DIR_BRUTEFORCE_PRESETS,
+             "output": {"dir": "scans/web", "ext": ".txt"}},
+            {"id": "smb_enum", "label": "SMB Enum", "presets": SMB_ENUM_PRESETS,
+             "output": {"dir": "scans/smb", "ext": ".txt"}},
+            {"id": "dns_enum", "label": "DNS Enum", "presets": DNS_ENUM_PRESETS,
+             "output": {"dir": "scans/dns", "ext": ".txt"}},
+            {"id": "web_tech_fingerprint", "label": "Web Tech Fingerprint", "presets": WEB_TECH_FINGERPRINT_PRESETS,
+             "output": {"dir": "scans/webtech", "ext": ".txt"}},
+            {"id": "subdomain_vhost_enum", "label": "Subdomain / Vhost Enum", "presets": SUBDOMAIN_VHOST_PRESETS,
+             "output": {"dir": "scans/vhost", "ext": ".txt"}},
+        ],
+    },
+    {
+        "id": "credential_access",
+        "label": "Credential Access",
+        "categories": [
+            {
+                "id": "credential_checking",
+                "label": "Credential Checking",
+                "cred_checker": {"tool": "nxc", "services": CREDENTIAL_SERVICES},
+                "output": {"dir": "scans/creds", "ext": ".txt"},
+                "results_endpoint": "/api/creds",
+            },
+        ],
+    },
 ]
 
 

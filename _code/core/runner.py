@@ -24,13 +24,14 @@ def launch_terminal(full_cmd, cwd):
     )
 
 
-def resolve_template(template, project, attacker_ip, attacker_port):
+def resolve_template(template, project, attacker_ip, attacker_port, scheme=None):
     repl = {
         "<IP>": project.get("target_ip", ""),
         "<DOMAIN>": project.get("domain", ""),
         "<DC_IP>": project.get("dc_ip", ""),
         "<ATTACKER_IP>": attacker_ip or "",
         "<PORT>": attacker_port or "",
+        "<SCHEME>": scheme or "http",
         "<PROJECT_DIR>": project_dir(project["name"]),
         "<NAME>": project["name"],
     }

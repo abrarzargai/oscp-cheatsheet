@@ -1,3 +1,11 @@
+  /* ---------- Theme tokens ----------
+     Dark is the default look (bare :root). Light is the same terminal/CTF
+     aesthetic on a pale background, not a generic light UI. Three layers,
+     same pattern in both directions:
+       1. bare :root                                   → dark, always the fallback
+       2. @media (prefers-color-scheme:light) + :not([data-theme="dark"])  → system light, unless pinned to dark
+       3. :root[data-theme="light"] / [data-theme="dark"]                  → explicit toggle (themeToggle in the topbar) wins outright
+  */
   :root{
     --bg:#050806;
     --surface:#0a120b;
@@ -11,6 +19,93 @@
     --code-ink:#c9ffd2;
     --focus:#49ff7e;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px -12px rgba(0,0,0,.75);
+    --selection-ink:#01120a;
+
+    --hljs-comment:#6b8577;
+    --hljs-string:#e3b341;
+    --hljs-number:#ffb86c;
+    --hljs-keyword:#7ee7d8;
+    --hljs-title:#7bf1a8;
+    --hljs-variable:#c9a7f0;
+    --hljs-deletion:#ff5f5f;
+    --hljs-addition:#7bf1a8;
+  }
+
+  @media (prefers-color-scheme:light){
+    :root:not([data-theme="dark"]){
+      --bg:#f4f8f3;
+      --surface:#ffffff;
+      --surface-2:#eaf3e8;
+      --border:#c9dcc4;
+      --ink:#16321c;
+      --bright:#1f8a3b;
+      --dim:#5c7a60;
+      --danger:#c9312b;
+      --code-bg:#eef5ec;
+      --code-ink:#184423;
+      --focus:#1f8a3b;
+      --shadow:0 1px 2px rgba(20,40,20,.08),0 12px 34px -14px rgba(20,40,20,.25);
+      --selection-ink:#ffffff;
+
+      --hljs-comment:#5c6f60;
+      --hljs-string:#a86a00;
+      --hljs-number:#b35900;
+      --hljs-keyword:#0f7c73;
+      --hljs-title:#1f8a3b;
+      --hljs-variable:#6b3fa0;
+      --hljs-deletion:#c9312b;
+      --hljs-addition:#1f8a3b;
+    }
+  }
+
+  :root[data-theme="light"]{
+    --bg:#f4f8f3;
+    --surface:#ffffff;
+    --surface-2:#eaf3e8;
+    --border:#c9dcc4;
+    --ink:#16321c;
+    --bright:#1f8a3b;
+    --dim:#5c7a60;
+    --danger:#c9312b;
+    --code-bg:#eef5ec;
+    --code-ink:#184423;
+    --focus:#1f8a3b;
+    --shadow:0 1px 2px rgba(20,40,20,.08),0 12px 34px -14px rgba(20,40,20,.25);
+    --selection-ink:#ffffff;
+
+    --hljs-comment:#5c6f60;
+    --hljs-string:#a86a00;
+    --hljs-number:#b35900;
+    --hljs-keyword:#0f7c73;
+    --hljs-title:#1f8a3b;
+    --hljs-variable:#6b3fa0;
+    --hljs-deletion:#c9312b;
+    --hljs-addition:#1f8a3b;
+  }
+
+  :root[data-theme="dark"]{
+    --bg:#050806;
+    --surface:#0a120b;
+    --surface-2:#0f1c11;
+    --border:#1c3322;
+    --ink:#b9f2c0;
+    --bright:#49ff7e;
+    --dim:#4f7a5a;
+    --danger:#ff5f5f;
+    --code-bg:#071009;
+    --code-ink:#c9ffd2;
+    --focus:#49ff7e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px -12px rgba(0,0,0,.75);
+    --selection-ink:#01120a;
+
+    --hljs-comment:#6b8577;
+    --hljs-string:#e3b341;
+    --hljs-number:#ffb86c;
+    --hljs-keyword:#7ee7d8;
+    --hljs-title:#7bf1a8;
+    --hljs-variable:#c9a7f0;
+    --hljs-deletion:#ff5f5f;
+    --hljs-addition:#7bf1a8;
   }
 
   *{box-sizing:border-box;}
@@ -21,8 +116,9 @@
     color:var(--ink);
     font-family:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
     -webkit-font-smoothing:antialiased;
+    transition:background-color .15s ease,color .15s ease;
   }
-  ::selection{ background:var(--bright); color:#01120a; }
+  ::selection{ background:var(--bright); color:var(--selection-ink); }
 
   .app{
     height:100dvh;
@@ -97,12 +193,23 @@
     text-shadow:
       0 0 4px var(--bright),
       0 0 10px var(--bright),
-      0 0 18px rgba(73,255,126,.75),
-      0 0 32px rgba(73,255,126,.45);
+      0 0 18px color-mix(in srgb,var(--bright) 75%,transparent),
+      0 0 32px color-mix(in srgb,var(--bright) 45%,transparent);
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
     max-width:100%;
+  }
+  /* The neon glow above reads as "glowing" on the dark theme's near-black
+     background; the same blurred layers on a light background just look
+     like a smudge behind the text. Light keeps a hint of color instead. */
+  :root[data-theme="light"] .brand-name-neon{
+    text-shadow:0 0 1px color-mix(in srgb,var(--bright) 55%,transparent);
+  }
+  @media (prefers-color-scheme:light){
+    :root:not([data-theme="dark"]) .brand-name-neon{
+      text-shadow:0 0 1px color-mix(in srgb,var(--bright) 55%,transparent);
+    }
   }
   .brand-lockup::after{
     content:"";
@@ -145,19 +252,55 @@
   .menu-toggle:hover .bars,.menu-toggle:hover .bars::before,.menu-toggle:hover .bars::after{ background:var(--bright); }
   .menu-toggle:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
 
+  .theme-toggle{
+    flex:none;
+    margin-left:auto;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    color:var(--dim);
+    border-radius:2px;
+    padding:.4rem .7rem;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.72rem;
+    font-weight:600;
+    letter-spacing:.02em;
+  }
+  .theme-toggle:hover{ color:var(--bright); border-color:var(--bright); }
+  .theme-toggle:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
   .cfg-groups{ display:flex; gap:.7rem; flex:1 1 auto; min-width:0; }
+  /* Equal thirds would give Victim's 3 free-width fields (IP/domain/dc_ip)
+     the same total space as Attacker's 1 (port has its own fixed basis
+     below) — every Victim field ends up a third as wide as Attacker's,
+     truncating text. Each group's flex-basis is a floor sized to what it
+     actually needs (an IP address; a project name + IP + a button), and
+     grow-weighting favors Victim 3:1 for whatever room is left beyond
+     those floors — the combination is what keeps every individual field a
+     readable width regardless of which group it's in, without any of them
+     wrapping to a second line. */
   fieldset.cfg-group{
-    flex:1 1 0;
+    flex:1 1 234px;
     display:flex;
-    flex-wrap:wrap;
+    flex-wrap:nowrap;
     align-items:flex-end;
-    gap:.5rem .9rem;
+    gap:.5rem .6rem;
     min-width:0;
     margin:0;
     background:var(--surface-2);
     border:1px solid var(--border);
     border-radius: 10px;
     padding:.55rem .7rem .5rem;
+  }
+  fieldset.cfg-group.victim{ flex:3 1 460px; }
+  /* Project's floor is bigger than Attacker's despite both having one
+     free-width field: the project <select> shares its row with the
+     [+ new] button (Attacker's PORT field is fixed-width and tiny by
+     comparison), so it needs more of its group's own width just to show
+     the active project's name before the button and gap even come out. */
+  fieldset.cfg-group.project{
+    flex:1 1 230px;
+    flex-wrap:wrap;
   }
   fieldset.cfg-group legend{
     padding:0 .35rem;
@@ -168,7 +311,7 @@
     font-weight:700;
   }
 
-  .cfg-field{ display:flex; flex-direction:column; gap:.15rem; }
+  .cfg-field{ display:flex; flex-direction:column; gap:.15rem; flex:1 1 0; min-width:0; }
   .cfg-field label{
     font-size:.62rem;
     letter-spacing:.08em;
@@ -176,6 +319,9 @@
     color:var(--dim);
     display:flex;
     align-items:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .status-dot{ font-weight:700; color:var(--dim); white-space:pre; }
   .status-dot.on{ color:var(--bright); }
@@ -192,8 +338,24 @@
   }
   .cfg-field input::placeholder{ color:var(--dim); opacity:.7; }
   .cfg-field input:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
-  .cfg-input-wrap{ position:relative; width:10.5rem; }
-  .cfg-field.port .cfg-input-wrap{ width:5rem; }
+  /* Fields share their fieldset's row evenly and shrink together — width
+     used to be a fixed rem per field, which is exactly what forced the
+     Attacker/Victim/Project row to wrap onto multiple lines once Victim
+     grew past 3 fields. min-width:0 is what lets a flex item shrink below
+     its content size instead of forcing the row wider than its column. */
+  .cfg-input-wrap{ position:relative; width:100%; min-width:0; }
+  .cfg-field.port{ flex:0 1 5.5rem; }
+  .cfg-field.scheme{ flex:0 1 5rem; }
+  .cfg-field.scheme select{
+    width:100%;
+    font-family:inherit;
+    font-size:.82rem;
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.4rem .5rem;
+  }
   .cfg-input-wrap input{ padding-right:2.1rem; }
   .cfg-copy{
     position:absolute;
@@ -211,6 +373,115 @@
   .cfg-copy:disabled{ opacity:.3; cursor:default; }
   .cfg-copy:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
   .cfg-note{ font-size:.68rem; color:var(--dim); width:100%; order:99; }
+  /* Project's ACTIVE label + its status text share one row instead of the
+     status text dropping to a line of its own — status is right-aligned
+     and truncates if the project name + path don't both fit. */
+  .proj-label-row{ display:flex; align-items:baseline; justify-content:space-between; gap:.5rem; min-width:0; }
+  .proj-label-row label{ flex:0 0 auto; }
+  .proj-label-row .cfg-note{
+    width:auto;
+    order:0;
+    flex:1 1 auto;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    text-align:right;
+  }
+
+  /* ---------- Attacker IP dropdown (detected local interfaces) ----------
+     A native <input list=datalist> can't be restyled in Chromium at all,
+     which is why this is a plain positioned panel instead — same pattern
+     as .search-dropdown, just anchored to .ip-detect instead of
+     .content-search. The input underneath stays a normal free-text field;
+     this is purely a themed set of suggestions on top of it. */
+  .ip-detect{ position:relative; }
+  .ip-dropdown{
+    position:absolute;
+    left:0;
+    top:calc(100% + .35rem);
+    /* The Attacker IP field itself is deliberately narrow (it shares a
+       compact one-line topbar row with Victim/Project), but an IP plus its
+       interface name needs real room — stretching to match the field's own
+       width just wraps/clips everything, so this floats wider than its
+       trigger and overlaps whatever's next to it, like any other dropdown
+       overlay would. */
+    width:max(100%, 15.5rem);
+    max-width:calc(100vw - 2rem);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:2px;
+    box-shadow:var(--shadow);
+    z-index:30;
+    overflow:hidden;
+  }
+  .ip-dropdown-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.6rem;
+    padding:.4rem .6rem;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--border);
+    font-size:.64rem;
+    white-space:nowrap;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--dim);
+  }
+  .ip-dropdown-refresh{
+    flex:none;
+    background:none;
+    border:none;
+    color:var(--dim);
+    font:inherit;
+    font-size:.64rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    cursor:pointer;
+    padding:0;
+  }
+  .ip-dropdown-refresh:hover{ color:var(--bright); }
+  .ip-dropdown-refresh.busy{ color:var(--bright); }
+  .ip-dropdown-refresh:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .ip-dropdown-list{ max-height:12rem; overflow-y:auto; overflow-x:hidden; }
+  .ip-option{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.6rem;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    border-bottom:1px solid var(--border);
+    color:var(--ink);
+    padding:.5rem .6rem;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.8rem;
+  }
+  .ip-option:last-child{ border-bottom:none; }
+  .ip-option:hover,.ip-option:focus-visible{ background:var(--surface-2); outline:none; }
+  .ip-option-ip{
+    color:var(--bright);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .ip-option-iface{
+    flex:none;
+    color:var(--dim);
+    font-size:.72rem;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.1rem .4rem;
+  }
+  .ip-dropdown-status{ padding:.6rem; color:var(--dim); font-size:.78rem; }
+  .ip-dropdown-status.err{ color:var(--danger); }
 
   /* ---------- Body (sidebar column + main column, side by side) ---------- */
   .body{
@@ -221,8 +492,24 @@
     min-height:0;
     overflow:hidden;
   }
-  /* Sidebar column: 2 stacked cards — brand (in .topbar-left, above) + nav card here */
+  /* Sidebar column: mode-switch card + nav card, stacked (mirrors .content-outer) */
+  .sidebar-outer{
+    min-height:0; min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    overflow:hidden;
+  }
+  .sidebar-mode{
+    flex:none;
+    padding:12px 14px;
+    display:flex;
+  }
+  fieldset.cfg-group.workspace-group{ width:100%; }
+  .cfg-field.workspace-field{ width:100%; }
+  .cfg-field.workspace-field select{ width:100%; }
   .sidebar{
+    flex:1;
     display:flex;
     flex-direction:column;
     min-height:0;
@@ -494,8 +781,8 @@
     margin:0 -1rem;
     padding:0 1rem;
   }
-  .code-line:hover{ background:rgba(73,255,126,.13); }
-  .code-line.copied{ background:rgba(73,255,126,.32); }
+  .code-line:hover{ background:color-mix(in srgb,var(--bright) 13%,transparent); }
+  .code-line.copied{ background:color-mix(in srgb,var(--bright) 32%,transparent); }
   .line-copied-badge{
     position:absolute;
     top:50%; right:.5rem;
@@ -539,17 +826,17 @@
   .var-unset{ color:var(--danger); border-bottom:1px dashed var(--danger); cursor:help; }
 
   /* ---------- Syntax highlighting (highlight.js token classes) ---------- */
-  .hljs-comment,.hljs-quote{ color:#6b8577; font-style:italic; }
-  .hljs-string,.hljs-regexp{ color:#e3b341; }
-  .hljs-number,.hljs-literal{ color:#ffb86c; }
-  .hljs-keyword,.hljs-selector-tag,.hljs-type,.hljs-built_in{ color:#7ee7d8; }
-  .hljs-title,.hljs-title.function_,.hljs-section{ color:#7bf1a8; font-weight:600; }
-  .hljs-variable,.hljs-template-variable,.hljs-attr,.hljs-attribute{ color:#c9a7f0; }
-  .hljs-name,.hljs-tag,.hljs-symbol,.hljs-bullet,.hljs-link{ color:#7ee7d8; }
-  .hljs-meta,.hljs-meta .hljs-keyword{ color:#6b8577; }
+  .hljs-comment,.hljs-quote{ color:var(--hljs-comment); font-style:italic; }
+  .hljs-string,.hljs-regexp{ color:var(--hljs-string); }
+  .hljs-number,.hljs-literal{ color:var(--hljs-number); }
+  .hljs-keyword,.hljs-selector-tag,.hljs-type,.hljs-built_in{ color:var(--hljs-keyword); }
+  .hljs-title,.hljs-title.function_,.hljs-section{ color:var(--hljs-title); font-weight:600; }
+  .hljs-variable,.hljs-template-variable,.hljs-attr,.hljs-attribute{ color:var(--hljs-variable); }
+  .hljs-name,.hljs-tag,.hljs-symbol,.hljs-bullet,.hljs-link{ color:var(--hljs-keyword); }
+  .hljs-meta,.hljs-meta .hljs-keyword{ color:var(--hljs-comment); }
   .hljs-params{ color:var(--code-ink); }
-  .hljs-deletion{ color:#ff5f5f; }
-  .hljs-addition{ color:#7bf1a8; }
+  .hljs-deletion{ color:var(--hljs-deletion); }
+  .hljs-addition{ color:var(--hljs-addition); }
   .hljs-emphasis{ font-style:italic; }
   .hljs-strong{ font-weight:700; }
 
@@ -569,6 +856,8 @@
   .proj-select:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
   .cfg-field.project{ position:relative; }
   .proj-btn{
+    flex:none;
+    white-space:nowrap;
     font-size:.68rem;
     background:var(--surface);
     color:var(--dim);
@@ -619,21 +908,7 @@
   #cancelProjectBtn{ background:var(--surface-2); color:var(--dim); border:1px solid var(--border); }
   .new-project-err{ color:var(--danger); font-size:.72rem; }
 
-  /* mode toggle (Notes / Engagement) */
-  .modebar{ display:flex; gap:.4rem; padding:.6rem 1.5rem 0; }
-  .mode-btn{
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    border-bottom:none;
-    color:var(--dim);
-    padding:.4rem .8rem;
-    border-radius:2px 2px 0 0;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:.78rem;
-  }
-  .mode-btn.active{ background:var(--bg); border-color:var(--bright); color:var(--bright); }
-  .mode-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  /* mode toggle (Notes / Engagement) — the dropdown itself lives in .sidebar-mode */
   .mode-hidden{ display:none !important; }
 
   /* engagement view */
@@ -663,10 +938,170 @@
   .preset-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
   .preset-btn.busy{ color:var(--bright); border-color:var(--bright); }
 
+  .eng-subhead{
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:var(--dim);
+    margin:1.1rem 0 .5rem;
+  }
+  .eng-subhead:first-of-type{ margin-top:.2rem; }
+
+  /* Port Scanning: tool tabs (nmap / rustscan / …). Scoped to :not([hidden])
+     for the same reason as .new-project-panel above — some tool-tabs rows
+     (e.g. the Username Generator's "more rules" pills) toggle via the
+     `hidden` attribute, which an unconditional display:flex would override. */
+  .tool-tabs:not([hidden]){ display:flex; gap:.4rem; margin-bottom:.8rem; flex-wrap:wrap; }
+  .tool-tab{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    color:var(--dim);
+    padding:.4rem .9rem;
+    border-radius:2px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.8rem;
+    font-weight:600;
+  }
+  .tool-tab:hover{ color:var(--ink); border-color:var(--bright); }
+  .tool-tab.active{ background:var(--bg); border-color:var(--bright); color:var(--bright); }
+  .tool-tab:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  /* Port Scanning: "build a command" bar */
+  .cmd-builder{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.7rem .8rem;
+  }
+  .builder-flags{ display:flex; flex-wrap:wrap; gap:.4rem 1.2rem; margin-bottom:.6rem; }
+  .builder-flag{
+    display:flex;
+    align-items:center;
+    gap:.4rem;
+    font-size:.8rem;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .builder-flag input[type="checkbox"]{ accent-color:var(--bright); width:1rem; height:1rem; }
+  .builder-preview-cmd{
+    display:block;
+    font-size:.76rem;
+    background:var(--code-bg);
+    color:var(--code-ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.45rem .6rem;
+    margin-bottom:.6rem;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  /* Credential Checking builder — free-text username/password field(s),
+     shape depends on the active mode (single/spray/bruteforce). */
+  .cred-fields{ display:flex; flex-direction:column; gap:.7rem; margin-bottom:.6rem; }
+  .cred-field{ display:flex; flex-direction:column; gap:.3rem; }
+  .cred-field label{
+    font-size:.66rem;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    color:var(--dim);
+  }
+  .cred-field input,.cred-field textarea{
+    font-family:inherit;
+    font-size:.82rem;
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.45rem .6rem;
+    resize:vertical;
+  }
+  .cred-field textarea{ min-height:4.5rem; line-height:1.4; }
+  .cred-field input::placeholder,.cred-field textarea::placeholder{ color:var(--dim); opacity:.7; }
+  .cred-field input:focus-visible,.cred-field textarea:focus-visible{
+    outline:2px solid var(--focus); outline-offset:1px;
+  }
+
+  /* Port Scanning / any tool: saved-scan file tabs */
+  .scan-tabs{ display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.8rem; }
+  .scan-tab{
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--dim);
+    padding:.3rem .7rem;
+    border-radius:12px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.74rem;
+  }
+  .scan-tab:hover{ color:var(--ink); border-color:var(--bright); }
+  .scan-tab.active{ background:var(--surface-2); border-color:var(--bright); color:var(--bright); font-weight:600; }
+  .scan-tab:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  /* Port results toolbar — state filter buttons + [copy ports], shared by
+     nmap's and rustscan's results tables. */
+  .port-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:.6rem;
+    margin-bottom:.7rem;
+  }
+  .port-filter-group{ display:flex; flex-wrap:wrap; gap:.35rem; }
+  .port-filter-btn{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    color:var(--dim);
+    padding:.3rem .65rem;
+    border-radius:12px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.74rem;
+    font-weight:600;
+  }
+  .port-filter-btn:hover{ color:var(--ink); border-color:var(--bright); }
+  .port-filter-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .port-filter-btn.active{ background:var(--bg); border-color:var(--bright); color:var(--bright); }
+  .port-filter-btn.open.active{ color:var(--bright); border-color:var(--bright); }
+  .port-filter-btn.closed.active,.port-filter-btn.filtered.active{ color:var(--ink); }
+
+  /* Port Scanning builder: free-text ports field ({PORTS} -> "-p <value>") */
+  .builder-ports{ display:flex; align-items:center; gap:.6rem; margin-bottom:.6rem; }
+  .builder-ports label{
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--dim);
+    flex:none;
+  }
+  .builder-ports input{
+    flex:1;
+    min-width:0;
+    font-family:inherit;
+    font-size:.8rem;
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.4rem .55rem;
+  }
+  .builder-ports input::placeholder{ color:var(--dim); opacity:.7; }
+  .builder-ports input:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
   .nmap-table td,.nmap-table th{ vertical-align:middle; }
   .port-state{ font-weight:700; }
   .port-state.open{ color:var(--bright); }
   .port-state.closed,.port-state.filtered{ color:var(--dim); }
+  /* Credential Checking results reuse this same state-badge look for
+     valid/failed/pwned instead of open/closed/filtered. */
+  .port-state.valid{ color:var(--bright); }
+  .port-state.failed{ color:var(--dim); }
+  .port-state.pwned{ color:var(--danger); }
+  .port-filter-btn.valid.active{ color:var(--bright); border-color:var(--bright); }
+  .port-filter-btn.failed.active{ color:var(--ink); }
+  .port-filter-btn.pwned.active{ color:var(--danger); border-color:var(--danger); }
   .service-version{ color:var(--dim); font-size:.85em; }
   .checklist-toggle{
     background:none; border:1px solid var(--border); color:var(--dim);
@@ -689,6 +1124,88 @@
     white-space:pre-wrap;
     word-break:break-word;
   }
+
+  /* Tools workspace: Username Extractor */
+  .raw-extract-input{
+    width:100%;
+    font-family:inherit;
+    font-size:.8rem;
+    line-height:1.45;
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.6rem .7rem;
+    resize:vertical;
+  }
+  .raw-extract-input::placeholder{ color:var(--dim); opacity:.7; }
+  .raw-extract-input:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .raw-extract-input[readonly]{ background:var(--code-bg); color:var(--code-ink); }
+
+  /* Tools workspace: Username Generator — rule pills reuse .tool-tab as-is,
+     this just dims the "(example)" portion inside each pill. */
+  .rule-pill-example{ opacity:.65; }
+
+  /* Tools workspace: Username Generator's "manage rules" modal. */
+  .modal-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:60;
+    background:rgba(0,0,0,.5);
+    align-items:center;
+    justify-content:center;
+    padding:1rem;
+  }
+  .modal-backdrop:not([hidden]){ display:flex; }
+  .modal-dialog{
+    width:36rem;
+    max-width:100%;
+    max-height:85vh;
+    overflow:auto;
+    padding:1rem 1.1rem;
+    display:flex;
+    flex-direction:column;
+    gap:.7rem;
+  }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; gap:.5rem; }
+  .modal-head h4{ margin:0; font-size:.8rem; color:var(--bright); letter-spacing:.04em; text-transform:uppercase; }
+  .modal-close{
+    background:none; border:none; color:var(--dim); font-size:1.1rem; line-height:1;
+    cursor:pointer; padding:0 .2rem; flex:none;
+  }
+  .modal-close:hover{ color:var(--danger); }
+  .modal-close:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .modal-body{ display:flex; flex-direction:column; gap:.6rem; overflow:auto; }
+  .modal-actions{ display:flex; justify-content:flex-end; }
+  .modal-actions button{
+    font-family:inherit;
+    font-size:.75rem;
+    font-weight:700;
+    cursor:pointer;
+    border-radius:2px;
+    padding:.4rem .8rem;
+    background:var(--bright);
+    color:var(--bg);
+    border:1px solid var(--bright);
+  }
+
+  /* Generic "saved output" raw-text viewer (directory bruteforce, SMB/DNS/
+     web-tech/vhost enum — anything without its own parsed table). */
+  .raw-output{
+    font-size:.78rem;
+    line-height:1.5;
+    background:var(--code-bg);
+    color:var(--code-ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.8rem .9rem;
+    margin:0;
+    max-height:28rem;
+    overflow:auto;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
   .checklist-items{ display:flex; flex-direction:column; gap:.5rem; }
   .checklist-item{
     display:flex;
@@ -727,6 +1244,47 @@
   .run-btn.copy-cmd-btn{ color:var(--dim); }
   .run-btn.copy-cmd-btn.copied{ color:var(--bright); border-color:var(--bright); }
   .no-checklist{ color:var(--dim); font-size:.8rem; font-style:italic; }
+
+  /* ---------- Command tooltip — hover preview of the resolved command,
+     shown above/below run+copy buttons. One shared element, repositioned
+     per hover (see attachCommandTooltip() in runner.js). ---------- */
+  .cmd-tooltip{
+    position:fixed;
+    z-index:100;
+    max-width:min(32rem,calc(100vw - 2rem));
+    background:var(--code-bg);
+    color:var(--code-ink);
+    border:1px solid var(--bright);
+    border-radius:2px;
+    padding:.45rem .6rem;
+    font-family:inherit;
+    font-size:.74rem;
+    line-height:1.4;
+    white-space:pre-wrap;
+    word-break:break-word;
+    box-shadow:var(--shadow);
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(4px);
+    transition:opacity .12s ease,transform .12s ease;
+    pointer-events:none;
+  }
+  .cmd-tooltip.visible{ opacity:1; visibility:visible; transform:translateY(0); }
+  .cmd-tooltip::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-7px;
+    transform:translateX(-50%);
+    border:6px solid transparent;
+    border-top-color:var(--bright);
+  }
+  .cmd-tooltip.below::after{
+    bottom:auto;
+    top:-7px;
+    border-top-color:transparent;
+    border-bottom-color:var(--bright);
+  }
 
   @media (max-width:820px){
     .new-project-panel{ right:auto; left:0; width:min(19rem,calc(100vw - 2.5rem)); }
@@ -792,6 +1350,7 @@
     .body{ grid-template-columns:1fr; gap:14px; }
     .topbar{ grid-template-columns:1fr; gap:14px; }
     .content-outer{ gap:14px; }
+    .sidebar-outer{ gap:14px; }
     .cfg-groups{ flex-direction:column; }
     .menu-toggle{ display:inline-flex; }
     .sidebar{
@@ -807,11 +1366,23 @@
     .content{ padding:.4rem 1rem 4rem; }
     .breadcrumb{ padding:.85rem 1rem 0; }
     .tabbar{ padding:.6rem 1rem 0; }
-    .cfg-input-wrap{ width:7rem; }
-    .cfg-field.port .cfg-input-wrap{ width:4.4rem; }
+    /* The topbar config fields stay on one line on desktop (see
+       fieldset.cfg-group above) but each fieldset only gets the full
+       viewport width to itself here (.cfg-groups goes column above) — not
+       enough room for 3-4 fields side by side, so let them wrap again and
+       give each a comfortable minimum instead of shrinking to nothing.
+       Also: .cfg-groups just switched to flex-direction:column above, so
+       its children's main axis is now vertical — the px flex-basis values
+       set on fieldset.cfg-group(.victim/.project) above were sized for a
+       ROW's width and would be read as a HEIGHT here instead, forcing each
+       fieldset to that many px tall. Reset them back to auto so height
+       just follows content like everywhere else. */
+    fieldset.cfg-group,
+    fieldset.cfg-group.victim,
+    fieldset.cfg-group.project{ flex:0 1 auto; flex-wrap:wrap; }
+    .cfg-field{ flex:1 1 8rem; }
   }
   @media (max-width:460px){
     .sidebar{ inset:10px 10% 10px 10px; }
-    .cfg-input-wrap{ width:6.2rem; }
-    .cfg-field.port .cfg-input-wrap{ width:4rem; }
+    .cfg-field{ flex:1 1 100%; }
   }

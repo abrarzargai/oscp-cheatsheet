@@ -22,8 +22,9 @@ Routes stay thin here; the actual work lives in core/:
   core/projects.py    project folders, project.json, create/switch/list,
                        per-project checklist.json state
   core/runner.py       native terminal launch + command templating
-  core/parsers.py       nmap XML -> JSON parsing
-  core/checklists.py    service -> checklist mapping + nmap scan presets
+  core/parsers.py       nmap XML + rustscan output -> JSON parsing
+  core/checklists.py    service -> checklist mapping + playbook tool presets
+  core/netinfo.py       local network interface IPs (Attacker IP dropdown)
 """
 
 import os
@@ -32,7 +33,7 @@ import xml.etree.ElementTree as ET
 
 from flask import Flask, jsonify, render_template, request
 
-from core import checklists, parsers, projects, runner
+from core import checklists, netinfo, parsers, projects, runner
 
 # ---------------------------------------------------------------------------
 # Config
@@ -80,6 +81,11 @@ def index():
 @app.route("/api/health")
 def health():
     return jsonify({"ok": True})
+
+
+@app.route("/api/local-ips")
+def local_ips():
+    return jsonify({"ips": netinfo.list_local_ips()})
 
 
 @app.route("/api/projects", methods=["GET"])
@@ -138,7 +144,8 @@ def run_command():
 
     attacker_ip = (body.get("attacker_ip") or "").strip()
     attacker_port = (body.get("attacker_port") or "").strip()
-    resolved = runner.resolve_template(template, project, attacker_ip, attacker_port)
+    scheme = (body.get("scheme") or "http").strip()
+    resolved = runner.resolve_template(template, project, attacker_ip, attacker_port, scheme)
 
     # Echo the resolved command into the terminal before running it (bash -c
     # doesn't print what it's about to run on its own) — shlex.quote makes
@@ -164,8 +171,13 @@ def presets():
     })
 
 
+@app.route("/api/playbook", methods=["GET"])
+def playbook():
+    return jsonify({"groups": checklists.PLAYBOOK})
+
+
 # ---------------------------------------------------------------------------
-# Routes — nmap results
+# Routes — module results (nmap, rustscan, nxc credential checks)
 # ---------------------------------------------------------------------------
 
 @app.route("/api/nmap", methods=["GET"])
@@ -195,16 +207,95 @@ def nmap_results():
     return jsonify(parsed)
 
 
-@app.route("/api/nmap/scans", methods=["GET"])
-def nmap_scan_files():
+@app.route("/api/rustscan", methods=["GET"])
+def rustscan_results():
     project = projects.get_active_project()
     if not project:
         return jsonify({"error": "no active project"}), 400
-    d = os.path.join(projects.project_dir(project["name"]), "scans", "nmap")
+
+    scan = request.args.get("scan", "quick")
+    if not projects.NAME_RE.match(scan):
+        return jsonify({"error": "invalid scan name"}), 400
+
+    path = os.path.join(projects.project_dir(project["name"]), "scans", "rustscan", scan + ".txt")
+    if not os.path.isfile(path):
+        return jsonify({"error": "no such scan file: scans/rustscan/{}.txt".format(scan), "ports": []}), 404
+
+    parsed = parsers.parse_rustscan_output(path)
+
+    checklist_state = projects.load_checklist(project["name"])
+    for p in parsed["ports"]:
+        key = "{}/{}".format(p["port"], p["protocol"])
+        p["checked"] = checklist_state.get(key, {})
+
+    return jsonify(parsed)
+
+
+@app.route("/api/creds", methods=["GET"])
+def creds_results():
+    project = projects.get_active_project()
+    if not project:
+        return jsonify({"error": "no active project"}), 400
+
+    scan = request.args.get("scan", "")
+    if not scan or not projects.NAME_RE.match(scan):
+        return jsonify({"error": "invalid scan name"}), 400
+
+    path = os.path.join(projects.project_dir(project["name"]), "scans", "creds", scan + ".txt")
+    if not os.path.isfile(path):
+        return jsonify({"error": "no such scan file: scans/creds/{}.txt".format(scan), "results": []}), 404
+
+    return jsonify(parsers.parse_nxc_output(path))
+
+
+# ---------------------------------------------------------------------------
+# Routes — playbook (Engagement sidebar) output files: "tool" here is either
+# a Port Scanning tool id (nmap/rustscan) or any other category's id
+# (directory_bruteforce, smb_enum, …) — find_output_spec() handles both.
+# ---------------------------------------------------------------------------
+
+@app.route("/api/playbook/outputs", methods=["GET"])
+def playbook_outputs():
+    project = projects.get_active_project()
+    if not project:
+        return jsonify({"error": "no active project"}), 400
+
+    tool = request.args.get("tool", "")
+    spec = checklists.find_output_spec(tool)
+    if not spec:
+        return jsonify({"error": "unknown tool: {}".format(tool)}), 404
+
+    d = os.path.join(projects.project_dir(project["name"]), spec["dir"])
     if not os.path.isdir(d):
-        return jsonify({"scans": []})
-    scans = sorted(f[:-4] for f in os.listdir(d) if f.endswith(".xml"))
-    return jsonify({"scans": scans})
+        return jsonify({"files": []})
+
+    ext = spec["ext"]
+    files = sorted(f[:-len(ext)] for f in os.listdir(d) if f.endswith(ext))
+    return jsonify({"files": files})
+
+
+@app.route("/api/playbook/raw", methods=["GET"])
+def playbook_raw():
+    project = projects.get_active_project()
+    if not project:
+        return jsonify({"error": "no active project"}), 400
+
+    tool = request.args.get("tool", "")
+    spec = checklists.find_output_spec(tool)
+    if not spec:
+        return jsonify({"error": "unknown tool: {}".format(tool)}), 404
+
+    name = request.args.get("file", "")
+    if not projects.NAME_RE.match(name):
+        return jsonify({"error": "invalid file name"}), 400
+
+    path = os.path.join(projects.project_dir(project["name"]), spec["dir"], name + spec["ext"])
+    if not os.path.isfile(path):
+        return jsonify({"error": "no such file: {}/{}{}".format(spec["dir"], name, spec["ext"])}), 404
+
+    with open(path, "r", errors="replace") as f:
+        content = f.read()
+    return jsonify({"content": content})
 
 
 # ---------------------------------------------------------------------------

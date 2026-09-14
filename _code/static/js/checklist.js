@@ -31,6 +31,7 @@ function renderChecklistItems(itemsWrap, checklist, checked, portKey){
     runBtn.textContent = "[run]";
     runBtn.dataset.label = "[run]";
     runBtn.addEventListener("click", function(){ runTemplate(item.cmd, runBtn); });
+    attachCommandTooltip(runBtn, item.cmd);
     itemEl.appendChild(runBtn);
     itemEl.appendChild(makeCopyCmdBtn(item.cmd));
 
