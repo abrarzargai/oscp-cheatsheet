@@ -1,6 +1,10 @@
 # OSCP Cheatsheet — Local App
 
-A browsable, searchable, terminal-styled version of this vault's notes with:
+A browsable, searchable, terminal-styled version of this vault's notes, plus
+an HTB/pentest **engagement workspace** (per-box projects, click-to-run
+commands, nmap results, per-port checklists) layered on top.
+
+Notes viewer:
 - A collapsible sidebar tree (Active Directory / Web Pentesting / Mobile Pentesting / Others), filterable by note name
 - A separate content search (top of the main pane) that greps every note's full text and lists every file that matches, with a preview snippet — click a result to open it
 - A top config bar for **Attacker (IP + Port)** and **Victim (IP + Domain + DC IP)**
@@ -9,65 +13,67 @@ A browsable, searchable, terminal-styled version of this vault's notes with:
 - A **[copy]** button on every code block that copies the *resolved* command (real values baked in, not the placeholder)
 - Syntax-highlighted code blocks (bash, PowerShell, cmd/batch, SQL, XML, etc.)
 
-Your config values are saved in the browser's `localStorage` only — nothing is sent anywhere.
+Engagement workspace ([ Notes ] / [ Engagement ] toggle in the viewer):
+- **Projects** — create a box (name + target IP/domain/DC IP), which auto-creates `~/htb/<name>/{scans/{nmap,smb,web},loot,www,notes.md,checklist.json,project.json}`. Switch between projects from the top bar; the active one drives every command template and syncs into the Victim/Domain/DC_IP fields above.
+- **Click-to-run** — recon-scan presets and per-port checklist commands each have `[run]` (launches a native terminal with the resolved command) and `[copy]` (copies the resolved command without running it).
+- **Nmap results** — parses the active project's saved `-oA` scan into a PORT/STATE/SERVICE/VERSION table, with NSE script output and a service-specific checklist expandable per port.
+- Checkbox state persists per-project in `checklist.json`.
+
+Your top-bar config values are saved in the browser's `localStorage` only.
+Everything under `~/htb/` (or `$HTB_ROOT`) is local, plaintext, on-disk state.
+
+> **`/api/run` launches arbitrary commands on your machine.** `app.py` binds
+> to `127.0.0.1` only — never expose it to a LAN/VPN/the internet.
 
 ---
 
 ## Stack
 
-Everything is a static site — no build step, no backend, no database.
-
 | Piece | What it's for |
 |---|---|
-| Plain HTML/CSS/JS (`index.html`) | The whole app: sidebar tree, config bar, tabs, search, rendering |
-| [marked.js](https://github.com/markedjs/marked) v12 (loaded from cdnjs) | Parses each note's Markdown into HTML |
-| [highlight.js](https://highlightjs.org/) v11.9 + `powershell`/`dos` language packs (loaded from cdnjs) | Syntax-colors each code block (comments, strings, keywords, variables, etc.) |
-| Google Fonts — JetBrains Mono | The single font used throughout, for the terminal look |
-| `data.json` | A pre-built snapshot of every note's content, generated from the vault's `.md` files |
-| `build_data.py` (Python 3, standard library only) | Regenerates `data.json` from the vault whenever notes change |
-
-No `npm install`, no frameworks, no compiling. `index.html` fetches `data.json` at load time and renders everything client-side.
-
----
+| `app.py` + `core/` (Python 3, Flask) | Serves the frontend (`templates/` + `static/`) *and* the JSON API on one process |
+| `templates/index.html` + `templates/partials/*.html` | Thin Jinja shell + includes for the static page structure |
+| `static/css/theme.css` | All styling — the green-on-black terminal theme, one file |
+| `static/js/*.js` | Frontend logic, split by feature (see File overview below) |
+| [marked.js](https://github.com/markedjs/marked) v12, [highlight.js](https://highlightjs.org/) v11.9 (CDN) | Markdown rendering + syntax highlighting |
+| Google Fonts — JetBrains Mono | The single font used throughout |
+| `static/data.json` | Pre-built snapshot of every note's content |
+| `build_data.py` (stdlib only) | Regenerates `static/data.json` from the vault's `.md` files |
 
 ## Requirements
 
-- A modern browser (Chrome, Firefox, Edge, Safari — anything from the last few years).
-- Python 3 — only needed to (a) serve the files locally and (b) regenerate `data.json` after editing notes. Check with:
-  ```bash
-  python3 --version
-  ```
-- Internet access on first load, to fetch marked.js, highlight.js, and the font from their CDNs. (Once cached by the browser, it mostly keeps working offline too.)
+```bash
+pip install flask
+```
+- `gnome-terminal` (or edit `core/runner.py`'s `launch_terminal()` for your terminal — konsole/xterm/kitty/alacritty examples are in a comment there).
+- Internet access on first load, to fetch marked.js/highlight.js/the font from CDN.
 
 ---
 
 ## How to run it
 
-Browsers block a page from `fetch()`-ing a local JSON file when opened directly as a `file://` URL, so you need a tiny local web server — Python's built-in one is enough.
-
 ```bash
 cd _code
-python3 -m http.server 8000
+python3 app.py
 ```
+Then open **http://127.0.0.1:5001** — this one process serves the page, the
+static assets, and the `/api/*` endpoints (same origin, no CORS needed).
 
-Then open **http://localhost:8000** in your browser.
+To stop it, press `Ctrl+C`.
 
-To stop the server, press `Ctrl+C` in that terminal.
-
-> Any static file server works instead of Python's, e.g. `npx serve .`, VS Code's "Live Server" extension, `php -S localhost:8000`, etc. — the app doesn't care how the files are served, only that they're served over `http://` rather than opened directly from disk.
+> Projects live under `~/htb/` by default; override with `HTB_ROOT=/some/path python3 app.py`.
 
 ---
 
-## Regenerating the data after editing notes
+## Regenerating the notes data
 
-`data.json` is a **snapshot**. If you add, edit, or delete notes anywhere under `ACTIVE_DIRECTORY/`, `WEB_PENETESTING/`, `MOBILE_PENETESTING/`, or `OTHERS/`, re-run the build script to refresh it:
+If you add/edit/delete notes anywhere under `ACTIVE_DIRECTORY/`, `WEB_PENETESTING/`, `MOBILE_PENETESTING/`, or `OTHERS/`:
 
 ```bash
 cd _code
 python3 build_data.py
 ```
-
-This rescans those four folders (relative to the vault root, one level up from `_code/`) and rewrites `data.json`. Then just refresh the browser tab — no need to restart the server.
+This rewrites `static/data.json`. Refresh the browser tab — no restart needed.
 
 ---
 
@@ -75,16 +81,46 @@ This rescans those four folders (relative to the vault root, one level up from `
 
 ```
 _code/
-├── index.html      the entire app (structure + styles + logic)
-├── data.json        generated snapshot of all notes (do not hand-edit — regenerate it instead)
-├── build_data.py    regenerates data.json from the four category folders
-└── README.md        this file
+├── app.py                      Flask app + route definitions (thin — delegates to core/)
+├── core/
+│   ├── projects.py             project folders, project.json, create/switch/list, checklist.json state
+│   ├── runner.py                native terminal launch + command templating (<IP>/<DOMAIN>/... placeholders)
+│   ├── parsers.py                nmap XML -> JSON parsing
+│   └── checklists.py             service -> checklist mapping + nmap scan presets
+├── templates/
+│   ├── index.html               thin page shell — pulls in the partials below
+│   └── partials/
+│       ├── _topbar.html         brand + Attacker/Victim/Project config bar
+│       ├── _sidebar.html        note-tree sidebar (filter input + mount point for JS)
+│       ├── _tabs.html           mode toggle + tab bar + breadcrumb + note/engagement content mount point
+│       ├── _runner.html         (placeholder — see its header comment; presets/checklist run-buttons are pure JS)
+│       ├── _nmap_table.html     (placeholder — nmap table is pure JS, data-driven)
+│       └── _checklist.html      (placeholder — checklist items are pure JS, data-driven)
+├── static/
+│   ├── css/theme.css            all styling
+│   ├── js/
+│   │   ├── app.js               shared state/helpers, note viewer (tabs/search/markdown/highlighting), boot()
+│   │   ├── projects.js           project create/switch/list UI + state
+│   │   ├── runner.js             click-to-run + copy-resolved-command buttons
+│   │   ├── nmap.js               nmap results table, NSE output, recon-scan presets
+│   │   └── checklist.js          per-port checklist item rendering + checkbox persistence
+│   └── data.json                 generated snapshot of all notes (regenerate via build_data.py, don't hand-edit)
+├── build_data.py                regenerates static/data.json
+└── README.md                    this file
 ```
+
+Adding new stuff, at a glance:
+- New engagement feature that talks to the OS/filesystem → `core/`, wired up via a thin route in `app.py`.
+- New service → checklist mapping → `core/checklists.py` (see the docstring at its top).
+- New frontend behavior → the matching `static/js/*.js` file by feature; shared helpers go in `app.js`.
+- New static page structure → `templates/partials/`, included from `templates/index.html`.
+- New look → `static/css/theme.css` (CSS variables at the top of the file).
 
 ---
 
 ## Notes / limitations
 
 - **Screenshots aren't embedded.** Any `![[Pasted image ...]]` embed in a note renders as a small `[image: filename]` placeholder instead of the actual image, to keep `data.json` small and the app simple.
-- **`$PORT` is wired up but unused so far.** The Attacker config cluster includes a Port field and the substitution engine supports `$PORT`, but no existing note currently contains that placeholder (ports today are written as literal numbers, e.g. `LPORT=4444`). Add `$PORT` to a note's commands and it'll substitute automatically.
-- This is a **read-only viewer** — it doesn't write back to your `.md` files. Keep editing notes normally in Obsidian/your editor, then re-run `build_data.py` to refresh the app.
+- **`$PORT` is wired up but unused so far** in notes (ports today are written as literal numbers). Add `$PORT` to a note's commands and it'll substitute automatically.
+- The notes viewer is **read-only** — it doesn't write back to your `.md` files. Keep editing notes normally in Obsidian/your editor, then re-run `build_data.py`.
+- The engagement workspace **does** write to disk: `~/htb/<project>/` (project.json, checklist.json, notes.md, scan output) is created/updated as you use it.

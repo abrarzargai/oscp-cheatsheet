@@ -11,17 +11,17 @@ for i in {1..254}; do ping -c 1 -W 1 192.168.1.$i | grep "64 bytes" & done
 
 
 ```bash
-sudo nmap -sU --min-rate 10000 $t 
+sudo nmap -sU --min-rate 10000 $VICTIM_IP 
 
-nmap -p- -T4 -v --min-rate 10000 -Pn $t 
+nmap -p- -T4 -v --min-rate 10000 -Pn $VICTIM_IP 
 
-nmap -sCV -T4 -v --min-rate 10000 -Pn $t
+nmap -sCV -T4 -v --min-rate 10000 -Pn $VICTIM_IP
 
-nmap -sCV -T4 -v --min-rate 10000 -Pn $t --script vuln
+nmap -sCV -T4 -v --min-rate 10000 -Pn $VICTIM_IP --script vuln
 
 
 ## Rustscan
-rustscan -a $t -- -A
+rustscan -a $VICTIM_IP -- -A
 ```
 
 

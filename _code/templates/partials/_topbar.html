@@ -1,0 +1,101 @@
+  <header class="topbar">
+    <div class="topbar-left card">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle sidebar" aria-expanded="false">
+        <span class="bars" aria-hidden="true"></span>
+      </button>
+      <div class="brand">
+        <div class="brand-lockup">
+          <span class="brand-bracket">[</span><span class="brand-mark">Cheat<span class="brand-mark-alt">Sheet</span></span><span class="brand-bracket">]</span>
+        </div>
+        <div class="brand-name-neon">Xargai</div>
+        <div class="brand-stats" id="brandStats">loading vault…</div>
+      </div>
+    </div>
+
+    <div class="topbar-right card">
+      <div class="cfg-groups">
+        <fieldset class="cfg-group">
+          <legend>Attacker</legend>
+          <div class="cfg-field">
+            <label for="attackerIp"><span class="status-dot" id="dot-attackerIp">[ ] </span>IP</label>
+            <div class="cfg-input-wrap">
+              <input id="attackerIp" type="text" placeholder="10.10.14.5" autocomplete="off" spellcheck="false">
+              <button type="button" class="cfg-copy" id="copy-attackerIp" title="Copy attacker IP" aria-label="Copy attacker IP value">[c]</button>
+            </div>
+          </div>
+          <div class="cfg-field port">
+            <label for="attackerPort"><span class="status-dot" id="dot-attackerPort">[ ] </span>PORT</label>
+            <div class="cfg-input-wrap">
+              <input id="attackerPort" type="text" placeholder="4444" autocomplete="off" spellcheck="false">
+              <button type="button" class="cfg-copy" id="copy-attackerPort" title="Copy attacker port" aria-label="Copy attacker port value">[c]</button>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="cfg-group">
+          <legend>Victim</legend>
+          <div class="cfg-field">
+            <label for="victimIp"><span class="status-dot" id="dot-victimIp">[ ] </span>IP</label>
+            <div class="cfg-input-wrap">
+              <input id="victimIp" type="text" placeholder="10.129.20.13" autocomplete="off" spellcheck="false">
+              <button type="button" class="cfg-copy" id="copy-victimIp" title="Copy victim IP" aria-label="Copy victim IP value">[c]</button>
+            </div>
+          </div>
+          <div class="cfg-field domain">
+            <label for="domain"><span class="status-dot" id="dot-domain">[ ] </span>DOMAIN</label>
+            <div class="cfg-input-wrap">
+              <input id="domain" type="text" placeholder="corp.local" autocomplete="off" spellcheck="false">
+              <button type="button" class="cfg-copy" id="copy-domain" title="Copy domain" aria-label="Copy domain value">[c]</button>
+            </div>
+          </div>
+          <div class="cfg-field">
+            <label for="dcIp"><span class="status-dot" id="dot-dcIp">[ ] </span>DC_IP</label>
+            <div class="cfg-input-wrap">
+              <input id="dcIp" type="text" placeholder="10.129.20.14" autocomplete="off" spellcheck="false">
+              <button type="button" class="cfg-copy" id="copy-dcIp" title="Copy DC IP" aria-label="Copy DC IP value">[c]</button>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="cfg-group project">
+          <legend>Project</legend>
+          <div class="cfg-field project">
+            <label for="projectSelect">ACTIVE</label>
+            <select id="projectSelect" class="proj-select">
+              <option value="">(none)</option>
+            </select>
+
+            <div class="new-project-panel card" id="newProjectPanel" hidden>
+              <div class="new-project-head">
+                <h4>New project</h4>
+                <button type="button" class="new-project-close" id="closeProjectPanelBtn" aria-label="Close new project form">x</button>
+              </div>
+              <div class="cfg-field">
+                <label for="npName">Box name</label>
+                <input id="npName" type="text" placeholder="Eighteen" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="cfg-field">
+                <label for="npTargetIp">Target IP</label>
+                <input id="npTargetIp" type="text" placeholder="10.129.20.13" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="cfg-field">
+                <label for="npDomain">Domain</label>
+                <input id="npDomain" type="text" placeholder="corp.local" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="cfg-field">
+                <label for="npDcIp">DC_IP</label>
+                <input id="npDcIp" type="text" placeholder="10.129.20.14" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="new-project-err" id="newProjectErr" hidden></div>
+              <div class="new-project-actions">
+                <button type="button" id="cancelProjectBtn">[cancel]</button>
+                <button type="button" id="createProjectBtn">[create]</button>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="proj-btn" id="newProjectBtn">[+ new]</button>
+          <div class="cfg-note" id="projectStatus">backend not checked yet</div>
+        </fieldset>
+      </div>
+    </div>
+  </header>

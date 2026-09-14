@@ -444,22 +444,22 @@
                         {
                             "type": "file",
                             "name": "DNS Record",
-                            "content": "\n##### <span style=\"color:#FFB86C\">`the *entire* DNS zone data`</span>\n\n```bash\ndig axfr @$t trick.htb\n```"
+                            "content": "\n##### <span style=\"color:#FFB86C\">`the *entire* DNS zone data`</span>\n\n```bash\ndig axfr @$VICTIM_IP trick.htb\n```"
                         },
                         {
                             "type": "file",
                             "name": "Directory Busting",
-                            "content": "\n```bash\ndirb http://$t\n\n\nffuf -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-large-directories-lowercase.txt -u http://$t/FUZZ\n\n\ngobuster dir -u http://$t/ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt\n```"
+                            "content": "\n```bash\ndirb http://$VICTIM_IP\n\n\nffuf -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-large-directories-lowercase.txt -u http://$VICTIM_IP/FUZZ\n\n\ngobuster dir -u http://$VICTIM_IP/ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt\n```"
                         },
                         {
                             "type": "file",
                             "name": "Network Scanning",
-                            "content": "\n### <span style=\"color:#50FA7B\">ping sweep</span>\n```bash\nfping -asgq 192.168.124.0/24\n\nnmap -sn 192.168.124.0/24\n\nfor i in {1..254}; do ping -c 1 -W 1 192.168.1.$i | grep \"64 bytes\" & done\n```\n\n\n\n```bash\nsudo nmap -sU --min-rate 10000 $t \n\nnmap -p- -T4 -v --min-rate 10000 -Pn $t \n\nnmap -sCV -T4 -v --min-rate 10000 -Pn $t\n\nnmap -sCV -T4 -v --min-rate 10000 -Pn $t --script vuln\n\n\n## Rustscan\nrustscan -a $t -- -A\n```\n\n\n```bash\n# list of ips\nnmap -sCV -T4 -v --min-rate 10000 -Pn -iL ./ips.txt\n```"
+                            "content": "\n### <span style=\"color:#50FA7B\">ping sweep</span>\n```bash\nfping -asgq 192.168.124.0/24\n\nnmap -sn 192.168.124.0/24\n\nfor i in {1..254}; do ping -c 1 -W 1 192.168.1.$i | grep \"64 bytes\" & done\n```\n\n\n\n```bash\nsudo nmap -sU --min-rate 10000 $VICTIM_IP \n\nnmap -p- -T4 -v --min-rate 10000 -Pn $VICTIM_IP \n\nnmap -sCV -T4 -v --min-rate 10000 -Pn $VICTIM_IP\n\nnmap -sCV -T4 -v --min-rate 10000 -Pn $VICTIM_IP --script vuln\n\n\n## Rustscan\nrustscan -a $VICTIM_IP -- -A\n```\n\n\n```bash\n# list of ips\nnmap -sCV -T4 -v --min-rate 10000 -Pn -iL ./ips.txt\n```"
                         },
                         {
                             "type": "file",
                             "name": "Subdomain Enumeration",
-                            "content": "\n\n```bash\nffuf -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt -H \"Host: FUZZ.boardlight.htb\" -u http://$t -fs 33560\n```\n"
+                            "content": "\n\n```bash\nffuf -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt -H \"Host: FUZZ.boardlight.htb\" -u http://$VICTIM_IP -fs 33560\n```\n"
                         }
                     ]
                 },
@@ -1521,7 +1521,7 @@
                         {
                             "type": "file",
                             "name": "CTF Notes",
-                            "content": "Preparing the target IP\n\n```bash\n# append the export to your ~/.bashrc so every new interactive shell gets it\necho 'export t=\"$VICTIM_IP\"' >> ~/.bashrc\n\n# apply it now to current shell\nsource ~/.bashrc\n\n# verify\necho $t\n\n```\n\n### <span style=\"color:#50FA7B\">IP in the terminal of parrot OS</span>\n```bash\necho 'export PS1=\"\\n\\[\\e[0;31m\\]┌─[\\[\\e[0m\\]\\u@\\[\\e[0;36m\\]\\$(ip addr show tun0 | grep '\\''inet '\\'' | awk '\\''{print \\$2}'\\'' | cut -d/ -f1)\\[\\e[0;31m\\]]─[\\[\\e[0m\\]\\w\\[\\e[0;31m\\]]\\n└──╼ \\[\\e[0m\\]\\$ \"' >> ~/.bashrc\n```\n\n## <span style=\"color:#8BE9FD\">Setting Attacker IP</span>\n\n- Open `~/.bashrc` in an editor\n```bash\nnano ~/.bashrc\n```\n\n- Paste the above lines at the bottom.\n```bash\n# ~/.bashrc additions\n\n# Alias → quick typing, shows VPN IP (tun0)\nalias LHOST=\"ip addr show tun0 | grep 'inet ' | awk '{print \\$2}' | cut -d/ -f1\"\n\n# Variable → usable in commands\nexport LHOST=$(ip addr show tun0 | grep 'inet ' | awk '{print $2}' | cut -d/ -f1)\n\n```\n\n- reload the configs `\n```bash\nsource ~/.bashrc\n```\n\n\n## <span style=\"color:#8BE9FD\">Setting Victim IP</span>\n\n\n```bash\n# saving victim IP\necho \"$VICTIM_IP\" > ~/.rhost\n\n# ~/.bashrc\n# Access it using $rhost\nexport rhost=$(cat ~/.rhost)\n# # Access it using $(rhost)\nrhost() {\n  cat ~/.rhost\n}\n\n# reload the configs \nsource ~/.bashrc\n```"
+                            "content": "Preparing the target IP\n\n```bash\n# append the export to your ~/.bashrc so every new interactive shell gets it\necho 'export t=\"$VICTIM_IP\"' >> ~/.bashrc\n\n# apply it now to current shell\nsource ~/.bashrc\n\n# verify\necho $VICTIM_IP\n\n```\n\n### <span style=\"color:#50FA7B\">IP in the terminal of parrot OS</span>\n```bash\necho 'export PS1=\"\\n\\[\\e[0;31m\\]┌─[\\[\\e[0m\\]\\u@\\[\\e[0;36m\\]\\$(ip addr show tun0 | grep '\\''inet '\\'' | awk '\\''{print \\$2}'\\'' | cut -d/ -f1)\\[\\e[0;31m\\]]─[\\[\\e[0m\\]\\w\\[\\e[0;31m\\]]\\n└──╼ \\[\\e[0m\\]\\$ \"' >> ~/.bashrc\n```\n\n## <span style=\"color:#8BE9FD\">Setting Attacker IP</span>\n\n- Open `~/.bashrc` in an editor\n```bash\nnano ~/.bashrc\n```\n\n- Paste the above lines at the bottom.\n```bash\n# ~/.bashrc additions\n\n# Alias → quick typing, shows VPN IP (tun0)\nalias LHOST=\"ip addr show tun0 | grep 'inet ' | awk '{print \\$2}' | cut -d/ -f1\"\n\n# Variable → usable in commands\nexport LHOST=$(ip addr show tun0 | grep 'inet ' | awk '{print $2}' | cut -d/ -f1)\n\n```\n\n- reload the configs `\n```bash\nsource ~/.bashrc\n```\n\n\n## <span style=\"color:#8BE9FD\">Setting Victim IP</span>\n\n\n```bash\n# saving victim IP\necho \"$VICTIM_IP\" > ~/.rhost\n\n# ~/.bashrc\n# Access it using $rhost\nexport rhost=$(cat ~/.rhost)\n# # Access it using $(rhost)\nrhost() {\n  cat ~/.rhost\n}\n\n# reload the configs \nsource ~/.bashrc\n```"
                         },
                         {
                             "type": "folder",
@@ -1626,7 +1626,7 @@
                         {
                             "type": "file",
                             "name": "PFX FILE",
-                            "content": "\nIf password protected then\n```bash\npfx2john legacyy_dev_auth.pfx > john.key  \njohn --wordlist=/usr/share/wordlists/rockyou.txt john.key\n```\n\nGetting the public and private keys\n```bash\nopenssl pkcs12 -in legacyy_dev_auth.pfx -nocerts -out key.pem -nodes  \nopenssl pkcs12 -in legacyy_dev_auth.pfx -nokeys -out cert.pem\n```\n\nAccessing the system\n```bash\nevil-winrm -S -i $t -c cert.pem -k key.pem\n```"
+                            "content": "\nIf password protected then\n```bash\npfx2john legacyy_dev_auth.pfx > john.key  \njohn --wordlist=/usr/share/wordlists/rockyou.txt john.key\n```\n\nGetting the public and private keys\n```bash\nopenssl pkcs12 -in legacyy_dev_auth.pfx -nocerts -out key.pem -nodes  \nopenssl pkcs12 -in legacyy_dev_auth.pfx -nokeys -out cert.pem\n```\n\nAccessing the system\n```bash\nevil-winrm -S -i $VICTIM_IP -c cert.pem -k key.pem\n```"
                         },
                         {
                             "type": "folder",

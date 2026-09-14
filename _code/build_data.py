@@ -78,7 +78,7 @@ def main():
         })
 
     data = {"categories": categories}
-    out_path = os.path.join(SCRIPT_DIR, "data.json")
+    out_path = os.path.join(SCRIPT_DIR, "static", "data.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
 

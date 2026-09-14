@@ -8,7 +8,7 @@ echo 'export t="$VICTIM_IP"' >> ~/.bashrc
 source ~/.bashrc
 
 # verify
-echo $t
+echo $VICTIM_IP
 
 ```
 
