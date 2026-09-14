@@ -54,8 +54,9 @@ pip install flask
 
 ```bash
 cd _code
-python3 app.py
+./run.sh
 ```
+(`run.sh` just installs Flask if missing and runs `python3 app.py` — equivalent to running that directly.)
 Then open **http://127.0.0.1:5001** — this one process serves the page, the
 static assets, and the `/api/*` endpoints (same origin, no CORS needed).
 

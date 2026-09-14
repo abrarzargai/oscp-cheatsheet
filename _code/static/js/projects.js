@@ -63,7 +63,7 @@ var projectList = [];
       activeProject = res.project || null;
       populateProjectSelect();
       if (activeProject){
-        setProjectStatus("active: " + activeProject.name + "  ~/htb/" + activeProject.name);
+        setProjectStatus("  ~/htb/" + activeProject.name);
         applyProjectToConfig(activeProject);
       } else {
         setProjectStatus("no active project — create one");
