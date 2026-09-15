@@ -448,13 +448,34 @@
       return;
     }
 
+    crumb.textContent = "~/" + t.path.concat(t.node.name).join("/");
+    if (t.node._btn) t.node._btn.classList.add("active");
+
+    // Content comes from the vault's .md files on demand (see /api/notes/*
+    // in core/notes.py) rather than a prebuilt data.json, so it doesn't
+    // exist on the node yet the first time a note is opened. Fetch once and
+    // cache it on the (shared) node object — every other place that opens
+    // this same file (search results, re-opening the tab later) reuses that
+    // cache instead of refetching.
+    if (t.node.content === undefined){
+      content.innerHTML = '<div class="empty-state">Loading note…</div>';
+      fetchNoteContent(t.node).then(function(){
+        if (tabs[activeIndex] === t) renderActiveTab();
+      });
+      return;
+    }
+
     content.innerHTML = '<article class="note">' + renderMarkdown(t.node.content || "*(empty note)*") + "</article>";
     highlightCodeBlocks(content);
     content.innerHTML = substituteVariables(content.innerHTML);
     enhanceContent(content);
     content.scrollTop = 0;
-    crumb.textContent = "~/" + t.path.concat(t.node.name).join("/");
-    if (t.node._btn) t.node._btn.classList.add("active");
+  }
+
+  function fetchNoteContent(node){
+    return apiFetch("/api/notes/content?category=" + encodeURIComponent(node.category) + "&path=" + encodeURIComponent(node.relpath))
+      .then(function(body){ node.content = body.content || ""; })
+      .catch(function(err){ node.content = "*(could not load this note: " + escapeHtml(String(err.message || err)) + ")*"; });
   }
 
   /* ---------- Sidebar tree (filename-only filter) ---------- */
@@ -569,77 +590,84 @@
     el.title = counts.map(function(c){ return c.label + ": " + c.count; }).join(" · ");
   }
 
-  function findSnippet(text, q){
-    var lines = text.split("\n");
-    for (var i=0;i<lines.length;i++){
-      var idx = lines[i].toLowerCase().indexOf(q);
-      if (idx !== -1){
-        var line = lines[i].trim();
-        if (line.length > 100){
-          var start = Math.max(0, idx - 30);
-          line = (start > 0 ? "…" : "") + line.substr(start, 100) + "…";
-        }
-        return line;
-      }
-    }
-    return "";
-  }
-
-  var MAX_HITS = 30;
+  // Content search runs server-side now (core/notes.py's search_notes) since
+  // note text is no longer preloaded into the browser's memory — a stale
+  // token guards against a slower earlier request's response landing after
+  // a newer one while the user is still typing.
+  var contentSearchToken = 0;
   function runContentSearch(query){
     var box = document.getElementById("contentSearchResults");
-    var q = query.trim().toLowerCase();
+    var q = query.trim();
     if (!q){ box.hidden = true; box.innerHTML = ""; return; }
 
-    var hits = ALL_FILES.filter(function(f){
-      return (f.node.content || "").toLowerCase().indexOf(q) !== -1;
+    var token = ++contentSearchToken;
+    apiFetch("/api/notes/search?q=" + encodeURIComponent(q)).then(function(body){
+      if (token !== contentSearchToken) return;
+      renderContentSearchHits(box, q, body);
+    }).catch(function(){
+      if (token !== contentSearchToken) return;
+      box.innerHTML = "";
+      var err = document.createElement("div");
+      err.className = "search-empty";
+      err.textContent = "search failed — is the backend running?";
+      box.appendChild(err);
+      box.hidden = false;
     });
+  }
 
+  function renderContentSearchHits(box, q, body){
+    var hits = body.hits || [];
     box.innerHTML = "";
     if (hits.length === 0){
       var none = document.createElement("div");
       none.className = "search-empty";
-      none.textContent = "no notes contain \"" + query.trim() + "\"";
+      none.textContent = "no notes contain \"" + q + "\"";
       box.appendChild(none);
       box.hidden = false;
       return;
     }
 
-    hits.slice(0, MAX_HITS).forEach(function(f){
+    hits.forEach(function(hit){
+      // Match back to the already-loaded metadata tree for the shared node
+      // object (openTab/tabs/ALL_FILES all key off that same reference).
+      var match = ALL_FILES.filter(function(f){
+        return f.node.category === hit.category && f.node.relpath === hit.relpath;
+      })[0];
+      if (!match) return;
+
       var el = document.createElement("button");
       el.type = "button";
       el.className = "search-hit";
 
       var nameEl = document.createElement("div");
       nameEl.className = "hit-name";
-      nameEl.textContent = f.node.name;
+      nameEl.textContent = match.node.name;
       el.appendChild(nameEl);
 
       var pathEl = document.createElement("div");
       pathEl.className = "hit-path";
-      pathEl.textContent = "~/" + f.path.join("/");
+      pathEl.textContent = "~/" + match.path.join("/");
       el.appendChild(pathEl);
 
-      var snippet = findSnippet(f.node.content || "", q);
-      if (snippet){
+      if (hit.snippet){
         var snipEl = document.createElement("div");
         snipEl.className = "hit-snippet";
-        snipEl.textContent = snippet;
+        snipEl.textContent = hit.snippet;
         el.appendChild(snipEl);
       }
 
       el.addEventListener("click", function(){
-        openTab(f.node, f.path);
+        openTab(match.node, match.path);
         box.hidden = true;
         document.getElementById("contentSearchInput").value = "";
       });
       box.appendChild(el);
     });
 
-    if (hits.length > MAX_HITS){
+    if (body.truncated){
       var more = document.createElement("div");
       more.className = "search-more";
-      more.textContent = "showing first " + MAX_HITS + " of " + hits.length + " matches — refine your search";
+      more.textContent = "showing first " + hits.length + " matches — refine your search";
       box.appendChild(more);
     }
     box.hidden = false;
@@ -937,8 +965,7 @@
     if (start) openTab(start.node, start.path);
   }
 
-  fetch("/static/data.json")
-    .then(function(r){ return r.json(); })
+  apiFetch("/api/notes/tree")
     .then(boot)
     .catch(function(err){
       document.getElementById("content").innerHTML =

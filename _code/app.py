@@ -33,7 +33,7 @@ import xml.etree.ElementTree as ET
 
 from flask import Flask, jsonify, render_template, request
 
-from core import checklists, netinfo, parsers, projects, runner
+from core import checklists, netinfo, notes, parsers, projects, runner
 
 # ---------------------------------------------------------------------------
 # Config
@@ -86,6 +86,33 @@ def health():
 @app.route("/api/local-ips")
 def local_ips():
     return jsonify({"ips": netinfo.list_local_ips()})
+
+
+# ---------------------------------------------------------------------------
+# Routes — notes (read straight from the vault's .md files, no build step)
+# ---------------------------------------------------------------------------
+
+@app.route("/api/notes/tree")
+def notes_tree():
+    return jsonify(notes.get_notes_tree())
+
+
+@app.route("/api/notes/content")
+def notes_content():
+    category = request.args.get("category", "")
+    relpath = request.args.get("path", "")
+    content = notes.read_note_content(category, relpath)
+    if content is None:
+        return jsonify({"error": "note not found"}), 404
+    return jsonify({"content": content})
+
+
+@app.route("/api/notes/search")
+def notes_search():
+    q = request.args.get("q", "").strip()
+    if not q:
+        return jsonify({"hits": [], "truncated": False})
+    return jsonify(notes.search_notes(q))
 
 
 @app.route("/api/projects", methods=["GET"])

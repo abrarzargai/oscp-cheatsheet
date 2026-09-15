@@ -37,8 +37,7 @@ Everything under `~/htb/` (or `$HTB_ROOT`) is local, plaintext, on-disk state.
 | `static/js/*.js` | Frontend logic, split by feature (see File overview below) |
 | [marked.js](https://github.com/markedjs/marked) v12, [highlight.js](https://highlightjs.org/) v11.9 (CDN) | Markdown rendering + syntax highlighting |
 | Google Fonts — JetBrains Mono | The single font used throughout |
-| `static/data.json` | Pre-built snapshot of every note's content |
-| `build_data.py` (stdlib only) | Regenerates `static/data.json` from the vault's `.md` files |
+| `core/notes.py` | Reads the vault's `.md` files straight off disk on request — no build step, no generated file to keep in sync |
 
 ## Requirements
 
@@ -66,15 +65,9 @@ To stop it, press `Ctrl+C`.
 
 ---
 
-## Regenerating the notes data
+## Adding/editing notes
 
-If you add/edit/delete notes anywhere under `ACTIVE_DIRECTORY/`, `WEB_PENETESTING/`, `MOBILE_PENETESTING/`, or `OTHERS/`:
-
-```bash
-cd _code
-python3 build_data.py
-```
-This rewrites `static/data.json`. Refresh the browser tab — no restart needed.
+Add, edit, or delete `.md` files anywhere under `ACTIVE_DIRECTORY/`, `WEB_PENETESTING/`, `MOBILE_PENETESTING/`, or `OTHERS/` and just refresh the browser tab — the sidebar tree and note content are both read live from disk on every request (`core/notes.py`), so there's no build step or generated file to regenerate.
 
 ---
 
@@ -87,7 +80,8 @@ _code/
 │   ├── projects.py             project folders, project.json, create/switch/list, checklist.json state
 │   ├── runner.py                native terminal launch + command templating (<IP>/<DOMAIN>/... placeholders)
 │   ├── parsers.py                nmap XML -> JSON parsing
-│   └── checklists.py             service -> checklist mapping + nmap scan presets
+│   ├── checklists.py             service -> checklist mapping + nmap scan presets
+│   └── notes.py                  reads the vault's .md files live: sidebar tree, one note's content, whole-vault search
 ├── templates/
 │   ├── index.html               thin page shell — pulls in the partials below
 │   └── partials/
@@ -105,8 +99,6 @@ _code/
 │   │   ├── runner.js             click-to-run + copy-resolved-command buttons
 │   │   ├── nmap.js               nmap results table, NSE output, recon-scan presets
 │   │   └── checklist.js          per-port checklist item rendering + checkbox persistence
-│   └── data.json                 generated snapshot of all notes (regenerate via build_data.py, don't hand-edit)
-├── build_data.py                regenerates static/data.json
 └── README.md                    this file
 ```
 
@@ -121,7 +113,7 @@ Adding new stuff, at a glance:
 
 ## Notes / limitations
 
-- **Screenshots aren't embedded.** Any `![[Pasted image ...]]` embed in a note renders as a small `[image: filename]` placeholder instead of the actual image, to keep `data.json` small and the app simple.
+- **Screenshots aren't embedded.** Any `![[Pasted image ...]]` embed in a note renders as a small `[image: filename]` placeholder instead of the actual image, to keep the app simple.
 - **`$PORT` is wired up but unused so far** in notes (ports today are written as literal numbers). Add `$PORT` to a note's commands and it'll substitute automatically.
-- The notes viewer is **read-only** — it doesn't write back to your `.md` files. Keep editing notes normally in Obsidian/your editor, then re-run `build_data.py`.
+- The notes viewer is **read-only** — it doesn't write back to your `.md` files. Keep editing notes normally in Obsidian/your editor; changes show up on refresh, no separate step needed.
 - The engagement workspace **does** write to disk: `~/htb/<project>/` (project.json, checklist.json, notes.md, scan output) is created/updated as you use it.
