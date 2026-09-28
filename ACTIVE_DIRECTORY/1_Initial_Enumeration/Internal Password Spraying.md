@@ -1,11 +1,6 @@
 
 ## <span style="color:#8BE9FD">Internal Password Spraying from a Linux Host</span>
 
-> [!info] Variables used below
-> - `$VICTIM_IP` – target machine's IP
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 ### <span style="color:#50FA7B">Using a Bash one-liner for the Attack</span>
 
 ```bash

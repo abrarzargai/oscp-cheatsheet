@@ -2,11 +2,6 @@
 
 ## <span style="color:#8BE9FD">User Enumeration (`crackmapexec --rid-brute`)</span>
 
-> [!info] Variables used below
-> - `$VICTIM_IP` – target machine's IP
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 It tells **CrackMapExec**:
 
 > “Try RID numbers from 500 to 5500 and give me usernames if any match.”
@@ -42,7 +37,7 @@ enum4linux -U $VICTIM_IP  | grep "user:" | cut -f2 -d"[" | cut -f1 -d"]"
 
 enum4linux -a $VICTIM_IP > enum4linux.txt # Full scan
 enum4linux -u "guest" -p "" $VICTIM_IP # Test guest access
-enum4linux -u thm.corp\\\\guest -a $VICTIM_IP # enumerating using the Guest account
+enum4linux -u $DOMAIN\\\\guest -a $VICTIM_IP # enumerating using the Guest account
 
 enum4linux-ng -A $VICTIM_IP -u FLUFFY/j.fleischman -p 'J0elTHEM4n1990!'
 ```
@@ -53,7 +48,13 @@ rpcclient -U "" -N $VICTIM_IP
 
 # Lists all domain users (run inside rpcclient)
 rpcclient $> enumdomusers
+
+# Users + descriptions + account flags (run inside rpcclient)
+rpcclient $> querydispinfo
 ```
+
+> [!tip] `querydispinfo` = description goldmine
+> It returns each user **with the description field**. Admins often store passwords here — e.g. `"Temp pw: Welcome123"`. Always read the descriptions.
 ##### <span style="color:#FFB86C">Using CrackMapExec --users Flag</span>
 ```bash
 # Lists users without credentials
@@ -72,9 +73,10 @@ ldapsearch -h $DC_IP -x -b "DC=INLANEFREIGHT,DC=LOCAL" -s sub "(&(objectclass=us
 
 ldapsearch -x -H ldap://$DC_IP -b "dc=htb,dc=support" > ldap_dump.txt
 # then search for keyword "LegacyPwd" it maycontain password
+# also check the "cascadeLegacyPwd" attribute per user — often a base64 password
 
 # search for "info" keyword it is password sometime and the name is user
-ldapsearch -x -H ldap://$DC_IP -D 'ldap@support.htb' -w 'nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz' -b "DC=support,DC=htb" > ldap.search
+ldapsearch -x -H ldap://$DC_IP -D 'ldap@$DOMAIN' -w 'nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz' -b "DC=support,DC=htb" > ldap.search
 
 # Finding user 
 nxc ldap $DC_IP -u '' -p '' --users

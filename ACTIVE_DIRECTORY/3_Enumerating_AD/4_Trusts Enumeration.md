@@ -1,9 +1,6 @@
 
 ## <span style="color:#8BE9FD">Get a list of all domain trusts for the current domain</span>
 
-> [!info] Variables used below
-> - `$DOMAIN` – target domain name
-
 ```powershell
 Get-NetDomainTrust
 Get-NetDomainTrust -Domain $DOMAIN

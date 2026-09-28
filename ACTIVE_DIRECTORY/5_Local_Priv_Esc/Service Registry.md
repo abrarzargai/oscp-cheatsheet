@@ -1,8 +1,5 @@
 # <span style="color:#FF5555">Service Registry</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP
-
 ## <span style="color:#8BE9FD">Methodology</span>
 A service registry consists of a cluster of servers that use a replication protocol to maintain consistency. Hence if we get Full Contol permission over the registry key, we can drop our malicious executable file to gain administrator access. 
 

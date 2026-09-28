@@ -1,8 +1,5 @@
 # <span style="color:#FF5555">Startup Applications</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP
-
 ## <span style="color:#8BE9FD">Methodology</span>
 
 Startup apps run in the background, the number of apps running on the system can be significantly more than what the user is aware of and affect system responsiveness. Startup apps are classified to include those leveraging these mechanisms to start:

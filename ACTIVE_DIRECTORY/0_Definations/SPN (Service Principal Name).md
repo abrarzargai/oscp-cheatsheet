@@ -32,7 +32,7 @@ Examples:
 Active Directory User Object: "CORP\sql_svc"
 └── Attributes:
     ├── sAMAccountName: sql_svc
-    └── servicePrincipalName: MSSQLSvc/db01.corp.local:1433
+    └── servicePrincipalName: MSSQLSvc/db01.$DOMAIN:1433
                                   ↑
                                   └── SPN belongs to CORP\sql_svc
 ```

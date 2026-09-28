@@ -4,10 +4,6 @@ A **Silver Ticket** is a fake service ticket (TGS) that lets you access ONE spec
 
 # <span style="color:#FF5555">Golden vs Silver Ticket</span>
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 - Golden Ticket = **full domain access**  
  - Silver Ticket = **single service access**
  -  Golden ticket requires NTLM hash of the KRBTGT account, while Silver ticket requires NTLM hash of a service account

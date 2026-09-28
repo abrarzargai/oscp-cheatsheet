@@ -1,8 +1,4 @@
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 ## <span style="color:#8BE9FD">Get current domain</span>
 ```powershell
 Get-NetDomain

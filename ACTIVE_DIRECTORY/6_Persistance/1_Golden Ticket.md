@@ -32,10 +32,6 @@
 
 # <span style="color:#FF5555">Steps</span>
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 ___
 # <span style="color:#FF5555">1. Gather required information</span>
 

@@ -8,6 +8,6 @@
 - **Automated Tool**:  `java -jar iis_shortname_scanner.jar 0 5 http://$VICTIM_IP/`
 
 #### <span style="color:#FFB86C">**Finding Full Filenames**</span>
-- **Generate a Wordlist**: `egrep -r ^transf /usr/share/wordlists/* | sed 's/^[^:]*://' > /tmp/list.txt`
+- **Generate a Wordlist**: `egrep -r ^transf $WORDLIST_PATH/* | sed 's/^[^:]*://' > /tmp/list.txt`
 - **Brute-Force with Gobuster**: `gobuster dir -u http://$VICTIM_IP/ -w /tmp/list.txt -x .aspx,.asp`
 

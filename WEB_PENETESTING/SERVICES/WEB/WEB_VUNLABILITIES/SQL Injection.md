@@ -1,3 +1,10 @@
+#### <span style="color:#FFB86C">Probing inputs</span>
+- When testing an input for SQLi (or anything), watch **how the response differs** for different inputs — look for behaviour/error/length changes that reveal the pattern.
+- Fuzz with a special-characters wordlist:
+```bash
+/opt/seclists/fuzzing/special-chars.txt
+```
+
 - Try admin'# (valid username, see netsparker sqli cheatsheet)
 - Try abcd' or 1=1;--
 - Use UNION SELECT null,null,.. instead of 1,2,.. to avoid type conversion errors

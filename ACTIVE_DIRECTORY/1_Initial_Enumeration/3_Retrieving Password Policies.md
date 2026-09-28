@@ -1,9 +1,6 @@
 #AD_retrieving_password_policies
 # <span style="color:#FF5555">If we have a **valid username + password**</span>
 
-> [!info] Variables used below
-> - `$VICTIM_IP` – target machine's IP
-
 ```bash
 # Checks password policy using valid credentials
 crackmapexec smb $VICTIM_IP -u avazquez -p Password123 --pass-pol

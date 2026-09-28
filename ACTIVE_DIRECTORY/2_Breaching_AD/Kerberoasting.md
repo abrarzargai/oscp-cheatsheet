@@ -4,10 +4,6 @@ ____
 
 # <span style="color:#FF5555">Explanation</span>
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 **Kerberoasting targets service accounts that have an SPN (a service identifier).** #AD_DEFINATION_SPN
 
 - When a user asks to access a service, they receive a **Service Ticket (ST)**

@@ -1,9 +1,6 @@
 
 ## <span style="color:#8BE9FD">Get list of GPO in current domain.</span>
 
-> [!info] Variables used below
-> - `$VICTIM_IP` – target machine's IP
-
 ```powershell
 Get-NetGPO
 Get-NetGPO -ComputerName $VICTIM_IP

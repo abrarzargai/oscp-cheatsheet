@@ -4,9 +4,6 @@ LLMNR/NBT-NS These are old Windows features used when a computer can't find anot
 
 ### <span style="color:#50FA7B">Example:</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP
-
 Your Windows tries to access a shared folder `\\fileserver\share`But if it **can’t find "fileserver"**, it asks:
 
 > [!quote] Broadcast Request

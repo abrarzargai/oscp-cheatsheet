@@ -4,24 +4,24 @@
 > [Domain Name System - DNS](https://academy.hackthebox.com/module/112/section/1069) Footprinting and enumeration.
 
 ```bash
-dig ns inlanefreight.htb @$VICTIM_IP
+dig ns $DOMAIN @$VICTIM_IP
 ```
 
 > Subdomain DNS Brute Forcing.
 
 ```bash
-dnsenum --dnsserver $VICTIM_IP --enum -p 0 -s 0 -f /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt inlanefreight.htb
+dnsenum --dnsserver $VICTIM_IP --enum -p 0 -s 0 -f $WORDLIST_PATH/seclists/Discovery/DNS/subdomains-top1million-110000.txt $DOMAIN
 
 ```
 or
 ```bash
 for sub in $(cat /usr/share/wordlist/seclist/Discovery/DNS/subdomains-top1million-110000.txt); do
-  ip=$(dig +short $sub.inlanefreight.htb @$VICTIM_IP)
+  ip=$(dig +short $sub.$DOMAIN @$VICTIM_IP)
   if [[ "$ip" == "$VICTIM_IP" ]]; then
-    echo "FOUND: $sub.inlanefreight.htb -> $ip"
+    echo "FOUND: $sub.$DOMAIN -> $ip"
     break
   else
-    echo "NOT FOUND: $sub.inlanefreight.htb -> $ip"
+    echo "NOT FOUND: $sub.$DOMAIN -> $ip"
   fi
 done
 ```
@@ -29,7 +29,7 @@ done
 > Find Hidden Zones or Internal Domains
 
 ```bash
-dig axfr internal.inlanefreight.htb @$VICTIM_IP
+dig axfr internal.$DOMAIN @$VICTIM_IP
 ```
 >Reverse DNS Lookup
 
@@ -63,7 +63,7 @@ git clone https://github.com/TheRook/subbrute.git
 
 1. Add IP and domain in /etc/hosts
    ```bash
-   $VICTIM_IP    inlanefreight.htb
+   $VICTIM_IP    $DOMAIN
 ```
    
 2. Add IP to resolvers.txt in subbrute.
@@ -73,10 +73,10 @@ git clone https://github.com/TheRook/subbrute.git
    
 3. run subbrute.py
    ```bash
-   python3 subbrute.py -p inlanefreight.htb -s names.txt -r resolvers.txt
+   python3 subbrute.py -p $DOMAIN -s names.txt -r resolvers.txt
 ```
    
 4. once you get another subdomain, try the to use dig axfr to extract information.
    ```bash
-   dig axfr hr.inlanefreight.htb @$VICTIM_IP
+   dig axfr hr.$DOMAIN @$VICTIM_IP
 ```

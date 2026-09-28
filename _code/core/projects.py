@@ -113,6 +113,33 @@ def create_project(name, target_ip, domain, dc_ip):
     return data
 
 
+# Fields that may be edited after creation (target_ip may be corrected too,
+# but it stays the project's identifying value that must never be blank).
+UPDATABLE_FIELDS = ("target_ip", "domain", "dc_ip")
+
+
+def update_project(name, fields):
+    """Merge editable fields (target_ip/domain/dc_ip) into an existing
+    project.json. Domain/DC IP are commonly unknown at creation and filled
+    in later; target_ip may be corrected but must not be emptied. Returns the
+    updated project dict, or None if the project doesn't exist."""
+    pj = project_json_path(name)
+    if not os.path.isfile(pj):
+        return None
+    with open(pj) as f:
+        data = json.load(f)
+    for key in UPDATABLE_FIELDS:
+        if key not in fields:
+            continue
+        val = (fields[key] or "").strip()
+        if key == "target_ip" and not val:
+            continue  # never blank out the identifying IP
+        data[key] = val
+    with open(pj, "w") as f:
+        json.dump(data, f, indent=2)
+    return with_path(data)
+
+
 # ---------------------------------------------------------------------------
 # Per-project checklist.json state
 # ---------------------------------------------------------------------------

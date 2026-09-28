@@ -17,10 +17,6 @@ ___
 
 # <span style="color:#FF5555">Usage with Mimikatz (PowerShell Remoting)</span>
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 To inject the Skeleton Key into `lsass.exe` on a Domain Controller:
 
 ```powershell

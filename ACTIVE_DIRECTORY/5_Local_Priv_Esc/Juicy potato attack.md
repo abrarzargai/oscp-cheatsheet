@@ -1,8 +1,5 @@
 # <span style="color:#FF5555">Juicy potato attack</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP
-
 ## <span style="color:#8BE9FD">Methodology</span>
 
 This privilege allows us to impersonate a token of a privileged account such as NT AUTHORITY\SYSTEM. 

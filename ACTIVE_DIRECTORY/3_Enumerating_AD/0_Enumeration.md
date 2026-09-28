@@ -1,11 +1,6 @@
 
 Suppose we will use the following credentials: User=forend and password=Klmcargo2
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$VICTIM_IP` – target machine's IP
-> - `$DOMAIN` – target domain name
-
 ```bash
 # -------------------------------------------
 # CRACKMAPEXEC (CME) - Swiss army knife for AD enumeration

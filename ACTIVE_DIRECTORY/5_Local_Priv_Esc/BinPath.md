@@ -1,8 +1,5 @@
 # <span style="color:#FF5555">BinPath</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP
-
 ## <span style="color:#8BE9FD">Methodology</span>
 
 BinPath is a type of Service Escalation. We can gain administrator privileges if we write access and restart access on any service. We can abuse this function by injecting our malicious BinPath to get executed once restarted.

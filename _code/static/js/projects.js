@@ -62,14 +62,49 @@ var projectList = [];
     return apiFetch("/api/active").then(function(res){
       activeProject = res.project || null;
       populateProjectSelect();
+      var statusEl = document.getElementById("projectStatus");
       if (activeProject){
         setProjectStatus("  ~/htb/" + activeProject.name);
+        // Clicking the status copies the project path (see wireProjectUI).
+        statusEl.dataset.copyPath = "~/htb/" + activeProject.name;
+        statusEl.classList.add("copyable");
+        statusEl.title = "click to copy project path";
         applyProjectToConfig(activeProject);
       } else {
         setProjectStatus("no active project — create one");
+        delete statusEl.dataset.copyPath;
+        statusEl.classList.remove("copyable");
+        statusEl.removeAttribute("title");
       }
       return activeProject;
     });
+  }
+
+  /* Persist a top-bar field edit back into the active project's project.json,
+     so domain/DC IP (unknown at creation) — and a corrected target IP — are
+     saved for later sessions, not just held in browser config. Maps the
+     config field id to the stored project key. */
+  var PROJECT_FIELD_KEYS = { victimIp: "target_ip", domain: "domain", dcIp: "dc_ip" };
+
+  function persistProjectField(fieldId){
+    if (!activeProject) return;
+    var key = PROJECT_FIELD_KEYS[fieldId];
+    var el = document.getElementById(fieldId);
+    if (!key || !el) return;
+    var val = el.value.trim();
+    // Don't blank out the identifying target IP.
+    if (key === "target_ip" && !val) return;
+    if ((activeProject[key] || "") === val) return;
+    var body = {};
+    body[key] = val;
+    apiFetch("/api/projects/" + encodeURIComponent(activeProject.name), {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    }).then(function(res){
+      if (res && res.project) activeProject = res.project;
+      populateProjectSelect();
+    }).catch(function(err){ setProjectStatus(err.message, true); });
   }
 
   function bootstrapEngagement(){
@@ -81,6 +116,26 @@ var projectList = [];
   }
 
   function wireProjectUI(){
+    // Click the active-project status to copy its ~/htb/<name> path.
+    var statusEl = document.getElementById("projectStatus");
+    if (statusEl){
+      statusEl.addEventListener("click", function(){
+        var path = statusEl.dataset.copyPath;
+        if (!path) return;
+        writeClipboard(path, function(){
+          statusEl.classList.add("copied");
+          setTimeout(function(){ statusEl.classList.remove("copied"); }, 1200);
+        });
+      });
+    }
+
+    // Save later edits to the top-bar IP/DOMAIN/DC_IP into the active project
+    // on blur/change (app.js already keeps browser config in sync separately).
+    Object.keys(PROJECT_FIELD_KEYS).forEach(function(fieldId){
+      var el = document.getElementById(fieldId);
+      if (el) el.addEventListener("change", function(){ persistProjectField(fieldId); });
+    });
+
     var sel = document.getElementById("projectSelect");
     sel.addEventListener("change", function(){
       if (!sel.value) return;
@@ -126,9 +181,18 @@ var projectList = [];
 
     createBtn.addEventListener("click", function(){
       var name = document.getElementById("npName").value.trim();
+      var targetIp = document.getElementById("npTargetIp").value.trim();
+      // Target IP is the identifying field and is required; domain/dc_ip are
+      // optional here and can be filled in later from the top-bar fields.
+      if (!targetIp){
+        errEl.textContent = "Target IP is required.";
+        errEl.hidden = false;
+        document.getElementById("npTargetIp").focus();
+        return;
+      }
       var body = {
         name: name,
-        target_ip: document.getElementById("npTargetIp").value.trim(),
+        target_ip: targetIp,
         domain: document.getElementById("npDomain").value.trim(),
         dc_ip: document.getElementById("npDcIp").value.trim()
       };

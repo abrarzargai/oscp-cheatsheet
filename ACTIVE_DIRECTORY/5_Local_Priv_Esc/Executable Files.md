@@ -1,8 +1,5 @@
 # <span style="color:#FF5555">Executable Files</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP
-
 ## <span style="color:#8BE9FD">Methodology</span>
 Microsoft Windows services, formerly known as NT services, enable you to create long-running executable applications that run in their own Windows sessions. These services can be automatically started when the computer boots, can be paused and restarted, and do not show any user interface.
 

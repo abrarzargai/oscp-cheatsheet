@@ -88,3 +88,5 @@ strings plum.sqlite-wal
 - `%WINDIR%\System32\drivers\etc\hosts`	Hosts file
 - `C:\ProgramData\Configs\*`	Config files
 - `C:\Program Files\Windows PowerShell\*`	PowerShell scripts or modules
+- `C:\SQLServer\Logs\ERRORLOG.BAK`	MSSQL error log backup — can contain sensitive data / credentials
+- `.pfx` / `.p12` files	Certificate + private key bundles — in AD these are high value (see [[PFX FILE]]); a `.pfx` prefix/extension is always worth grabbing

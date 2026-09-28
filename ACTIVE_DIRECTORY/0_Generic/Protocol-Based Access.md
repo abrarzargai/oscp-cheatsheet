@@ -2,10 +2,6 @@
 
 # <span style="color:#FF5555">Protocol-Based Access</span>
 
-> [!info] Variables used below
-> - `$VICTIM_IP` – target machine's IP
-> - `$DOMAIN` – target domain name
-
 - Got **SMB creds** → try `psexec.py` → fall back to `wmiexec.py` or `smbexec.py`.
 - Got **WinRM** → `evil-winrm` (best).
 - Got **RDP** → `xfreerdp` for full GUI access.

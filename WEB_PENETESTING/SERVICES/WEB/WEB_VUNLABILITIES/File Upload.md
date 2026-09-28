@@ -10,6 +10,10 @@
 ##### <span style="color:#FFB86C">Paylaods</span>
 https://github.com/KathanP19/HowToHunt/blob/master/File_Upload/file_upload.md
 
+# <span style="color:#FF5555">Extension bypass tricks</span>
+- **Null byte** — append a null byte before an allowed extension so the server truncates at it: `shell.php%00.png` (works on old PHP < 5.3.4 / certain configs).
+- **Zip slip** — upload a crafted zip whose entries use `../` path traversal so extraction writes files outside the intended folder (overwrite a web-root file / drop a shell).
+
 # <span style="color:#FF5555">Blacklist Filters</span>
 - paylaods
 ```bash

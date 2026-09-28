@@ -2,9 +2,6 @@
 
 # <span style="color:#FF5555">AV / AMSI Evasion</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP (hosting payloads via HTTP/HFS)
-
 **Defender** = Security guard checking everyone at the door  
 **AMSI** = Undercover cop listening to what you say  
 **Bypass** = Showing a fake badge or sneaking through the b

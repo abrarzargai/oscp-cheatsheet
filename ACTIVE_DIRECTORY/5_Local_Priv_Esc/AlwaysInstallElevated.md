@@ -1,8 +1,5 @@
 # <span style="color:#FF5555">AlwaysInstallElevated</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP
-
 ## <span style="color:#8BE9FD">Methodology</span>
 
 AlwaysInstallElevated  is a type of Registry Escalation.

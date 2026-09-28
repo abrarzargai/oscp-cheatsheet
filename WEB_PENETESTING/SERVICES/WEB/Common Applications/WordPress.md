@@ -22,10 +22,10 @@ wpscan --url example.com -e vp --plugins-detection mixed --api-token API_TOKEN
 
 # Enumerate users (-e u) on example.com and attempt password brute-forcing
 # Using the rockyou.txt password list for cracking
-wpscan --url example.com -e u --passwords /usr/share/wordlists/rockyou.txt
+wpscan --url example.com -e u --passwords $WORDLIST_PATH/rockyou.txt
 
 # Brute-force login on example.com for user 'admin' (-U admin) with rockyou.txt passwords (-P)
-wpscan --url example.com -U admin -P /usr/share/wordlists/rockyou.txt
+wpscan --url example.com -U admin -P $WORDLIST_PATH/rockyou.txt
 
 # Get API Key (free): Register at https://wpvulndb.com Use it with --api-token
 wpscan --url http://target.com --enumerate --api-token YOUR_TOKEN

@@ -49,9 +49,6 @@ Instead of hardcoding IP addresses or domain names in commands, notes use these 
 
 **Info callout convention (seen in AD notes, optional to add elsewhere):**
 ```markdown
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
 ```
 
 ---

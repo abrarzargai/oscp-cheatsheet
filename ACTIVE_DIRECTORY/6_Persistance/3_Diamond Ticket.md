@@ -22,10 +22,6 @@ A Diamond Ticket is a **modified real TGT (Ticket Granting Ticket)** where:
 ___
 # <span style="color:#FF5555">Method 1: Forge a Diamond Ticket with Credentials</span>
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 
 You can use **Rubeus** to create a Diamond Ticket using the **krbtgt AES key** and the credentials of a domain user:
 

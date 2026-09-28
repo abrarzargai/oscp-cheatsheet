@@ -1,8 +1,5 @@
 # <span style="color:#FF5555">DLL Hijacking</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP
-
 ## <span style="color:#8BE9FD">Methodology</span>
 Windows applications usually load DLL files when started. It may happen that a DLL file does not exist and the application is unable to load it. Nevertheless, an application will continue to execute as long as the missing DLL is not needed.  
 In case the application uses a relative and not an absolute file path, Windows searches for the file in the following directories:

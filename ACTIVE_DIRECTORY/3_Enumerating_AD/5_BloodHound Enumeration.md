@@ -1,11 +1,6 @@
 #AD_Bloohdhound-Enumeration
 # <span style="color:#FF5555">Using Sharphound.exe :</span>
 
-> [!info] Variables used below
-> - `$ATTACKER_IP` – your attacking machine's IP
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 #### <span style="color:#FFB86C">Enable Sharp-Hound and execute</span>
 ```bash
 # https://github.com/SpecterOps/BloodHound-Legacy/blob/master/Collectors/SharpHound.exe

@@ -6,10 +6,6 @@
 - [https://github.com/MariamTariq404/OSCP-Checklist](https://github.com/MariamTariq404/OSCP-Checklist)
 - [https://benheater.com/my-ctf-methodology/](https://benheater.com/my-ctf-methodology/)
 
-> [!info] Variables used below
-> - `$VICTIM_IP` – target machine's IP
-> - `$DC_IP` – Domain Controller's IP
-
 ____
 # <span style="color:#FF5555">Adding Target IP</span>
 

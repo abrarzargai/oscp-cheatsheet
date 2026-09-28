@@ -4,13 +4,13 @@
 ### <span style="color:#50FA7B">General Information</span>
 ```bash
 # Checking if Joomla
-curl -s http://dev.inlanefreight.local/ | grep Joomla
+curl -s http://dev.$DOMAIN/ | grep Joomla
 
 # Check for robots.txt
-http://dev.inlanefreight.local/robots.txt
+http://dev.$DOMAIN/robots.txt
 
 # Check for README.txt
-curl -s http://dev.inlanefreight.local/README.txt | head -n 5
+curl -s http://dev.$DOMAIN/README.txt | head -n 5
 
 # To find the Joomla version
 http://$VICTIM_IP/language/en-GB/en-GB.xml
@@ -19,11 +19,11 @@ http://$VICTIM_IP/language/en-GB/en-GB.xml
 ### <span style="color:#50FA7B">Enumeration</span>
 ```bash
 sudo pip3 install droopescan
-droopescan scan joomla --url http://dev.inlanefreight.local
+droopescan scan joomla --url http://dev.$DOMAIN
 
 
 # Brute Force Admin Login
-sudo python3 joomla-brute.py -u http://dev.inlanefreight.local -w /usr/share/metasploit-framework/data/wordlists/http_default_pass.txt -usr admin
+sudo python3 joomla-brute.py -u http://dev.$DOMAIN -w /usr/share/metasploit-framework/data/wordlists/http_default_pass.txt -usr admin
 ```
 
 ### <span style="color:#50FA7B">Joomla  version 3.7.0 (CVE-2017-8917 SQL injection)</span>

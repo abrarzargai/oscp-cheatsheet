@@ -3,10 +3,6 @@
 > [!tip] When to Use getTGT
 > **Use getTGT when you have a password but NTLM is blocked - it gives you a Kerberos ticket that works like a session cookie for multiple tools.**
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-> - `$DOMAIN` – target domain name
-
 ```shell
 # Get Kerberos TGT (writes .ccache)
 impacket-getTGT $DOMAIN/'ryan.naylor':'HollowOct31Nyt'

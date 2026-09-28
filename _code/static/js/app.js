@@ -37,6 +37,7 @@
   initTheme();
 
   var STORAGE_KEY = "CheatSheet-config-v1";
+  var TABS_KEY = "CheatSheet-tabs-v1";
   var FIELDS = ["attackerIp","attackerPort","victimIp","domain","dcIp","scheme"];
   var VAR_MAP = [
     ["ATTACKER_IP","attackerIp"],
@@ -47,6 +48,8 @@
     ["SCHEME","scheme"]
   ];
   var config = {};
+  var wordlistPath = "";       // $WORDLIST_PATH base, loaded from Settings
+  var hiddenModules = [];      // top-level category ids hidden from the Notes tree (Settings)
   var tabs = [];
   var activeIndex = -1;
   var debounceTimer = null;
@@ -65,6 +68,48 @@
   }
   function saveConfig(){
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(config)); }catch(e){}
+  }
+
+  /* ---------- Open-tabs persistence ----------
+     Remember which notes are open and which one is active, keyed by the
+     file's category+relpath (stable across reloads), so a refresh restores
+     the exact session instead of starting from the first note. */
+  function saveTabs(){
+    try{
+      var data = {
+        open: tabs.map(function(t){
+          return { category: t.node.category, relpath: t.node.relpath };
+        }),
+        active: activeIndex
+      };
+      localStorage.setItem(TABS_KEY, JSON.stringify(data));
+    }catch(e){}
+  }
+  function loadSavedTabs(){
+    try{
+      var raw = localStorage.getItem(TABS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){ return null; }
+  }
+  function restoreTabs(){
+    var saved = loadSavedTabs();
+    if (!saved || !saved.open || !saved.open.length) return false;
+    saved.open.forEach(function(ref){
+      var match = null;
+      for (var i=0;i<ALL_FILES.length;i++){
+        var n = ALL_FILES[i].node;
+        if (n.category === ref.category && n.relpath === ref.relpath){ match = ALL_FILES[i]; break; }
+      }
+      // Skip refs that no longer resolve (note renamed/deleted since last visit).
+      if (match && !tabs.some(function(t){ return t.node === match.node; })){
+        tabs.push({ node: match.node, path: match.path });
+      }
+    });
+    if (!tabs.length) return false;
+    activeIndex = Math.min(Math.max(saved.active | 0, 0), tabs.length - 1);
+    renderTabs();
+    renderActiveTab();
+    return true;
   }
 
   function escapeHtml(s){
@@ -157,6 +202,12 @@
         html = html.replace(re, '<span class="var-unset" title="Set ' + name + ' above to fill this in">$' + name + "</span>");
       }
     });
+    // $WORDLIST_PATH is the wordlist base path from Settings (SecLists lives
+    // inside it as $WORDLIST_PATH/seclists/...), not a top-bar config field.
+    var wp = (wordlistPath || "").trim();
+    html = html.replace(/\$WORDLIST_PATH(?![A-Z_])/g, wp
+      ? '<span class="var-filled" title="$WORDLIST_PATH">' + escapeHtml(wp) + "</span>"
+      : '<span class="var-unset" title="Set the Wordlist path in Settings">$WORDLIST_PATH</span>');
     return html;
   }
 
@@ -368,6 +419,7 @@
       idx = tabs.length - 1;
     }
     activeIndex = idx;
+    saveTabs();
     renderTabs();
     renderActiveTab();
     if (window.matchMedia("(max-width:820px)").matches){
@@ -385,6 +437,7 @@
     } else if (index < activeIndex){
       activeIndex -= 1;
     }
+    saveTabs();
     renderTabs();
     renderActiveTab();
   }
@@ -392,6 +445,7 @@
   function closeAllTabs(){
     tabs = [];
     activeIndex = -1;
+    saveTabs();
     renderTabs();
     renderActiveTab();
   }
@@ -412,6 +466,7 @@
       label.title = "~/" + t.path.concat(t.node.name).join("/");
       label.addEventListener("click", function(){
         activeIndex = i;
+        saveTabs();
         renderTabs();
         renderActiveTab();
       });
@@ -531,6 +586,7 @@
     var topFrag = document.createDocumentFragment();
     var anyTop = false;
     DATA.categories.forEach(function(cat){
+      if (hiddenModules.indexOf(cat.id) !== -1) return;   // module hidden in Settings
       var result = buildTree(cat.children, [cat.label], filter);
       if (!result.any) return;
       anyTop = true;
@@ -877,6 +933,27 @@
     });
   }
 
+  /* ---------- $WORDLIST_PATH base (from Settings) ----------
+     Global so settings.js can push a new value after a save. */
+  function applyWordlistPath(p){
+    wordlistPath = (p || "").trim();
+    if (viewMode === "notes") renderActiveTab();  // re-render open note with the new base path
+  }
+  /* Hide/show top-level modules in the Notes tree (from Settings). Global so
+     settings.js can push a new list after a save. */
+  function applyHiddenModules(list){
+    hiddenModules = Array.isArray(list) ? list.slice() : [];
+    var f = document.getElementById("treeSearchInput");
+    renderTree(f ? f.value : "");
+  }
+  function loadAppSettings(){
+    apiFetch("/api/settings").then(function(res){
+      var s = res.settings || {};
+      applyWordlistPath(s.wordlists_path || "");
+      applyHiddenModules(s.hidden_modules || []);
+    }).catch(function(){ /* backend offline — defaults stay */ });
+  }
+
   /* ---------- Mode toggle (Notes / Engagement / Tools) ---------- */
   function setMode(mode){
     viewMode = mode;
@@ -912,6 +989,7 @@
     updateBrandStats();
 
     initConfigFields();
+    loadAppSettings();
     renderTree("");
     renderTabs();
 
@@ -960,9 +1038,14 @@
     wireModeToggle();
     bootstrapEngagement();
 
-    var firstCat = DATA.categories[0];
-    var start = firstCat ? firstFilePath(firstCat.children, [firstCat.label]) : null;
-    if (start) openTab(start.node, start.path);
+    // Restore the previous session's open tabs + active tab; only if nothing
+    // was restored (first visit, or all saved notes gone) fall back to the
+    // first note.
+    if (!restoreTabs()){
+      var firstCat = DATA.categories[0];
+      var start = firstCat ? firstFilePath(firstCat.children, [firstCat.label]) : null;
+      if (start) openTab(start.node, start.path);
+    }
   }
 
   apiFetch("/api/notes/tree")

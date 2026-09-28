@@ -1,9 +1,6 @@
 
 ## <span style="color:#8BE9FD">Get the ACLs associated with the specified object (groups)</span>
 
-> [!info] Variables used below
-> - `$DC_IP` – Domain Controller's IP
-
 ```powershell
 Get-ObjectAcl -SamAccountName student1 -ResolveGUIDs
 ```
