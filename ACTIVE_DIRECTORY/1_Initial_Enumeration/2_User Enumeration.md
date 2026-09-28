@@ -1,8 +1,8 @@
 #AD_user_enumeration
 
-## <span style="color:#8BE9FD">User Enumeration (`crackmapexec --rid-brute`)</span>
+## <span style="color:#8BE9FD">User Enumeration (`nxc --rid-brute`)</span>
 
-It tells **CrackMapExec**:
+It tells **nxc**:
 
 > “Try RID numbers from 500 to 5500 and give me usernames if any match.”
 
@@ -16,13 +16,13 @@ So if you **try each RID**, you might "guess" real usernames even if enumeration
 
 ```bash
 # Tries to find usernames without any login (anonymous).
-crackmapexec smb $VICTIM_IP --rid-brute
+nxc smb $VICTIM_IP --rid-brute
 
 # Tries to find usernames using the guest account (blank password).
-crackmapexec smb $VICTIM_IP -u guest -p  '' --rid-brute
+nxc smb $VICTIM_IP -u guest -p  '' --rid-brute
 
 # Show only actual user accounts (not computer names or groups).
-crackmapexec smb $VICTIM_IP -u guest -p  '' --rid-brute | grep SidTypeUser
+nxc smb $VICTIM_IP -u guest -p  '' --rid-brute | grep SidTypeUser
 ```
 
 ___
@@ -55,13 +55,13 @@ rpcclient $> querydispinfo
 
 > [!tip] `querydispinfo` = description goldmine
 > It returns each user **with the description field**. Admins often store passwords here — e.g. `"Temp pw: Welcome123"`. Always read the descriptions.
-##### <span style="color:#FFB86C">Using CrackMapExec --users Flag</span>
+##### <span style="color:#FFB86C">Using nxc --users Flag</span>
 ```bash
 # Lists users without credentials
-crackmapexec smb $VICTIM_IP --users
+nxc smb $VICTIM_IP --users
 
 # Lists all domain users using valid credentials
-crackmapexec smb $VICTIM_IP -u htb-student -p Academy_student_AD! --users
+nxc smb $VICTIM_IP -u htb-student -p Academy_student_AD! --users
 ```
 
 ___

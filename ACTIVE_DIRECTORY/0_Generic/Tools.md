@@ -24,7 +24,7 @@
 
 |Tool|Purpose|Easy Explanation|
 |---|---|---|
-|**[CrackMapExec (CME)](https://github.com/byt3bl33d3r/CrackMapExec)**|Swiss Army knife|Runs commands on **many Windows PCs at once** (like remote control).|
+|**[nxc (CME)](https://github.com/byt3bl33d3r/nxc)**|Swiss Army knife|Runs commands on **many Windows PCs at once** (like remote control).|
 |**[psexec.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/psexec.py)**|Remote command execution|Gives a **command prompt** on a target PC (like SSH for Windows).|
 |**[evil-winrm](https://github.com/Hackplayers/evil-winrm)**|WinRM shell|Gets a **PowerShell terminal** on a target over WinRM.|
 ### <span style="color:#50FA7B">4. Privilege Escalation</span>

@@ -1,4 +1,4 @@
-"""core/parsers.py — nmap XML, rustscan greppable-output, and nxc (NetExec)
+"""core/parsers.py — nmap XML, rustscan greppable-output, and nxc (nxc)
 output -> JSON parsing."""
 
 import re
@@ -84,7 +84,7 @@ def parse_rustscan_output(path):
     return {"host": host_ip, "ports": ports_out}
 
 
-# nxc (NetExec, the crackmapexec successor) prints one line per attempt:
+# nxc (nxc, the nxc successor) prints one line per attempt:
 #   SMB    10.10.10.5   445   TARGET  [*] Windows 10 Build 19041 (name:TARGET) ...
 #   SMB    10.10.10.5   445   TARGET  [+] corp.local\jdoe:Password123
 #   SMB    10.10.10.5   445   TARGET  [+] corp.local\admin:Passw0rd! (Pwn3d!)
@@ -95,23 +95,28 @@ def parse_rustscan_output(path):
 NXC_LINE_RE = re.compile(r"^\S+\s+\S+\s+\S+\s+\S+\s+\[(?P<flag>[+\-*])\]\s+(?P<rest>.*)$")
 
 
-def parse_nxc_output(path):
+def parse_nxc_text(text):
+    """Parse nxc output already in memory (e.g. captured from a verify run)."""
     results = []
-    with open(path, errors="replace") as f:
-        for raw in f:
-            line = raw.rstrip("\n")
-            m = NXC_LINE_RE.match(line.strip())
-            if not m or m.group("flag") == "*":
-                continue
-            rest = m.group("rest").strip()
-            pwned = "Pwn3d!" in rest
-            status = "pwned" if pwned else ("valid" if m.group("flag") == "+" else "failed")
-            cred_part = rest.replace("(Pwn3d!)", "").strip()
-            user, secret = "", ""
-            if ":" in cred_part:
-                user, secret = cred_part.split(":", 1)
-                user, secret = user.strip(), secret.strip()
-            else:
-                user = cred_part
-            results.append({"status": status, "user": user, "secret": secret, "raw": line})
+    for raw in (text or "").splitlines():
+        line = raw.rstrip("\n")
+        m = NXC_LINE_RE.match(line.strip())
+        if not m or m.group("flag") == "*":
+            continue
+        rest = m.group("rest").strip()
+        pwned = "Pwn3d!" in rest
+        status = "pwned" if pwned else ("valid" if m.group("flag") == "+" else "failed")
+        cred_part = rest.replace("(Pwn3d!)", "").strip()
+        user, secret = "", ""
+        if ":" in cred_part:
+            user, secret = cred_part.split(":", 1)
+            user, secret = user.strip(), secret.strip()
+        else:
+            user = cred_part
+        results.append({"status": status, "user": user, "secret": secret, "raw": line})
     return {"results": results}
+
+
+def parse_nxc_output(path):
+    with open(path, errors="replace") as f:
+        return parse_nxc_text(f.read())

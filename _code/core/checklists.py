@@ -35,8 +35,8 @@ SERVICE_CHECKLISTS = {
          "cmd": "smbclient -L //<IP>/ -N"},
         {"id": "null-session", "label": "null session check (rpcclient)",
          "cmd": "rpcclient -U '' -N <IP>"},
-        {"id": "crackmapexec", "label": "crackmapexec smb enum shares/sessions",
-         "cmd": "crackmapexec smb <IP> --shares --sessions"},
+        {"id": "nxc", "label": "nxc smb enum shares/sessions",
+         "cmd": "nxc smb <IP> --shares --sessions"},
     ],
     "http": [
         {"id": "whatweb", "label": "whatweb fingerprint",
@@ -273,8 +273,8 @@ SMB_ENUM_PRESETS = [
      "cmd": "mkdir -p <PROJECT_DIR>/scans/smb && enum4linux-ng -A <IP> | tee <PROJECT_DIR>/scans/smb/enum4linux-ng.txt"},
     {"id": "smbclient-list", "label": "smbclient -L (list shares)",
      "cmd": "mkdir -p <PROJECT_DIR>/scans/smb && smbclient -L //<IP>/ -N | tee <PROJECT_DIR>/scans/smb/smbclient-list.txt"},
-    {"id": "crackmapexec-smb", "label": "crackmapexec smb shares/sessions",
-     "cmd": "mkdir -p <PROJECT_DIR>/scans/smb && crackmapexec smb <IP> --shares --sessions | tee <PROJECT_DIR>/scans/smb/crackmapexec-smb.txt"},
+    {"id": "nxc-smb", "label": "nxc smb shares/sessions",
+     "cmd": "mkdir -p <PROJECT_DIR>/scans/smb && nxc smb <IP> --shares --sessions | tee <PROJECT_DIR>/scans/smb/nxc-smb.txt"},
 ]
 
 # DNS enumeration presets — Engagement sidebar's Enumeration > DNS Enum
@@ -313,7 +313,7 @@ SUBDOMAIN_VHOST_PRESETS = [
      "cmd": "mkdir -p <PROJECT_DIR>/scans/vhost && (for sub in $(cat /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt); do curl -s -o /dev/null -w \"%{http_code} $sub\\n\" -H \"Host: $sub.<DOMAIN>\" <SCHEME>://<IP>/; done) | tee <PROJECT_DIR>/scans/vhost/host-header-fuzz.txt"},
 ]
 
-# Credential Checking — services nxc (NetExec) can authenticate against.
+# Credential Checking — services nxc (nxc) can authenticate against.
 # The frontend builds the whole nxc command client-side (service + mode +
 # username/password fields -> a "mkdir -p ... && printf ... > users.txt &&
 # nxc <service> <IP> -u ... -p ... | tee <output>" one-liner, same as any

@@ -24,6 +24,25 @@ def launch_terminal(full_cmd, cwd):
     )
 
 
+def run_nxc_capture(service, ip, user, secret, timeout=30):
+    """Run a single nxc credential check SYNCHRONOUSLY and return its combined
+    stdout+stderr as text (for the Settings/Credential 'verify' button).
+
+    Args are passed as a list (no shell), so user/secret can contain any
+    characters without injection risk. A DOMAIN\\user is split into nxc's
+    -u user -d domain form. Returns "" on failure to launch."""
+    domain = ""
+    if "\\" in user:
+        domain, user = user.split("\\", 1)
+    args = ["nxc", service, ip, "-u", user, "-p", secret]
+    if domain:
+        args += ["-d", domain]
+    proc = subprocess.run(
+        args, capture_output=True, text=True, timeout=timeout,
+    )
+    return (proc.stdout or "") + "\n" + (proc.stderr or "")
+
+
 def resolve_template(template, project, attacker_ip, attacker_port, scheme=None):
     repl = {
         "<IP>": project.get("target_ip", ""),

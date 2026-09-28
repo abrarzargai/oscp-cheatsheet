@@ -165,7 +165,7 @@ reg query HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\ /f "Proxy" /s
 ### <span style="color:#50FA7B">Using Found Credentials to Gain Access</span>
 Use runas to switch user
 ```bash
-runas.exe /user:<username> cmd
+runas.exe /user:$USER cmd
 ```
 You’ll be prompted to enter the password. If successful and the user is admin → you get admin CMD.
 

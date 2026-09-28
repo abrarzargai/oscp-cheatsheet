@@ -38,6 +38,7 @@
 
   var STORAGE_KEY = "CheatSheet-config-v1";
   var TABS_KEY = "CheatSheet-tabs-v1";
+  var MODE_KEY = "CheatSheet-mode-v1";
   var FIELDS = ["attackerIp","attackerPort","victimIp","domain","dcIp","scheme"];
   var VAR_MAP = [
     ["ATTACKER_IP","attackerIp"],
@@ -50,6 +51,7 @@
   var config = {};
   var wordlistPath = "";       // $WORDLIST_PATH base, loaded from Settings
   var hiddenModules = [];      // top-level category ids hidden from the Notes tree (Settings)
+  var selectedCred = null;     // {user, secret} from the Creds vault → $USER/$PASS
   var tabs = [];
   var activeIndex = -1;
   var debounceTimer = null;
@@ -208,6 +210,23 @@
     html = html.replace(/\$WORDLIST_PATH(?![A-Z_])/g, wp
       ? '<span class="var-filled" title="$WORDLIST_PATH">' + escapeHtml(wp) + "</span>"
       : '<span class="var-unset" title="Set the Wordlist path in Settings">$WORDLIST_PATH</span>');
+
+    // $USER / $PASS come from the credential selected in the Creds vault
+    // (right-side drawer). Once a cred is selected, both fill even if empty
+    // (e.g. guest / null session → -p '' becomes '').
+    if (selectedCred){
+      var cu = selectedCred.user || "";
+      var cp = selectedCred.secret != null ? selectedCred.secret : "";
+      html = html.replace(/\$USER(?![A-Z_])/g,
+        '<span class="var-filled" title="$USER">' + escapeHtml(cu) + "</span>");
+      html = html.replace(/\$PASS(?![A-Z_])/g,
+        '<span class="var-filled" title="$PASS">' + escapeHtml(cp) + "</span>");
+    } else {
+      html = html.replace(/\$USER(?![A-Z_])/g,
+        '<span class="var-unset" title="Pick a credential in the Creds vault (right)">$USER</span>');
+      html = html.replace(/\$PASS(?![A-Z_])/g,
+        '<span class="var-unset" title="Pick a credential in the Creds vault (right)">$PASS</span>');
+    }
     return html;
   }
 
@@ -954,9 +973,17 @@
     }).catch(function(){ /* backend offline — defaults stay */ });
   }
 
+  /* Selected credential from the Creds vault (creds-vault.js). Global so the
+     vault can push a new selection; re-renders the open note's $USER/$PASS. */
+  function applySelectedCred(cred){
+    selectedCred = cred || null;   // keep even if empty (guest / null session)
+    if (viewMode === "notes") renderActiveTab();
+  }
+
   /* ---------- Mode toggle (Notes / Engagement / Tools) ---------- */
   function setMode(mode){
     viewMode = mode;
+    try{ localStorage.setItem(MODE_KEY, mode); }catch(e){}
     var sel = document.getElementById("modeSelect");
     if (sel && sel.value !== mode) sel.value = mode;
 
@@ -1046,6 +1073,11 @@
       var start = firstCat ? firstFilePath(firstCat.children, [firstCat.label]) : null;
       if (start) openTab(start.node, start.path);
     }
+
+    // Restore the last workspace mode (Notes / Engagement / Tools).
+    var savedMode = null;
+    try{ savedMode = localStorage.getItem(MODE_KEY); }catch(e){}
+    if (savedMode && savedMode !== "notes") setMode(savedMode);
   }
 
   apiFetch("/api/notes/tree")

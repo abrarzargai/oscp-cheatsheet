@@ -791,7 +791,7 @@ Host Identification
 
 1. Run Bloodhound with discovered credentials **(mark anything we have controlled over as owned)**
 2. Use ldapdomaindump to identify all domain joined computers
-3. Enumerate accessible shares on servers with NetExec, SMBMap, PowerView, or Snaffler
+3. Enumerate accessible shares on servers with nxc, SMBMap, PowerView, or Snaffler
 
 User Identification  
 **Run Bloodhound with discovered credentials (mark anything we have controlled over as owned)**  
@@ -803,7 +803,7 @@ b. Bloodhound from Windows
 ```
 
 2. Gather the domain password policy using the discovered credentials
-3. Use the discovered credentials and a tool like NetExec to get all users, groups, and logged-on users against the server you have credentials for (ultimate goal is DC)  
+3. Use the discovered credentials and a tool like nxc to get all users, groups, and logged-on users against the server you have credentials for (ultimate goal is DC)  
     **Gather a list of Domain Admins or Privileged users using the following tools:**  
     ○ Windapsearch  
     ○ PowerView  

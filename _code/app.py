@@ -28,7 +28,9 @@ Routes stay thin here; the actual work lives in core/:
 """
 
 import os
+import re
 import shlex
+import subprocess
 import xml.etree.ElementTree as ET
 
 from flask import Flask, jsonify, render_template, request
@@ -306,6 +308,44 @@ def creds_results():
         return jsonify({"error": "no such scan file: scans/creds/{}.txt".format(scan), "results": []}), 404
 
     return jsonify(parsers.parse_nxc_output(path))
+
+
+@app.route("/api/verify-cred", methods=["POST"])
+def verify_cred():
+    """Re-check one credential live: run `nxc <service> <target_ip> -u ... -p ...`
+    and return valid/failed/pwned by parsing the output. Synchronous (unlike
+    /api/run which launches a terminal) so the UI gets an immediate result."""
+    project = projects.get_active_project()
+    if not project:
+        return jsonify({"error": "no active project — create/select one first"}), 400
+    ip = (project.get("target_ip") or "").strip()
+    if not ip:
+        return jsonify({"error": "active project has no target IP"}), 400
+
+    body = request.get_json(force=True) or {}
+    service = (body.get("service") or "").strip().lower()
+    user = (body.get("user") or "").strip()
+    secret = body.get("secret") or ""
+    if not re.match(r"^[a-z0-9]+$", service):
+        return jsonify({"error": "invalid service"}), 400
+    if not user:
+        return jsonify({"error": "username required"}), 400
+
+    try:
+        out = runner.run_nxc_capture(service, ip, user, secret)
+    except FileNotFoundError:
+        return jsonify({"error": "nxc not found on PATH"}), 500
+    except subprocess.TimeoutExpired:
+        return jsonify({"error": "verify timed out"}), 504
+
+    parsed = parsers.parse_nxc_text(out)
+    # Prefer the strongest signal: pwned > valid > failed.
+    rank = {"pwned": 3, "valid": 2, "failed": 1}
+    status = "failed"
+    for r in parsed.get("results", []):
+        if rank.get(r["status"], 0) > rank.get(status, 0):
+            status = r["status"]
+    return jsonify({"status": status, "raw": out.strip()[:2000]})
 
 
 # ---------------------------------------------------------------------------

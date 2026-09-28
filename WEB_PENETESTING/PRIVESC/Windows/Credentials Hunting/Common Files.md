@@ -37,7 +37,7 @@ where /R C:\ *.config
 Windows Sticky Notes saves data in a SQLite database file.
 #### <span style="color:#FFB86C">Location:</span>
 ```
-C:\Users\<user>\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\
+C:\Users\$USER\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\
 ```
 Files of interest:
 - `plum.sqlite`

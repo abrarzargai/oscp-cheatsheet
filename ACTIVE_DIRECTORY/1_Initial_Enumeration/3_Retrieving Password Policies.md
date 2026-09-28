@@ -3,7 +3,7 @@
 
 ```bash
 # Checks password policy using valid credentials
-crackmapexec smb $VICTIM_IP -u avazquez -p Password123 --pass-pol
+nxc smb $VICTIM_IP -u avazquez -p Password123 --pass-pol
 ```
 
 # <span style="color:#FF5555">SMB NULL SESSION</span>

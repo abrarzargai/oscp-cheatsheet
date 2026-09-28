@@ -41,7 +41,7 @@ mysql -u username -p database_name
 
 # Execute commands
 mysql -u username -p database_name -e "show databases;"
-echo '<password>' | mysql -u username -p database_name -e "show databases;"
+echo '$PASS' | mysql -u username -p database_name -e "show databases;"
 
 # Execute commands via a file
 echo 'show tables;' > example.sql

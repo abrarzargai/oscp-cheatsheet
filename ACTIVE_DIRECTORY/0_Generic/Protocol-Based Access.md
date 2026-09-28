@@ -21,7 +21,7 @@ nxc ldap $VICTIM_IP -u user -p pass
 nxc mssql $VICTIM_IP -u user -p pass
 
 
-# --local-auth tells NetExec to authenticate using a local account instead of a domain account.
+# --local-auth tells nxc to authenticate using a local account instead of a domain account.
 nxc mssql $VICTIM_IP --local-auth -u username -p passwords.txt
 ```
 

@@ -3,23 +3,23 @@ Suppose we will use the following credentials: User=forend and password=Klmcargo
 
 ```bash
 # -------------------------------------------
-# CRACKMAPEXEC (CME) - Swiss army knife for AD enumeration
+# nxc (CME) - Swiss army knife for AD enumeration
 # -------------------------------------------
 
 # List all domain users
-crackmapexec smb $DC_IP -u forend -p Klmcargo2 --users
+nxc smb $DC_IP -u forend -p Klmcargo2 --users
 
 # List all domain groups
-crackmapexec smb $DC_IP -u forend -p Klmcargo2 --groups
+nxc smb $DC_IP -u forend -p Klmcargo2 --groups
 
 # Find specific group (interns) - pipe to grep
-crackmapexec smb $DC_IP -u forend -p Klmcargo2 --groups | grep -i interns
+nxc smb $DC_IP -u forend -p Klmcargo2 --groups | grep -i interns
 
 # Show currently logged on users (great for finding targets)
-crackmapexec smb $VICTIM_IP -u forend -p Klmcargo2 --loggedon-users
+nxc smb $VICTIM_IP -u forend -p Klmcargo2 --loggedon-users
 
 # Enumerate shares - what folders can forend access?
-crackmapexec smb $DC_IP -u forend -p Klmcargo2 --shares
+nxc smb $DC_IP -u forend -p Klmcargo2 --shares
 
 # -------------------------------------------
 # SMBMAP - Share enumeration with more details
