@@ -14,7 +14,7 @@ simple bash script for multiple calls (if GET request is not working change it t
 ```bash
 #!/bin/bash
 
-url="http://94.237.57.211:44167"
+url="http://$VICTIM_IP:44167"
 
 for i in {1..50}; do
   for link in $(curl -s "$url/documents.php?uid=$i" | grep -oP "/documents.*?.pdf"); do

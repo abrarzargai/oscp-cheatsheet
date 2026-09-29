@@ -118,15 +118,139 @@
     return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
   }
 
+  /* ---------- Save-output (tee) toggle ----------
+     When on, runnable scan/enum commands in bash blocks are rewritten to also
+     save their output via tee, into a per-tool folder (e.g. nmap →
+     enumeration/scanning/nmap/nmap.txt), while still printing to the screen. */
+  var TEE_KEY = "CheatSheet-tee-v1";
+  var teeEnabled = false;
+  // Each tool -> { dir, ext? }. dir is where output is saved; ext overrides the
+  // file extension when the command name isn't a clean tag (aliases, *.py, -ng).
+  // Only NON-interactive, output-producing tools belong here — interactive ones
+  // (evil-winrm, ssh, xfreerdp, mysql, nc, msfconsole, rpcclient/smbclient/
+  // impacket shells) are intentionally omitted so tee never eats a live session.
+  var TEE_TOOLS = {
+    // port / host scanning
+    nmap:         { dir: "enumeration/scanning/nmap" },
+    rustscan:     { dir: "enumeration/scanning/rustscan" },
+    masscan:      { dir: "enumeration/scanning/masscan" },
+    autorecon:    { dir: "enumeration/scanning/autorecon" },
+    // web content discovery
+    ffuf:         { dir: "enumeration/web/ffuf" },
+    gobuster:     { dir: "enumeration/web/gobuster" },
+    feroxbuster:  { dir: "enumeration/web/feroxbuster" },
+    dirb:         { dir: "enumeration/web/dirb" },
+    dirsearch:    { dir: "enumeration/web/dirsearch" },
+    wfuzz:        { dir: "enumeration/web/wfuzz" },
+    nikto:        { dir: "enumeration/web/nikto" },
+    whatweb:      { dir: "enumeration/web/whatweb" },
+    // smb / netbios
+    enum4linux:      { dir: "enumeration/smb" },
+    "enum4linux-ng": { dir: "enumeration/smb", ext: "enum4linux" },
+    smbmap:          { dir: "enumeration/smb" },
+    // ldap / active directory
+    ldapsearch:   { dir: "enumeration/ldap" },
+    nxc:          { dir: "enumeration/ad", ext: "nxc" },
+    netexec:      { dir: "enumeration/ad", ext: "nxc" },
+    crackmapexec: { dir: "enumeration/ad", ext: "nxc" },
+    cme:          { dir: "enumeration/ad", ext: "nxc" },
+    certipy:      { dir: "enumeration/ad/certipy" },
+    "certipy-ad": { dir: "enumeration/ad/certipy", ext: "certipy" },
+    kerbrute:     { dir: "enumeration/ad/kerbrute" },
+    "getuserspns.py": { dir: "enumeration/ad", ext: "kerberoast" },
+    "getnpusers.py":  { dir: "enumeration/ad", ext: "asreproast" },
+    // dns
+    dig:          { dir: "enumeration/dns" },
+    dnsrecon:     { dir: "enumeration/dns" },
+    dnsenum:      { dir: "enumeration/dns" },
+    fierce:       { dir: "enumeration/dns" },
+    // snmp
+    snmpwalk:     { dir: "enumeration/snmp" },
+    "snmp-check": { dir: "enumeration/snmp" },
+    onesixtyone:  { dir: "enumeration/snmp" },
+    // databases
+    odat:         { dir: "enumeration/oracle" },
+    // brute force (non-interactive result output)
+    hydra:        { dir: "attacks/bruteforce/hydra" }
+  };
+  function initTeeToggle(){
+    try{ teeEnabled = localStorage.getItem(TEE_KEY) === "1"; }catch(e){ teeEnabled = false; }
+    var cb = document.getElementById("teeToggle");
+    if (!cb) return;
+    cb.checked = teeEnabled;
+    cb.addEventListener("change", function(){
+      teeEnabled = cb.checked;
+      try{ localStorage.setItem(TEE_KEY, teeEnabled ? "1" : "0"); }catch(e){}
+      if (viewMode === "notes") renderActiveTab();
+    });
+  }
+
+  /* Descriptive basename for a command's output. The TOOL becomes the file
+     EXTENSION (e.g. all-ports.nmap, vhost.gobuster) so outputs can later be
+     globbed + parsed per tool (*.nmap, *.gobuster, …). */
+  function teeVariant(tool, sub, line){
+    if (tool === "nmap"){
+      if (/(^|\s)-sn(\s|$)/.test(line)) return "ping-sweep";
+      if (/(^|\s)-sU(\s|$)/.test(line)) return "udp";
+      if (/--script[ =]?vuln/.test(line)) return "vuln";
+      if (/--script/.test(line)) return "scripts";
+      if (/(^|\s)-p-(\s|$)/.test(line)) return "all-ports";
+      if (/(^|\s)-s[CV]+(\s|$)/.test(line)) return "service-version";
+      return "scan";
+    }
+    if (tool === "ffuf" || tool === "wfuzz"){
+      if (/Host:\s*FUZZ/i.test(line)) return "vhost";
+      if (/FUZZ=/.test(line)) return "params";
+      return "directories";
+    }
+    // nxc/cme/netexec: the protocol is the descriptive name (smb.nxc, mssql.nxc).
+    if (tool === "nxc" || tool === "netexec" || tool === "crackmapexec" || tool === "cme"){
+      return sub || "scan";
+    }
+    if (sub) return sub;                                // gobuster/certipy/dig subcommands, …
+    return "scan";
+  }
+  function teeify(line){
+    if (/\|\s*tee\b/.test(line)) return line;          // already saving
+    if (/[\\]$/.test(line.trim())) return line;        // line continuation — skip
+    // optional leading "sudo ", then tool, then an optional bare subcommand.
+    var m = line.match(/^(\s*)(sudo\s+)?([A-Za-z0-9_.\-]+)(?:\s+([a-z][a-z0-9-]*))?/);
+    if (!m) return line;
+    var tool = m[3].toLowerCase();
+    var def = TEE_TOOLS[tool];
+    if (!def) return line;
+    var name = teeVariant(tool, m[4] || "", line);
+    var ext = def.ext || tool;                          // clean extension for parsing
+    // Anchor to the active project's folder (~/htb/<box>/…) so output lands
+    // where the Findings workspace looks, whatever the shell's cwd is.
+    // No active project → relative to cwd, as before.
+    var base = (typeof activeProject !== "undefined" && activeProject && activeProject.path)
+      ? activeProject.path.replace(/\/+$/, "") + "/" : "";
+    var dir = base + def.dir;
+    var file = dir + "/" + name + "." + ext;            // <descriptive>.<tool>
+    return 'mkdir -p "' + dir + '" && ' + line.trim() + ' 2>&1 | tee "' + file + '"';
+  }
+
   /* ---------- Obsidian-flavored markdown preprocessing (fence-aware) ---------- */
   var CALLOUT_TAGS = {
     info:"[i]", tip:"[tip]", warning:"[!]", danger:"[!!]", error:"[!!]",
     note:"[note]", question:"[?]", example:"[ex]", success:"[ok]", bug:"[bug]", quote:"[quote]"
   };
 
+  var IMG_EXT_RE = /\.(png|jpe?g|gif|webp|svg|bmp|ico|avif)$/i;
   function transformLine(line){
-    var out = line.replace(/!\[\[([^\]]+)\]\]/g, function(_, name){
-      return "*[image: " + name.trim() + "]*";
+    // Obsidian embeds: ![[Pasted image ….png]] or ![[img.png|300]] (optional
+    // width after a pipe). Images become a real <img> served by /api/notes/image
+    // (resolved by basename); non-image embeds keep the old text placeholder.
+    var out = line.replace(/!\[\[([^\]]+)\]\]/g, function(_, inner){
+      var parts = inner.split("|");
+      var name = parts[0].trim();
+      var opt = (parts[1] || "").trim();
+      if (!IMG_EXT_RE.test(name)) return "*[embed: " + name + "]*";
+      var src = "/api/notes/image?name=" + encodeURIComponent(name);
+      var widthAttr = /^\d+$/.test(opt) ? ' width="' + opt + '"' : "";
+      return '<img class="note-img" src="' + src + '" alt="' + escapeHtml(name) +
+        '"' + widthAttr + ' loading="lazy">';
     });
     // Obsidian-style topic tags, e.g. #AD_DEFINATION_SPN — turn into a clickable
     // link that triggers the content search for that tag (handled in enhanceContent).
@@ -145,17 +269,22 @@
 
   function preprocessMarkdown(md){
     var lines = md.split("\n");
-    var inFence = false, marker = "";
+    var inFence = false, marker = "", lang = "";
     var out = [];
     for (var i=0;i<lines.length;i++){
       var line = lines[i];
-      var fm = line.match(/^(\s*)(```|~~~)/);
+      var fm = line.match(/^(\s*)(```|~~~)(\S*)/);
       if (fm){
-        if (!inFence){ inFence = true; marker = fm[2]; out.push(line); continue; }
-        else if (line.indexOf(marker) !== -1){ inFence = false; out.push(line); continue; }
+        if (!inFence){ inFence = true; marker = fm[2]; lang = (fm[3] || "").toLowerCase(); out.push(line); continue; }
+        else if (line.indexOf(marker) !== -1){ inFence = false; lang = ""; out.push(line); continue; }
         else { out.push(line); continue; }
       }
-      out.push(inFence ? line : transformLine(line));
+      if (inFence){
+        var isShell = lang === "" || lang === "bash" || lang === "sh" || lang === "shell" || lang === "shell-session";
+        out.push(teeEnabled && isShell ? teeify(line) : line);
+      } else {
+        out.push(transformLine(line));
+      }
     }
     return out.join("\n");
   }
@@ -348,6 +477,26 @@
       wrap.className = "table-scroll";
       table.parentNode.insertBefore(wrap, table);
       wrap.appendChild(table);
+    });
+
+    // Embedded note images: click to view full-size; show a clear note if the
+    // image file can't be found in the vault.
+    container.querySelectorAll("img.note-img").forEach(function(img){
+      img.addEventListener("error", function(){
+        var span = document.createElement("span");
+        span.className = "note-img broken";
+        span.textContent = "[missing image: " + (img.getAttribute("alt") || "") + "]";
+        if (img.parentNode) img.parentNode.replaceChild(span, img);
+      });
+      img.addEventListener("click", function(){
+        var box = document.createElement("div");
+        box.className = "img-lightbox";
+        var big = document.createElement("img");
+        big.src = img.src;
+        box.appendChild(big);
+        box.addEventListener("click", function(){ box.remove(); });
+        document.body.appendChild(box);
+      });
     });
 
     container.querySelectorAll('a[href^="tag:"]').forEach(function(a){
@@ -945,6 +1094,14 @@
 
   function apiFetch(path, opts){
     return fetch(API_BASE + path, opts).then(function(r){
+      // A non-JSON reply (Flask's HTML 404/500 page) usually means the server
+      // is running older code without this route — say so instead of a JSON
+      // parse error.
+      var type = r.headers.get("content-type") || "";
+      if (type.indexOf("application/json") === -1){
+        throw new Error("HTTP " + r.status + " from " + path.split("?")[0] +
+          (r.status === 404 ? " — route missing; restart the server (./run.sh) to load new code" : ""));
+      }
       return r.json().then(function(body){
         if (!r.ok) throw new Error(body.error || ("HTTP " + r.status));
         return body;
@@ -990,16 +1147,19 @@
     var isNotes = mode === "notes";
     var isEngagement = mode === "engagement";
     var isTools = mode === "tools";
+    var isOutput = mode === "output";
 
     document.getElementById("notesSidebarHead").classList.toggle("mode-hidden", !isNotes);
     document.getElementById("tree").classList.toggle("mode-hidden", !isNotes);
     document.getElementById("engagementTree").hidden = !isEngagement;
+    document.getElementById("outputTree").hidden = !isOutput;
     document.getElementById("toolsTree").hidden = !isTools;
     document.getElementById("tabbar").classList.toggle("mode-hidden", !isNotes);
     document.getElementById("breadcrumb").classList.toggle("mode-hidden", !isNotes);
 
     if (isEngagement) renderEngagementView();
     else if (isTools) renderToolsView();
+    else if (isOutput) renderOutputView();
     else renderActiveTab();
   }
 
@@ -1016,6 +1176,7 @@
     updateBrandStats();
 
     initConfigFields();
+    initTeeToggle();
     loadAppSettings();
     renderTree("");
     renderTabs();

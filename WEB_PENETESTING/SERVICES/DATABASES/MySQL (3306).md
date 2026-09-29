@@ -31,39 +31,39 @@ cat /etc/mysql/mysql.conf.d/mysqld.cnf
 #### <span style="color:#FFB86C">Local</span>
 ```bash
 # No password
-mysql -u username
+mysql -u $USER
 
 # With Password
-mysql -u username -p
+mysql -u $USER -p
 
 # Specity database name
-mysql -u username -p database_name
+mysql -u $USER -p database_name
 
 # Execute commands
-mysql -u username -p database_name -e "show databases;"
-echo '$PASS' | mysql -u username -p database_name -e "show databases;"
+mysql -u $USER -p database_name -e "show databases;"
+echo '$PASS' | mysql -u $USER -p database_name -e "show databases;"
 
 # Execute commands via a file
 echo 'show tables;' > example.sql
-mysql -u username --password='password' database_name -v < example.sql
+mysql -u $USER --password='password' database_name -v < example.sql
 
 # Read arbitrary files
-mysql -u username --password='password' database_name -v < /etc/passwd
+mysql -u $USER --password='password' database_name -v < /etc/passwd
 
 ```
 
 #### <span style="color:#FFB86C">Remote</span>
 ```bash
-mysql -u username -p -h $VICTIM_IP -P 3306
+mysql -u $USER -p -h $VICTIM_IP -P 3306
 
 # Without password (remove -p)
-mysql -u username -h $VICTIM_IP -P 3306
+mysql -u $USER -h $VICTIM_IP -P 3306
 
 # Specify database (-D)
-mysql -u username -p -h $VICTIM_IP -D database_name
+mysql -u $USER -p -h $VICTIM_IP -D database_name
 
 # Default credential (username: root, no password)
-mysql -u root -h $VICTIM_IP -P 3306
+mysql -u $USER -h $VICTIM_IP -P 3306
 ```
 ### <span style="color:#50FA7B">Execute from File</span>
 After connecting MySQL, you can execute SQL commands from a .sql file.

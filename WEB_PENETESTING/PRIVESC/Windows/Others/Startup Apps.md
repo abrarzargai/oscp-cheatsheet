@@ -10,7 +10,7 @@ cscript C:\PrivEsc\CreateShortcut.vbs
 
 Start a listener on Kali, and then simulate an admin logon using RDP and the credentials you previously extracted:
 ```
-rdesktop -u admin $VICTIM_IP
+rdesktop -u $USER $VICTIM_IP
 ```
 
 A shell running as admin should connect back to your listener.

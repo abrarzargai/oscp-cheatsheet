@@ -78,6 +78,9 @@ var projectList = [];
       }
       // Credentials are stored per machine — reload the vault for this project.
       if (typeof credVaultOnProjectChange === "function") credVaultOnProjectChange();
+      // "save output" tee paths point into the project folder — re-render so
+      // the open note picks up the (new) machine's path.
+      if (teeEnabled && viewMode === "notes") renderActiveTab();
       return activeProject;
     });
   }
@@ -149,6 +152,7 @@ var projectList = [];
         return refreshActiveProject();
       }).then(function(){
         if (viewMode === "engagement") renderEngagementView();
+        else if (viewMode === "output") renderOutputView();
       }).catch(function(err){ setProjectStatus(err.message, true); });
     });
 
@@ -211,6 +215,7 @@ var projectList = [];
         return loadProjects().then(refreshActiveProject);
       }).then(function(){
         if (viewMode === "engagement") renderEngagementView();
+        else if (viewMode === "output") renderOutputView();
       }).catch(function(err){
         errEl.textContent = err.message;
         errEl.hidden = false;

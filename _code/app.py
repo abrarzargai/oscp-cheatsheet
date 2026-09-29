@@ -33,9 +33,9 @@ import shlex
 import subprocess
 import xml.etree.ElementTree as ET
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_file
 
-from core import checklists, netinfo, notes, parsers, projects, runner, settings, vpn, vpn
+from core import checklists, netinfo, notes, outputs, parsers, projects, runner, settings, sysmon, vpn
 
 # ---------------------------------------------------------------------------
 # Config
@@ -177,6 +177,16 @@ def notes_content():
     if content is None:
         return jsonify({"error": "note not found"}), 404
     return jsonify({"content": content})
+
+
+@app.route("/api/notes/image")
+def notes_image():
+    """Serve a vault image referenced by an Obsidian ![[name.png]] embed."""
+    name = request.args.get("name", "")
+    full = notes.resolve_image(name)
+    if not full:
+        return jsonify({"error": "image not found"}), 404
+    return send_file(full, max_age=3600)
 
 
 @app.route("/api/notes/search")
@@ -480,6 +490,81 @@ def checklist_set():
     state.setdefault(port_key, {})[item_id] = checked
     projects.save_checklist(project["name"], state)
     return jsonify({"ok": True, "checklist": state})
+
+
+# ---------------------------------------------------------------------------
+# Routes — Results workspace: the saved command-output tree (from the "save
+# output" tee toggle). Scoped to the active project, read-only, path-guarded.
+# ---------------------------------------------------------------------------
+
+@app.route("/api/outputs/tree", methods=["GET"])
+def outputs_tree():
+    project = projects.get_active_project()
+    if not project:
+        return jsonify({"error": "no active project"}), 400
+    pdir = projects.project_dir(project["name"])
+    return jsonify({"project": project["name"], "files": outputs.list_files(pdir)})
+
+
+@app.route("/api/outputs/file", methods=["GET"])
+def outputs_file():
+    project = projects.get_active_project()
+    if not project:
+        return jsonify({"error": "no active project"}), 400
+    rel = request.args.get("path", "")
+    pdir = projects.project_dir(project["name"])
+    full = outputs.resolve_in_project(pdir, rel)
+    if not full:
+        return jsonify({"error": "no such file"}), 404
+    result = outputs.read_and_parse(full, rel)
+    result["rel"] = rel
+    return jsonify(result)
+
+
+@app.route("/api/outputs/summary", methods=["GET"])
+def outputs_summary():
+    project = projects.get_active_project()
+    if not project:
+        return jsonify({"error": "no active project"}), 400
+    pdir = projects.project_dir(project["name"])
+    summary = outputs.summarize(pdir)
+    summary["project"] = project["name"]
+    return jsonify(summary)
+
+
+# ---------------------------------------------------------------------------
+# Routes — System monitor (Settings › System). Read-only stats + a local
+# process kill. Like /api/run, these act on this machine and rely on the
+# server being bound to 127.0.0.1 only.
+# ---------------------------------------------------------------------------
+
+@app.route("/api/system", methods=["GET"])
+def system_snapshot():
+    try:
+        top = int(request.args.get("top", 15))
+    except ValueError:
+        top = 15
+    sort = request.args.get("sort", "rss")
+    return jsonify(sysmon.snapshot(top=top, sort=sort))
+
+
+@app.route("/api/system/kill", methods=["POST"])
+def system_kill():
+    body = request.get_json(force=True) or {}
+    force = bool(body.get("force"))
+    # terminal=true → hand the privileged kill to a native terminal instead of
+    # signalling directly (so the user can enter a sudo password).
+    if body.get("terminal"):
+        cmd = sysmon.kill_command(body.get("pid"), force)
+        full = "printf '\\033[1;32m$ %s\\033[0m\\n' {}; {}; exec bash".format(
+            shlex.quote(cmd), cmd)
+        try:
+            runner.launch_terminal(full, cwd=os.path.expanduser("~"))
+        except FileNotFoundError as e:
+            return jsonify({"ok": False, "error": "could not launch terminal: {}".format(e)}), 500
+        return jsonify({"ok": True, "command": cmd})
+    result = sysmon.kill_process(body.get("pid"), force)
+    return jsonify(result), (200 if result.get("ok") else 400)
 
 
 if __name__ == "__main__":

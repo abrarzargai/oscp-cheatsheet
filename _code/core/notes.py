@@ -92,6 +92,55 @@ def read_note_content(category_id, relpath):
         return f.read()
 
 
+# ---------------------------------------------------------------------------
+# Embedded images (Obsidian ![[name.png]] embeds). The vault stores images
+# under OTHERS/ASSETS/IMAGES (and possibly elsewhere) and embeds reference them
+# by BASENAME only, the way Obsidian resolves them across the vault. So we build
+# a basename -> absolute-path index once and serve by basename, path-guarded to
+# stay inside the vault.
+# ---------------------------------------------------------------------------
+IMAGE_EXTS = {"png", "jpg", "jpeg", "gif", "webp", "svg", "bmp", "ico", "avif"}
+_IMAGE_INDEX = None
+
+
+def _build_image_index():
+    index = {}
+    for dirpath, dirnames, filenames in os.walk(VAULT_ROOT):
+        # don't descend into the app code or hidden dirs
+        dirnames[:] = [d for d in dirnames if not d.startswith(".") and d != "_code"]
+        for fn in filenames:
+            ext = fn.rsplit(".", 1)[-1].lower() if "." in fn else ""
+            if ext in IMAGE_EXTS:
+                # first match wins; later duplicates of the same name are ignored
+                index.setdefault(fn, os.path.join(dirpath, fn))
+                index.setdefault(fn.lower(), os.path.join(dirpath, fn))
+    return index
+
+
+def resolve_image(name, refresh=False):
+    """Return the absolute path of a vault image referenced by basename, or
+    None. Rebuilds the index if the name isn't found (covers newly pasted
+    images) so a missing image self-heals without a server restart."""
+    global _IMAGE_INDEX
+    if name is None:
+        return None
+    name = name.strip().split("/")[-1].split("\\")[-1]  # basename only
+    if not name or ".." in name:
+        return None
+    if _IMAGE_INDEX is None or refresh:
+        _IMAGE_INDEX = _build_image_index()
+    full = _IMAGE_INDEX.get(name) or _IMAGE_INDEX.get(name.lower())
+    if not full and not refresh:
+        return resolve_image(name, refresh=True)  # one rebuild, then give up
+    if not full:
+        return None
+    # path guard: must stay inside the vault and still exist
+    full = os.path.realpath(full)
+    if os.path.commonpath([full, os.path.realpath(VAULT_ROOT)]) != os.path.realpath(VAULT_ROOT):
+        return None
+    return full if os.path.isfile(full) else None
+
+
 def _find_snippet(text, query_lower):
     for line in text.split("\n"):
         idx = line.lower().find(query_lower)

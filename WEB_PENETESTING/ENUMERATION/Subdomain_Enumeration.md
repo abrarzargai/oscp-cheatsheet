@@ -1,4 +1,10 @@
 
+# <span style="color:#8BE9FD">NXC — host finding using smb</span>
+```bash
+# Add all target hostnames to /etc/hosts automatically
+nxc smb $VICTIM_IP --generate-hosts-file hosts
+```
+
 # <span style="color:#8BE9FD">ffuf — vhost fuzzing</span>
 ```bash
 dig axfr @$VICTIM_IP $DOMAIN

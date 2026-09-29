@@ -11,8 +11,8 @@ impacket-getTGT $DOMAIN/'ryan.naylor':'HollowOct31Nyt'
 export KRB5CCNAME=/home/kali/Voleur/ryan.naylor.ccache
 
 # Use Kerberos ticket for LDAP and the -k Kerberos option (use Kerberos ticke
-nxc ldap $DC_IP -u ryan.naylor -p HollowOct31Nyt -k
+nxc ldap $DC_IP -u $USER -p $PASS -k
 
 # Use Kerberos ticket for SMB and the -k Kerberos option (use Kerberos ticke
-nxc smb $DC_IP -u ryan.naylor -p HollowOct31Nyt -k
+nxc smb $DC_IP -u $USER -p $PASS -k
 ```

@@ -39,7 +39,7 @@ enum4linux -a $VICTIM_IP > enum4linux.txt # Full scan
 enum4linux -u "guest" -p "" $VICTIM_IP # Test guest access
 enum4linux -u $DOMAIN\\\\guest -a $VICTIM_IP # enumerating using the Guest account
 
-enum4linux-ng -A $VICTIM_IP -u FLUFFY/j.fleischman -p 'J0elTHEM4n1990!'
+enum4linux-ng -A $VICTIM_IP -u $DOMAIN/$USER -p '$PASS'
 ```
 ##### <span style="color:#FFB86C">Using rpcclient</span>
 ```bash
@@ -61,7 +61,7 @@ rpcclient $> querydispinfo
 nxc smb $VICTIM_IP --users
 
 # Lists all domain users using valid credentials
-nxc smb $VICTIM_IP -u htb-student -p Academy_student_AD! --users
+nxc smb $VICTIM_IP -u $USER -p $PASS --users
 ```
 
 ___

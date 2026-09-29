@@ -31,6 +31,9 @@
           <input type="search" id="contentSearchInput" placeholder="grep -r 'keyword' notes/" aria-label="Search inside all notes">
           <button type="button" class="search-clear" id="contentSearchClear" aria-label="Clear search" hidden>[x]</button>
         </div>
+        <label class="tee-toggle" id="teeToggleLabel" title="Rewrite scan/enum commands to also save output via tee into the active project folder (e.g. ~/htb/title="Rewrite scan/enum commands to also save output via tee (e.g. enumeration/scanning/nmap/nmap.txt)"lt;boxtitle="Rewrite scan/enum commands to also save output via tee (e.g. enumeration/scanning/nmap/nmap.txt)"gt;/enumeration/scanning/nmap/all-ports.nmap)">
+          <input type="checkbox" id="teeToggle"> save output
+        </label>
         <div class="search-dropdown" id="contentSearchResults" hidden></div>
       </div>
 
@@ -42,9 +45,11 @@
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 <script src="{{ url_for('static', filename='js/projects.js') }}"></script>
 <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sysmon.js') }}"></script>
 <script src="{{ url_for('static', filename='js/creds-vault.js') }}"></script>
 <script src="{{ url_for('static', filename='js/vpn.js') }}"></script>
 <script src="{{ url_for('static', filename='js/runner.js') }}"></script>
 <script src="{{ url_for('static', filename='js/nmap.js') }}"></script>
+<script src="{{ url_for('static', filename='js/outputs.js') }}"></script>
 <script src="{{ url_for('static', filename='js/checklist.js') }}"></script>
 <script src="{{ url_for('static', filename='js/tools.js') }}"></script>

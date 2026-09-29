@@ -53,6 +53,8 @@ function modulesPanelBody(){
     '<p class="settings-sub">Choose which top-level modules appear in the Notes sidebar.</p>' +
     modulesSectionHtml();
 }
+// The System monitor now opens from the sidebar's [system] button (see
+// sysmon.js), so it's no longer a Settings section.
 var SETTINGS_SECTIONS = [
   { id: "paths", label: "Paths", body: pathsPanelBody },
   { id: "modules", label: "Modules", body: modulesPanelBody }

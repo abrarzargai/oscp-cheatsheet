@@ -19,7 +19,7 @@ https://www.exploit-db.com/exploits/34992
 - Type: Pre-auth SQL Injection
 - Goal: If successfull it will create an admin user
 ```bash
-python2 drupalgeddon.py -t http://drupal-qa.$DOMAIN -u hacker -p pwnd
+python2 drupalgeddon.py -t http://drupal-qa.$DOMAIN -u $USER -p $PASS
 ```
 
 ## <span style="color:#8BE9FD">Drupalgeddon 2 – CVE-2018-7600</span>

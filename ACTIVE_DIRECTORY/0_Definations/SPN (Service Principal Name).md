@@ -8,7 +8,7 @@ When a user wants to access a service, such as a **SQL Server**, Kerberos needs 
 
 ### <span style="color:#50FA7B">SPN Format</span>
 ```plain
-serviceclass/hostname:port/servicename
+$DOMAIN/$USER:$PASS
 ```
 Examples:
 - `MSSQLSvc/sql01.corp.local:1433` — SQL Server on port 1433

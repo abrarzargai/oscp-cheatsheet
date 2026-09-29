@@ -33,6 +33,9 @@ git clone https://github.com/fortra/impacket
 cd impacket
 sudo python3 -m pip install .
 ```
+
+> some time the old version doesn't work perfectly so we need to update it 
+> **pip install --upgrade git+https://github.com/fortra/impacket.git**
 # <span style="color:#FF5555">2. List SPNs (Service Accounts)</span>
 
 Check kerberoastable users using the Impacket's module GetUserSPNs.py

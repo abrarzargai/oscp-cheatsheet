@@ -7,29 +7,29 @@ Suppose we will use the following credentials: User=forend and password=Klmcargo
 # -------------------------------------------
 
 # List all domain users
-nxc smb $DC_IP -u forend -p Klmcargo2 --users
+nxc smb $DC_IP -u $USER -p $PASS --users
 
 # List all domain groups
-nxc smb $DC_IP -u forend -p Klmcargo2 --groups
+nxc smb $DC_IP -u $USER -p $PASS --groups
 
 # Find specific group (interns) - pipe to grep
-nxc smb $DC_IP -u forend -p Klmcargo2 --groups | grep -i interns
+nxc smb $DC_IP -u $USER -p $PASS --groups | grep -i interns
 
 # Show currently logged on users (great for finding targets)
-nxc smb $VICTIM_IP -u forend -p Klmcargo2 --loggedon-users
+nxc smb $VICTIM_IP -u $USER -p $PASS --loggedon-users
 
 # Enumerate shares - what folders can forend access?
-nxc smb $DC_IP -u forend -p Klmcargo2 --shares
+nxc smb $DC_IP -u $USER -p $PASS --shares
 
 # -------------------------------------------
 # SMBMAP - Share enumeration with more details
 # -------------------------------------------
 
 # Quick check of access on all shares
-smbmap -u forend -p Klmcargo2 -d $DOMAIN -H $DC_IP
+smbmap -u $USER -p $PASS -d $DOMAIN -H $DC_IP
 
 # Recursive directory listing (find sensitive files)
-smbmap -u forend -p Klmcargo2 -d $DOMAIN -H $DC_IP -R 'Department Shares'
+smbmap -u $USER -p $PASS -d $DOMAIN -H $DC_IP -R 'Department Shares'
 
 # -------------------------------------------
 # RPCCLIENT - RID brute force enumeration
@@ -47,8 +47,8 @@ rpcclient $> queryuser 1170      # Query specific user by RID (1170 is example)
 # -------------------------------------------
 
 # Find Domain Admins group members
-python3 windapsearch.py --dc-ip $DC_IP -u forend@$DOMAIN -p Klmcargo2 --da
+python3 windapsearch.py --dc-ip $DC_IP -u forend@$DOMAIN -p $PASS --da
 
 # Find ALL privileged users (includes nested group members)
-python3 windapsearch.py --dc-ip $DC_IP -u forend@$DOMAIN -p Klmcargo2 -PU
+python3 windapsearch.py --dc-ip $DC_IP -u forend@$DOMAIN -p $PASS -PU
 ```

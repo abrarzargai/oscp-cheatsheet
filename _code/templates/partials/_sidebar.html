@@ -6,6 +6,7 @@
             <select id="modeSelect" class="proj-select">
               <option value="notes">Notes</option>
               <option value="engagement">Engagement</option>
+              <option value="output">Findings</option>
               <option value="tools">Tools</option>
             </select>
           </div>
@@ -22,10 +23,13 @@
 
         <nav class="tree" id="engagementTree" aria-label="Engagement playbook" hidden></nav>
 
+        <nav class="tree" id="outputTree" aria-label="Saved command output" hidden></nav>
+
         <nav class="tree" id="toolsTree" aria-label="Tools" hidden></nav>
 
         <div class="sidebar-foot">
           <button type="button" class="sidebar-foot-btn" id="settingsToggle" title="Settings">[settings]</button>
+          <button type="button" class="sidebar-foot-btn" id="sysmonToggle" title="System monitor — RAM, CPU, disk, processes">[system]</button>
         </div>
       </aside>
     </div>

