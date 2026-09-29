@@ -1,0 +1,1 @@
+- `Config files >> configuration.php | config.inc.php`

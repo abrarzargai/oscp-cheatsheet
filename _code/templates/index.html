@@ -1,0 +1,50 @@
+<script>
+  // Applied before the stylesheet/body render so a saved manual theme choice
+  // never flashes the other theme first. System-preference light/dark (no
+  // saved choice) needs no JS at all — theme.css's prefers-color-scheme
+  // media query handles that on its own.
+  (function(){
+    try{
+      var saved = localStorage.getItem("CheatSheet-theme-v1");
+      if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
+    }catch(e){}
+  })();
+</script>
+<title>Cheatsheet</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dos.min.js"></script>
+
+<div class="app">
+  {% include "partials/_topbar.html" %}
+
+  <div class="body">
+    {% include "partials/_sidebar.html" %}
+
+    <div class="content-outer">
+      <div class="content-search card" id="contentSearchWrap">
+        <div class="search-wrap">
+          <input type="search" id="contentSearchInput" placeholder="grep -r 'keyword' notes/" aria-label="Search inside all notes">
+          <button type="button" class="search-clear" id="contentSearchClear" aria-label="Clear search" hidden>[x]</button>
+        </div>
+        <div class="search-dropdown" id="contentSearchResults" hidden></div>
+      </div>
+
+      {% include "partials/_tabs.html" %}
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script src="{{ url_for('static', filename='js/projects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+<script src="{{ url_for('static', filename='js/creds-vault.js') }}"></script>
+<script src="{{ url_for('static', filename='js/vpn.js') }}"></script>
+<script src="{{ url_for('static', filename='js/runner.js') }}"></script>
+<script src="{{ url_for('static', filename='js/nmap.js') }}"></script>
+<script src="{{ url_for('static', filename='js/checklist.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tools.js') }}"></script>

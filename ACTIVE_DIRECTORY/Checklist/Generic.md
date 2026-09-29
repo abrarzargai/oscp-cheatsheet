@@ -1,0 +1,5 @@
+- [ ]  If you get a shell as a user: run privilege-escalation checks, dump local/domain hashes, and collect them into a file for offline cracking and lateral movement.
+ - [ ] If stuck: rescan, verify your tool versions/flags, and ensure you’re running tools correctly (and that network/firewall rules aren’t blocking you).
+ - [ ] When brute-forcing, remember to test different protocols and include NTLM where required — be careful with lockouts.
+- [ ] In AD environments, look for additional network adapters/subnets for pivoting; set up a jumpbox and relay tools through it when needed.
+- [ ] If **AD FS** is in scope, look into **ADFSDump** (extract signing keys/config from the ADFS DB) and **ADFSpoof** (forge SAML tokens to impersonate any federated user).

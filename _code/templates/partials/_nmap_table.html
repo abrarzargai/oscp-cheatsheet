@@ -1,0 +1,13 @@
+{#
+  Not included by index.html.
+
+  The nmap results table (PORT | STATE | SERVICE | VERSION | NSE/CHECKLIST)
+  is built entirely client-side by static/js/nmap.js's renderNmapTable(),
+  from JSON returned by GET /api/nmap. Row count is data-driven (one row
+  per parsed port, plus a collapsible details row), so it can't be a fixed
+  Jinja partial without also changing nmap.js to populate a static table
+  skeleton instead of building one — left alone here to keep this a pure
+  reorganization rather than a behavior change.
+
+  This file exists so the folder layout matches the requested structure.
+#}

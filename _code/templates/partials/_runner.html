@@ -1,0 +1,16 @@
+{#
+  Not included by index.html.
+
+  The command-runner panel (recon-scan preset buttons with their [run]/
+  [copy] pair) has no separate server-rendered markup in this app — it's
+  built entirely client-side by static/js/nmap.js's engagementShell() /
+  renderPresetButtons(), injected into the shared #content mount point
+  defined in partials/_tabs.html, and wired up by static/js/runner.js
+  (runTemplate / makeCopyCmdBtn).
+
+  This file exists so the folder layout matches the requested structure.
+  If you want real server-rendered markup here instead of a JS template
+  string, move engagementShell()'s HTML into this partial, include it from
+  index.html (initially hidden), and change renderEngagementView() in
+  nmap.js to toggle/populate it rather than rebuild it from scratch.
+#}

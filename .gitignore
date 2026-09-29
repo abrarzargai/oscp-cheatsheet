@@ -1,0 +1,28 @@
+# ── Python (_code helper app) ──
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# ── Obsidian vault state ──
+# Per-session UI layout — changes constantly, not worth versioning
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/hotkeys.json
+.trash/
+
+# ── OS / editor cruft ──
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
