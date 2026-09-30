@@ -140,8 +140,14 @@
 
   function build(){
     toggleBtn = document.createElement("button");
-    toggleBtn.type = "button"; toggleBtn.className = "vpn-toggle";
-    toggleBtn.innerHTML = '<span class="vpn-toggle-dot down"></span><span>VPN</span>';
+    toggleBtn.type = "button"; toggleBtn.className = "edge-tab vpn-toggle";
+    toggleBtn.innerHTML =
+      '<span class="vpn-toggle-dot down"></span>' +
+      '<span class="edge-tab-icon">' +
+        '<svg class="edge-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M12 3l7 3v5c0 4.5-3 7.5-7 8.5C8 18.5 5 15.5 5 11V6l7-3z"/></svg>' +
+      '</span>' +
+      '<span class="edge-tab-label">VPN</span>';
     toggleBtn.title = "OpenVPN status / connect";
     dotEl = toggleBtn.querySelector(".vpn-toggle-dot");
     toggleBtn.addEventListener("click", function(){

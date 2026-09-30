@@ -237,6 +237,17 @@ def projects_update(name):
     return jsonify({"project": data})
 
 
+@app.route("/api/projects/<name>", methods=["DELETE"])
+def projects_delete(name):
+    """Permanently delete a project's folder (~/htb/<name>)."""
+    if not projects.valid_name(name):
+        return jsonify({"error": "invalid project name"}), 400
+    ok = projects.delete_project(name)
+    if not ok:
+        return jsonify({"error": "no such project"}), 404
+    return jsonify({"ok": True, "active": projects.get_active_name()})
+
+
 @app.route("/api/active", methods=["GET"])
 def active_get():
     return jsonify({"project": projects.get_active_project()})

@@ -38,6 +38,8 @@
     if (!treeEl) return;
     treeEl.innerHTML = "";
     (PLAYBOOK || []).forEach(function(group){
+      // Credential Checking now lives in the Tools workspace, not here.
+      if (group.id === "credential_access") return;
       var details = document.createElement("details");
       details.className = "tree-folder";
       details.open = true;

@@ -4,6 +4,7 @@ and per-project checklist.json state."""
 import json
 import os
 import re
+import shutil
 from datetime import datetime, timezone
 
 PROJECTS_ROOT = os.path.expanduser(os.environ.get("HTB_ROOT", "~/htb"))
@@ -111,6 +112,28 @@ def create_project(name, target_ip, domain, dc_ip):
             json.dump({}, f)
 
     return data
+
+
+def delete_project(name):
+    """Permanently delete a project's folder (everything under ~/htb/<name>).
+    Path-guarded to stay inside PROJECTS_ROOT. Clears the active project if it
+    was the one deleted. Returns True on success, False if it didn't exist."""
+    if not valid_name(name):
+        return False
+    root = os.path.realpath(PROJECTS_ROOT)
+    full = os.path.realpath(project_dir(name))
+    # must be a direct child of the projects root — never the root itself or outside it
+    if os.path.dirname(full) != root or full == root:
+        return False
+    if not os.path.isdir(full):
+        return False
+    shutil.rmtree(full)
+    if get_active_name() == name:
+        try:
+            os.remove(ACTIVE_FILE)
+        except OSError:
+            pass
+    return True
 
 
 # Fields that may be edited after creation (target_ip may be corrected too,

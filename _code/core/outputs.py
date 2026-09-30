@@ -89,6 +89,7 @@ DIR_CATEGORIES = {
     "ldap": "LDAP", "dns": "DNS", "snmp": "SNMP",
     "oracle": "Databases", "mssql": "Databases", "mysql": "Databases",
     "bruteforce": "Brute Force",
+    "creds": "Credentials", "credentials": "Credentials", "credential_checking": "Credentials",
     "loot": "Loot",
 }
 
@@ -131,6 +132,10 @@ def classify(rel):
             if d in TOOLS:
                 tool = TOOLS[d]
                 break
+    # Credential Checking (Tools) saves nxc output under scans/creds; treat
+    # anything in a creds/ folder as nxc so its valid creds show in Findings.
+    if tool is None and any(d in ("creds", "credentials", "credential_checking") for d in dirs):
+        tool = ("nxc", "Credentials")
 
     category = None
     for d in reversed(dirs):

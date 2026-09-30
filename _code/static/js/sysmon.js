@@ -1,15 +1,16 @@
 "use strict";
 
-/* System monitor — a wide (80vw × 80vh) modal opened from Settings › System.
-   Top row of stat cards (RAM, Swap, CPU, each real disk); clicking a card
-   drills into the process table sorted by that resource (RAM → by memory,
-   CPU → by cpu%). Each process row can be killed (SIGTERM), force-killed
-   (SIGKILL), or handed to a native terminal for a sudo kill. Reads
-   /api/system and posts /api/system/kill. Globals from app.js: apiFetch,
-   escapeHtml. Exposes openSystemMonitor(). */
+/* System monitor — a wide (80vw × 80vh) modal opened from the sidebar [system]
+   button. Top row of stat cards (RAM, Swap, CPU, each real disk):
+     • clicking RAM or CPU sorts the process table by that resource (desc);
+     • clicking any card also opens a detail panel (total / used / free …).
+   The process list has a live search (PID / user / command) and each row has a
+   single kill button that opens a terminal for `sudo kill`, confirmed via an
+   in-app modal (not the browser's). Reads /api/system, posts /api/system/kill.
+   Globals from app.js: apiFetch, escapeHtml. Exposes openSystemMonitor(). */
 
 var SYSMON_REFRESH_MS = 4000;
-var sysmonState = { sort: "rss", timer: null, data: null, top: 40 };
+var sysmonState = { sort: "rss", timer: null, data: null, top: 120, query: "", detail: null };
 
 function sysFmtBytes(n){
   if (n == null) return "—";
@@ -43,9 +44,15 @@ function openSystemMonitor(){
         '</div>' +
       '</div>' +
       '<div class="sysmon-cards" id="sysmonCards"></div>' +
+      '<div class="sysmon-detail" id="sysmonDetail" hidden></div>' +
       '<div class="sysmon-proc-head">' +
-        '<span id="sysmonProcTitle">Processes by memory</span>' +
-        '<span class="sysmon-proc-note" id="sysmonProcNote"></span>' +
+        '<div class="sysmon-proc-titles">' +
+          '<span id="sysmonProcTitle">Processes by memory</span>' +
+          '<span class="sysmon-proc-note" id="sysmonProcNote"></span>' +
+        '</div>' +
+        '<div class="sysmon-search-wrap">' +
+          '<input type="search" id="sysmonSearch" class="sysmon-search" placeholder="search pid / user / command…" autocomplete="off" spellcheck="false">' +
+        '</div>' +
       '</div>' +
       '<div class="sysmon-proc-wrap" id="sysmonProcWrap">' +
         '<div class="empty-state">Loading…</div>' +
@@ -58,6 +65,12 @@ function openSystemMonitor(){
   document.getElementById("sysmonAuto").addEventListener("change", function(){
     if (this.checked) sysmonStartTimer(); else sysmonStopTimer();
   });
+  var search = document.getElementById("sysmonSearch");
+  search.value = sysmonState.query;
+  search.addEventListener("input", function(){
+    sysmonState.query = this.value;
+    if (sysmonState.data) sysmonRenderProcs(sysmonState.data);  // filter without refetch
+  });
   back.addEventListener("click", function(e){ if (e.target === back) closeSystemMonitor(); });
   document.addEventListener("keydown", sysmonEsc);
 
@@ -65,11 +78,19 @@ function openSystemMonitor(){
   sysmonStartTimer();
 }
 
-function sysmonEsc(e){ if (e.key === "Escape") closeSystemMonitor(); }
+function sysmonEsc(e){
+  if (e.key !== "Escape") return;
+  // A confirm dialog on top takes Escape first.
+  var cd = document.getElementById("sysmonConfirm");
+  if (cd){ cd.remove(); return; }
+  closeSystemMonitor();
+}
 function closeSystemMonitor(){
   sysmonStopTimer();
   var b = document.getElementById("sysmonBackdrop");
   if (b) b.remove();
+  var cd = document.getElementById("sysmonConfirm");
+  if (cd) cd.remove();
   document.removeEventListener("keydown", sysmonEsc);
 }
 function sysmonStartTimer(){
@@ -86,6 +107,7 @@ function sysmonLoad(quiet){
   apiFetch("/api/system?top=" + sysmonState.top + "&sort=" + sysmonState.sort).then(function(res){
     sysmonState.data = res;
     sysmonRenderCards(res);
+    sysmonRenderDetail(res);
     sysmonRenderProcs(res);
     var host = document.getElementById("sysmonHost");
     if (host) host.textContent = res.hostname ? "· " + res.hostname : "";
@@ -102,6 +124,7 @@ function sysmonCard(id, active, title, big, sub, pct){
     ? '<div class="sysmon-bar"><span class="sysmon-bar-fill ' + sysPctClass(pct) +
         '" style="width:' + Math.min(pct,100) + '%"></span></div>' : '';
   return '<button type="button" class="sysmon-card' + (active ? " active" : "") +
+    (sysmonState.detail === id ? " detail-open" : "") +
     '" data-card="' + id + '">' +
     '<div class="sysmon-card-title">' + escapeHtml(title) + '</div>' +
     '<div class="sysmon-card-big">' + big + (pct != null ? '<span class="sysmon-card-pct ' +
@@ -135,12 +158,51 @@ function sysmonRenderCards(res){
   cards.querySelectorAll(".sysmon-card").forEach(function(card){
     card.addEventListener("click", function(){
       var id = card.getAttribute("data-card");
-      if (id === "cpu" || id === "rss"){
-        if (sysmonState.sort !== id){ sysmonState.sort = id; sysmonLoad(); }
+      // RAM / CPU also re-sort the process table.
+      if ((id === "cpu" || id === "rss") && sysmonState.sort !== id){
+        sysmonState.sort = id;
+        sysmonLoad();
+        sysmonState.detail = id;
+        return;
       }
-      // swap/disk cards are informational — no process sort for them.
+      // Toggle the detail panel for the clicked card.
+      sysmonState.detail = (sysmonState.detail === id) ? null : id;
+      sysmonRenderCards(sysmonState.data);
+      sysmonRenderDetail(sysmonState.data);
     });
   });
+}
+
+/* Expanded breakdown for whichever card is selected (total / used / free …). */
+function sysmonRenderDetail(res){
+  var el = document.getElementById("sysmonDetail");
+  if (!el) return;
+  var id = sysmonState.detail;
+  if (!id){ el.hidden = true; el.innerHTML = ""; return; }
+  var rows = [];
+  var m = res.memory || {}, c = res.cpu || {};
+  if (id === "rss"){
+    rows = [["Total", sysFmtBytes(m.total)], ["Used", sysFmtBytes(m.used)],
+            ["Available", sysFmtBytes(m.available)], ["Usage", (m.percent || 0) + "%"]];
+    if (m.swap_total) rows.push(["Swap used", sysFmtBytes(m.swap_used) + " / " + sysFmtBytes(m.swap_total)]);
+  } else if (id === "swap"){
+    rows = [["Total", sysFmtBytes(m.swap_total)], ["Used", sysFmtBytes(m.swap_used)],
+            ["Free", sysFmtBytes(m.swap_total - m.swap_used)], ["Usage", (m.swap_percent || 0) + "%"]];
+  } else if (id === "cpu"){
+    rows = [["Cores", String(c.cores || 1)], ["Usage", (c.percent || 0) + "%"],
+            ["Load (1/5/15m)", c.load ? c.load.join("  ") : "—"], ["Uptime", sysFmtUptime(c.uptime)]];
+  } else if (id.indexOf("disk") === 0){
+    var d = (res.disks || [])[parseInt(id.slice(4), 10)];
+    if (d) rows = [["Device", d.device], ["Mount", d.mount], ["Filesystem", d.fstype],
+                   ["Total", sysFmtBytes(d.total)], ["Used", sysFmtBytes(d.used) + " (" + d.percent + "%)"],
+                   ["Free", sysFmtBytes(d.free)]];
+  }
+  if (!rows.length){ el.hidden = true; el.innerHTML = ""; return; }
+  el.hidden = false;
+  el.innerHTML = rows.map(function(r){
+    return '<div class="sysmon-detail-item"><span class="sysmon-detail-k">' + escapeHtml(r[0]) +
+      '</span><span class="sysmon-detail-v">' + escapeHtml(String(r[1])) + '</span></div>';
+  }).join("");
 }
 
 function sysmonRenderProcs(res){
@@ -149,10 +211,26 @@ function sysmonRenderProcs(res){
   var note = document.getElementById("sysmonProcNote");
   if (!wrap) return;
   if (title) title.textContent = "Processes by " + (sysmonState.sort === "cpu" ? "CPU" : "memory");
-  if (note) note.textContent = res.has_psutil ? "" : "CPU% needs psutil — showing memory only";
 
   var procs = res.processes || [];
-  if (!procs.length){ wrap.innerHTML = '<div class="empty-state">No processes.</div>'; return; }
+  var q = (sysmonState.query || "").trim().toLowerCase();
+  if (q){
+    procs = procs.filter(function(p){
+      return String(p.pid).indexOf(q) === 0 ||
+        (p.user || "").toLowerCase().indexOf(q) !== -1 ||
+        (p.cmd || p.name || "").toLowerCase().indexOf(q) !== -1;
+    });
+  }
+  if (note){
+    var base = res.has_psutil ? "" : "CPU% needs psutil";
+    var count = q ? procs.length + " match" + (procs.length === 1 ? "" : "es") : (res.processes || []).length + " shown";
+    note.textContent = base ? base + " · " + count : count;
+  }
+
+  if (!procs.length){
+    wrap.innerHTML = '<div class="empty-state">' + (q ? "No process matches “" + escapeHtml(q) + "”." : "No processes.") + '</div>';
+    return;
+  }
 
   var html = '<table class="sysmon-table"><thead><tr>' +
     '<th class="num">PID</th><th>User</th><th class="num">Memory</th>' +
@@ -184,28 +262,53 @@ function sysmonRenderProcs(res){
   });
 }
 
+/* In-app confirm dialog (replaces window.confirm). onYes runs if confirmed. */
+function sysmonConfirmDialog(title, body, onYes){
+  var old = document.getElementById("sysmonConfirm");
+  if (old) old.remove();
+  var d = document.createElement("div");
+  d.className = "sysmon-confirm-backdrop";
+  d.id = "sysmonConfirm";
+  d.innerHTML =
+    '<div class="sysmon-confirm card" role="alertdialog" aria-modal="true">' +
+      '<div class="sysmon-confirm-title">' + escapeHtml(title) + '</div>' +
+      '<div class="sysmon-confirm-body">' + body + '</div>' +
+      '<div class="sysmon-confirm-actions">' +
+        '<button type="button" class="modal-btn" id="sysmonConfirmNo">[cancel]</button>' +
+        '<button type="button" class="modal-btn danger" id="sysmonConfirmYes">[kill]</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(d);
+  function close(){ d.remove(); }
+  d.addEventListener("click", function(e){ if (e.target === d) close(); });
+  d.querySelector("#sysmonConfirmNo").addEventListener("click", close);
+  d.querySelector("#sysmonConfirmYes").addEventListener("click", function(){ close(); onYes(); });
+  d.querySelector("#sysmonConfirmYes").focus();
+}
+
 // One action: open a terminal running `sudo kill <pid>` so the user can enter
-// their password and confirm. No silent in-process kill.
+// their password and confirm. Confirmation uses the in-app dialog above.
 function sysmonKill(pid, name, btn){
-  if (!window.confirm("Open a terminal to sudo kill PID " + pid +
-      (name ? " (" + name + ")" : "") + "?")) return;
-  var row = btn.closest("tr");
-  if (row) row.classList.add("sysmon-killing");
-  apiFetch("/api/system/kill", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ pid: Number(pid), terminal: true })
-  }).then(function(res){
-    if (!res.ok){
+  var body = 'Open a terminal to run <code>sudo kill ' + escapeHtml(String(pid)) + '</code>' +
+    (name ? ' for <b>' + escapeHtml(name) + '</b>' : '') + '?';
+  sysmonConfirmDialog("Kill process", body, function(){
+    var row = btn.closest("tr");
+    if (row) row.classList.add("sysmon-killing");
+    apiFetch("/api/system/kill", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pid: Number(pid), terminal: true })
+    }).then(function(res){
+      if (!res.ok){
+        if (row) row.classList.remove("sysmon-killing");
+        sysmonConfirmDialog("Error", escapeHtml(res.error || "could not open terminal"), function(){});
+        return;
+      }
+      setTimeout(function(){ sysmonLoad(); }, 1500);
+    }).catch(function(err){
       if (row) row.classList.remove("sysmon-killing");
-      window.alert(res.error || "could not open terminal");
-      return;
-    }
-    // Terminal is now open; refresh shortly so the row drops once it's gone.
-    setTimeout(function(){ sysmonLoad(); }, 1500);
-  }).catch(function(err){
-    if (row) row.classList.remove("sysmon-killing");
-    window.alert(err.message);
+      sysmonConfirmDialog("Error", escapeHtml(err.message), function(){});
+    });
   });
 }
 

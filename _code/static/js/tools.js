@@ -5,9 +5,36 @@
    {id,label,render(container)}) to grow this the same way PLAYBOOK grows
    the Engagement sidebar. */
 var TOOLS_REGISTRY = [
+  { id: "credential_checking", label: "Credential Checking", render: renderCredentialCheckingTool },
   { id: "username_extractor", label: "Username Extractor", render: renderUsernameExtractor },
   { id: "username_generator", label: "Username Generator", render: renderUsernameGenerator }
 ];
+
+/* Credential Checking lives here now (moved out of the Engagement playbook).
+   It reuses the cred-checker UI from nmap.js (credCheckerShell + panel), whose
+   category config comes from the playbook API via loadPlaybook(). */
+function renderCredentialCheckingTool(content){
+  if (typeof activeProject === "undefined" || !activeProject){
+    content.innerHTML = '<div class="empty-state">No active project — pick a machine in the top bar to check credentials.</div>';
+    return;
+  }
+  if (typeof loadPlaybook !== "function" || typeof credCheckerShell !== "function"){
+    content.innerHTML = '<div class="empty-state">Credential checking is unavailable.</div>';
+    return;
+  }
+  content.innerHTML = '<div class="empty-state">Loading…</div>';
+  loadPlaybook().then(function(groups){
+    var cat = null;
+    (groups || []).forEach(function(g){
+      (g.categories || []).forEach(function(c){ if (c.cred_checker) cat = c; });
+    });
+    if (!cat){ content.innerHTML = '<div class="empty-state">Credential checking config not found.</div>'; return; }
+    content.innerHTML = '<div class="engagement">' + credCheckerShell(cat) + '</div>';
+    renderCredCheckerPanel(cat);
+  }).catch(function(err){
+    content.innerHTML = '<div class="empty-state">' + escapeHtml(err.message || String(err)) + '</div>';
+  });
+}
 var activeToolId = null;
 
 function currentTool(){

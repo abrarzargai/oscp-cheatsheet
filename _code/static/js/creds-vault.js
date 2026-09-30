@@ -84,8 +84,15 @@
   function updateCount(){
     var el = toggleBtn && toggleBtn.querySelector(".cv-vault-toggle-count");
     if (el){
-      el.textContent = vault.length ? String(vault.length) : "";
+      var val = vault.length ? String(vault.length) : "";
+      var changed = el.textContent !== val;
+      el.textContent = val;
       el.hidden = !vault.length;
+      if (changed && vault.length && toggleBtn){
+        toggleBtn.classList.remove("edge-bump");
+        void toggleBtn.offsetWidth;
+        toggleBtn.classList.add("edge-bump");
+      }
     }
     var title = document.getElementById("cvVaultListTitle");
     if (title) title.innerHTML = "Saved credentials" +
@@ -183,10 +190,14 @@
   function build(){
     toggleBtn = document.createElement("button");
     toggleBtn.type = "button";
-    toggleBtn.className = "cv-vault-toggle";
-    toggleBtn.innerHTML = '<span class="cv-vault-toggle-icon">⚿</span>' +
-      '<span>Creds</span>' +
-      '<span class="cv-vault-toggle-count" hidden></span>';
+    toggleBtn.className = "edge-tab cv-vault-toggle";
+    toggleBtn.innerHTML =
+      '<span class="cv-vault-toggle-count" hidden></span>' +
+      '<span class="edge-tab-icon cv-vault-toggle-icon">' +
+        '<svg class="edge-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<circle cx="7.5" cy="15.5" r="4.2"/><path d="M10.6 12.4L20 3M16.5 6.5l2.2 2.2M13.5 9.5l2.2 2.2"/></svg>' +
+      '</span>' +
+      '<span class="edge-tab-label">Creds</span>';
     toggleBtn.title = "Credentials vault — fill $USER / $PASS";
     toggleBtn.addEventListener("click", function(){
       if (backdrop.classList.contains("open")) closeDrawer(); else openDrawer();

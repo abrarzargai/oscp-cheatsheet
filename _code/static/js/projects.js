@@ -76,6 +76,8 @@ var projectList = [];
         statusEl.classList.remove("copyable");
         statusEl.removeAttribute("title");
       }
+      var delBtn = document.getElementById("deleteProjectBtn");
+      if (delBtn) delBtn.hidden = !activeProject;
       // Credentials are stored per machine — reload the vault for this project.
       if (typeof credVaultOnProjectChange === "function") credVaultOnProjectChange();
       // "save output" tee paths point into the project folder — re-render so
@@ -118,6 +120,57 @@ var projectList = [];
       .catch(function(err){
         setProjectStatus("backend offline (start server.py) — " + err.message, true);
       });
+  }
+
+  /* Destructive: rm -rf ~/htb/<name>. Uses an in-app confirm dialog (not the
+     browser's) that requires an explicit click, then swaps to whatever project
+     the backend reports as active afterwards (none if it was the last one). */
+  function confirmDeleteProject(name){
+    if (document.getElementById("deleteProjectModal")) return;
+    var back = document.createElement("div");
+    back.className = "modal-backdrop";
+    back.id = "deleteProjectModal";
+    back.innerHTML =
+      '<div class="modal-dialog card delete-project-dialog" role="alertdialog" aria-modal="true">' +
+        '<div class="modal-head"><h2 class="modal-title">Delete project</h2>' +
+          '<button type="button" class="modal-close" data-act="no" aria-label="Cancel">x</button></div>' +
+        '<div class="modal-body">Permanently delete <b>' + escapeHtml(name) + '</b> and everything inside ' +
+          '<code>~/htb/' + escapeHtml(name) + '</code> — scans, loot, notes, checklist. ' +
+          '<b>This cannot be undone.</b></div>' +
+        '<div class="modal-foot"><span class="setting-status" id="deleteProjectErr" hidden></span>' +
+          '<div class="modal-actions">' +
+            '<button type="button" class="modal-btn" data-act="no">[cancel]</button>' +
+            '<button type="button" class="modal-btn danger" data-act="yes">[delete]</button>' +
+          '</div></div>' +
+      '</div>';
+    document.body.appendChild(back);
+
+    function close(){ back.remove(); document.removeEventListener("keydown", onKey); }
+    function onKey(e){ if (e.key === "Escape") close(); }
+    document.addEventListener("keydown", onKey);
+    back.addEventListener("click", function(e){
+      if (e.target === back) return close();
+      var act = e.target.getAttribute && e.target.getAttribute("data-act");
+      if (act === "no") close();
+      else if (act === "yes") doDelete();
+    });
+
+    function doDelete(){
+      var yes = back.querySelector('[data-act="yes"]');
+      var err = document.getElementById("deleteProjectErr");
+      if (yes){ yes.disabled = true; yes.textContent = "[deleting…]"; }
+      apiFetch("/api/projects/" + encodeURIComponent(name), { method: "DELETE" })
+        .then(function(){
+          close();
+          return loadProjects().then(refreshActiveProject);
+        }).then(function(){
+          if (viewMode === "engagement") renderEngagementView();
+          else if (viewMode === "output") renderOutputView();
+        }).catch(function(e){
+          if (yes){ yes.disabled = false; yes.textContent = "[delete]"; }
+          if (err){ err.className = "setting-status err"; err.textContent = e.message; err.hidden = false; }
+        });
+    }
   }
 
   function wireProjectUI(){
@@ -184,6 +237,15 @@ var projectList = [];
         closeNewProjectPanel();
       }
     });
+
+    // Delete the active project (folder and all) after an explicit confirm.
+    var deleteBtn = document.getElementById("deleteProjectBtn");
+    if (deleteBtn){
+      deleteBtn.addEventListener("click", function(){
+        if (!activeProject) return;
+        confirmDeleteProject(activeProject.name);
+      });
+    }
 
     createBtn.addEventListener("click", function(){
       var name = document.getElementById("npName").value.trim();

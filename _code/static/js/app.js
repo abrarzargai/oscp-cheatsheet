@@ -456,6 +456,7 @@
           ? Array.prototype.map.call(lineEls, function(el){ return el.textContent; }).join("\n")
           : code.textContent;
         copyText(text, btn);
+        recordCopiedCommand(text);
       });
       toolbar.appendChild(btn);
       wrap.appendChild(toolbar);
@@ -469,6 +470,7 @@
         var lineText = line.textContent;
         if (!lineText.trim()) return;
         copyLine(lineText, line);
+        recordCopiedCommand(lineText);
       });
     });
 
@@ -576,6 +578,13 @@
       showLineCopiedBadge(lineEl);
       setTimeout(function(){ lineEl.classList.remove("copied"); }, 500);
     });
+  }
+
+  // Push a copied command into the copy-history drawer (copy-history.js). The
+  // text still has $VAR spans substituted to their real values at copy time,
+  // so what's remembered is exactly what landed on the clipboard.
+  function recordCopiedCommand(text){
+    if (typeof window.copyHistoryAdd === "function") window.copyHistoryAdd(text);
   }
 
   /* ---------- Tabs ---------- */

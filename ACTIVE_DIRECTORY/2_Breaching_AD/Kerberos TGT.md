@@ -5,7 +5,7 @@
 
 ```shell
 # Get Kerberos TGT (writes .ccache)
-impacket-getTGT $DOMAIN/'ryan.naylor':'HollowOct31Nyt'
+impacket-getTGT $DOMAIN/$USER:'$PASS'
 
 # Point env to the ticket cache
 export KRB5CCNAME=/home/kali/Voleur/ryan.naylor.ccache

