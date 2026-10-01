@@ -2,24 +2,32 @@
 # <span style="color:#FF5555">SMB null session</span>
 
 ```bash
-smbclient -L //$VICTIM_IP -N     # List shares without creds
+smbclient -L //$VICTIM_IP -N              # null session (no creds)
+smbclient -L //$VICTIM_IP -U '$USER%$PASS'   # with creds from the vault
 
 #smbmap
-smbmap -H $VICTIM_IP -u '' -p ''
+smbmap -H $VICTIM_IP -u '' -p ''              # null session
+smbmap -H $VICTIM_IP -u $USER -p '$PASS'      # with creds from the vault
 
 # shares
-nxc smb $VICTIM_IP -u '' -p '' --shares   
-nxc smb $VICTIM_IP -u 'guest' -p '' --shares
+nxc smb $VICTIM_IP -u '' -p '' --shares          # null session
+nxc smb $VICTIM_IP -u 'guest' -p '' --shares     # guest account
+nxc smb $VICTIM_IP -u $USER -p '$PASS' --shares   # with creds from the vault
    
 # users   
-nxc smb $VICTIM_IP -u '' -p '' --users   
-nxc smb $VICTIM_IP -u 'guest' -p '' --users
+nxc smb $VICTIM_IP -u '' -p '' --users           # null session
+nxc smb $VICTIM_IP -u 'guest' -p '' --users      # guest account
+nxc smb $VICTIM_IP -u $USER -p '$PASS' --users    # with creds from the vault
 
 # write all the files in your local system
 # EXCLUDE_FILTER : to exclude some shares, as some of shares contain rough/huge data
 nxc smb $VICTIM_IP -u '' -p '' --shares -M spider_plus -o DOWNLOAD_FLAG=True EXCLUDE_FILTER='print$, ipc$'
+# same, with creds from the vault
+nxc smb $VICTIM_IP -u $USER -p '$PASS' --shares -M spider_plus -o DOWNLOAD_FLAG=True EXCLUDE_FILTER='print$, ipc$'
 # Include shares with size with 50mb 
 nxc smb $VICTIM_IP -u '' -p '' --share 'SHARE_NAME' -M spider_plus -o DOWNLOAD_FLAG=True MAX_FILE_SIZE=52428800
+# same, with creds from the vault
+nxc smb $VICTIM_IP -u $USER -p '$PASS' --share 'SHARE_NAME' -M spider_plus -o DOWNLOAD_FLAG=True MAX_FILE_SIZE=52428800
 
 # for multiple ips
 nxc --verbose smb ./ips.txt -u $USER -p '$PASS' --continue-on-success
@@ -46,7 +54,8 @@ nxc smb dc01.$DOMAIN -u $USER -p $PASS -k --shares
 
 ```bash
 ldapsearch -x -H ldap://$DC_IP -s base namingcontexts
-nxc ldap $DC_IP -u '' -p '' -M ldap-checker
+nxc ldap $DC_IP -u '' -p '' -M ldap-checker              # anonymous bind
+nxc ldap $DC_IP -u $USER -p '$PASS' -M ldap-checker       # with creds from the vault
 ```
 
 # <span style="color:#FF5555">RPC null session</span>
@@ -54,7 +63,8 @@ checking for null sessions to get the usernames
 
 ```bash
 rpcclient $VICTIM_IP
-rpcclient -U "" -N $VICTIM_IP
+rpcclient -U "" -N $VICTIM_IP                 # null session
+rpcclient -U '$USER%$PASS' $VICTIM_IP         # with creds from the vault
 rpcclient $> enumdomusers
 rpcclient $> enumdomgroups
 rpcclient $> querygroupmem 0x200

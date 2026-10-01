@@ -245,6 +245,12 @@ def projects_delete(name):
     ok = projects.delete_project(name)
     if not ok:
         return jsonify({"error": "no such project"}), 404
+    # If that left no active project, fall back to the first remaining one so
+    # the UI always lands on a machine instead of an empty state.
+    if not projects.get_active_name():
+        remaining = projects.list_projects()
+        if remaining:
+            projects.set_active_name(remaining[0]["name"])
     return jsonify({"ok": True, "active": projects.get_active_name()})
 
 

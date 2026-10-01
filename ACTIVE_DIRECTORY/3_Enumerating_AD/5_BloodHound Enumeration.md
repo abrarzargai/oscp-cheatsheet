@@ -31,7 +31,8 @@ ___
 
 ```bash
 # it will create a zip
-nxc ldap $DC_IP -u "" -p "" --bloodhound --collection All --dns-server $DC_IP
+nxc ldap $DC_IP -u "" -p "" --bloodhound --collection All --dns-server $DC_IP           # anonymous bind
+nxc ldap $DC_IP -u $USER -p '$PASS' --bloodhound --collection All --dns-server $DC_IP     # with creds from the vault
 ```
 
 ___
@@ -40,7 +41,8 @@ ___
 ```bash
 source ~/venv/bin/activate
 pip install bloodhound
-bloodhound-python -c All -u '' -p '' -d $DOMAIN -ns $DC_IP
+bloodhound-python -c All -u '' -p '' -d $DOMAIN -ns $DC_IP              # anonymous
+bloodhound-python -c All -u $USER -p '$PASS' -d $DOMAIN -ns $DC_IP       # with creds from the vault
 ```
 
 ____
@@ -69,6 +71,9 @@ Invoke-BloodHound -CollectionMethod All -Domain $DOMAIN -ZipFileName loot.zip
 # - DCs have advanced logging (Event ID 4662, 4663 for directory access)
 # - Any unusual LDAP query to a DC triggers high-severity alert
 Invoke-BloodHound -CollectionMethod All -ExcludeDC
+
+# 
+Invoke-BloodHound -CollectionMethod All -Domain $DOMAIN -OutputDirectory C:\Users\ATHENA_SVC\Documents\temp
 ```
 
 ____

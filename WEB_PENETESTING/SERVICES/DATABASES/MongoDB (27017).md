@@ -23,10 +23,13 @@ msf> run
 mongo
 mongo --port 27017
 
-# Remote
-mongo --host $VICTIM_IP --port 27017 -u $USER -p $PASS
+# Remote (anonymous)
+mongo --host $VICTIM_IP --port 27017
 mongo "mongodb://$VICTIM_IP:27017"
-mongo "mongodb://username:password@$VICTIM_IP:27017/?authSource=admin"
+
+# Remote (with creds from the vault)
+mongo --host $VICTIM_IP --port 27017 -u $USER -p $PASS
+mongo "mongodb://$USER:$PASS@$VICTIM_IP:27017/?authSource=admin"
 
 ```
 

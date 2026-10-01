@@ -10,7 +10,8 @@ run
 ```
 ### <span style="color:#50FA7B">Manual Access via psql:</span>
 ```bash
-psql -U $USER -p 5437 -h $VICTIM_IP
+psql -U $USER -p 5437 -h $VICTIM_IP                  # prompts for the password
+PGPASSWORD=$PASS psql -U $USER -p 5437 -h $VICTIM_IP  # password from the vault (no prompt)
 ```
 
 ###

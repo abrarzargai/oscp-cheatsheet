@@ -13,6 +13,10 @@ nmap -p 21 --script=ftp-* $VICTIM_IP
 ftp $VICTIM_IP
 # User: anonymous | Pass: anonymous
 # If 'ls' fails → type: passive
+
+# Or log in with the creds selected from the vault
+ftp $USER@$VICTIM_IP                 # then enter $PASS at the prompt
+lftp -u $USER,$PASS $VICTIM_IP       # non-interactive (lftp)
 ```
 
 ### <span style="color:#50FA7B">File Operations</span>
@@ -31,6 +35,8 @@ exiftool -u -a <file>
 ### <span style="color:#50FA7B">Download everything recursively</span>
 ```bash
 wget -m --no-passive ftp://anonymous:anonymous@$VICTIM_IP
+# with creds from the vault
+wget -m --no-passive ftp://$USER:$PASS@$VICTIM_IP
 ```
 
 ### <span style="color:#50FA7B">Brute Force</span>

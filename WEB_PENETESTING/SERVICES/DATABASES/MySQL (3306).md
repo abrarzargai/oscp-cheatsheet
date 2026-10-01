@@ -45,10 +45,10 @@ echo '$PASS' | mysql -u $USER -p database_name -e "show databases;"
 
 # Execute commands via a file
 echo 'show tables;' > example.sql
-mysql -u $USER --password='password' database_name -v < example.sql
+mysql -u $USER --password='$PASS' database_name -v < example.sql
 
 # Read arbitrary files
-mysql -u $USER --password='password' database_name -v < /etc/passwd
+mysql -u $USER --password='$PASS' database_name -v < /etc/passwd
 
 ```
 

@@ -21,6 +21,9 @@ nxc smb $VICTIM_IP --rid-brute
 # Tries to find usernames using the guest account (blank password).
 nxc smb $VICTIM_IP -u guest -p  '' --rid-brute
 
+# Same, but with the creds selected from the vault.
+nxc smb $VICTIM_IP -u $USER -p '$PASS' --rid-brute
+
 # Show only actual user accounts (not computer names or groups).
 nxc smb $VICTIM_IP -u guest -p  '' --rid-brute | grep SidTypeUser
 ```
@@ -38,6 +41,7 @@ enum4linux -U $VICTIM_IP  | grep "user:" | cut -f2 -d"[" | cut -f1 -d"]"
 enum4linux -a $VICTIM_IP > enum4linux.txt # Full scan
 enum4linux -u "guest" -p "" $VICTIM_IP # Test guest access
 enum4linux -u $DOMAIN\\\\guest -a $VICTIM_IP # enumerating using the Guest account
+enum4linux -u $USER -p '$PASS' -a $VICTIM_IP # with creds from the vault
 
 enum4linux-ng -A $VICTIM_IP -u $DOMAIN/$USER -p '$PASS'
 ```
@@ -45,6 +49,9 @@ enum4linux-ng -A $VICTIM_IP -u $DOMAIN/$USER -p '$PASS'
 ```bash
 # Opens null session RPC connection
 rpcclient -U "" -N $VICTIM_IP
+
+# Or authenticate with the creds selected from the vault
+rpcclient -U '$USER%$PASS' $VICTIM_IP
 
 # Lists all domain users (run inside rpcclient)
 rpcclient $> enumdomusers
@@ -79,13 +86,17 @@ ldapsearch -x -H ldap://$DC_IP -b "dc=htb,dc=support" > ldap_dump.txt
 ldapsearch -x -H ldap://$DC_IP -D 'ldap@$DOMAIN' -w 'nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz' -b "DC=support,DC=htb" > ldap.search
 
 # Finding user 
-nxc ldap $DC_IP -u '' -p '' --users
-nxc ldap $DC_IP -u 'guest' -p '' --users
+nxc ldap $DC_IP -u '' -p '' --users              # anonymous bind
+nxc ldap $DC_IP -u 'guest' -p '' --users         # guest account
+nxc ldap $DC_IP -u $USER -p '$PASS' --users       # with creds from the vault
 ```
 ##### <span style="color:#FFB86C">Using windapsearch</span>
 ```bash
 # Python tool for anonymous LDAP user enumeration
 ./windapsearch.py --dc-ip $DC_IP -u "" -U
+
+# with creds from the vault
+./windapsearch.py --dc-ip $DC_IP -d $DOMAIN -u $USER -p '$PASS' -U
 ```
 
 ___

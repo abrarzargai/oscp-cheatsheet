@@ -10,9 +10,11 @@ msf> use auxiliary/scanner/redis/redis_server
 ### <span style="color:#50FA7B">Connect</span>
 
 ```bash
-redis-cli -h $VICTIM_IP -p 6379
+redis-cli -h $VICTIM_IP -p 6379               # no auth (anonymous)
 # with password
 redis-cli -h $VICTIM_IP -p 6379 -a password
+redis-cli -h $VICTIM_IP -p 6379 -a $PASS                 # password from the vault
+redis-cli -h $VICTIM_IP -p 6379 --user $USER -a $PASS    # ACL user from the vault
 
 # using socket
 redis-cli -s /path/to/redis.sock
