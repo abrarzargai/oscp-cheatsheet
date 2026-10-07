@@ -92,7 +92,7 @@ def parse_rustscan_output(path):
 # This format (PROTO  HOST  PORT  NAME  [flag] message) is consistent across
 # nxc's protocol modules, so one regex covers smb/ssh/winrm/rdp/ldap/etc.
 # [*] lines are banner/info, not a credential attempt, and are skipped here.
-NXC_LINE_RE = re.compile(r"^\S+\s+\S+\s+\S+\s+\S+\s+\[(?P<flag>[+\-*])\]\s+(?P<rest>.*)$")
+NXC_LINE_RE = re.compile(r"^(?P<proto>\S+)\s+\S+\s+\S+\s+\S+\s+\[(?P<flag>[+\-*])\]\s+(?P<rest>.*)$")
 
 
 def parse_nxc_text(text):
@@ -113,7 +113,10 @@ def parse_nxc_text(text):
             user, secret = user.strip(), secret.strip()
         else:
             user = cred_part
-        results.append({"status": status, "user": user, "secret": secret, "raw": line})
+        # The first column is nxc's protocol module (SMB/WINRM/SSH/RDP/LDAP/…) —
+        # keep it so the Findings view can offer the right connect commands.
+        results.append({"status": status, "user": user, "secret": secret,
+                        "service": (m.group("proto") or "").lower(), "raw": line})
     return {"results": results}
 
 

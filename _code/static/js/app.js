@@ -39,6 +39,16 @@
   var STORAGE_KEY = "CheatSheet-config-v1";
   var TABS_KEY = "CheatSheet-tabs-v1";
   var MODE_KEY = "CheatSheet-mode-v1";
+  /* The Workspace dropdown's options (single source of truth for both the
+     dropdown itself and the Settings › Workspace visibility checkboxes).
+     `value` matches the <option> values in _sidebar.html + viewMode; "notes"
+     is locked (can never be hidden). */
+  var WORKSPACE_OPTIONS = [
+    { value: "notes", label: "Notes", locked: true },
+    { value: "engagement", label: "Engagement" },
+    { value: "output", label: "Findings" },
+    { value: "tools", label: "Tools" }
+  ];
   var FIELDS = ["attackerIp","attackerPort","victimIp","domain","dcIp","scheme"];
   var VAR_MAP = [
     ["ATTACKER_IP","attackerIp"],
@@ -51,6 +61,7 @@
   var config = {};
   var wordlistPath = "";       // $WORDLIST_PATH base, loaded from Settings
   var hiddenModules = [];      // top-level category ids hidden from the Notes tree (Settings)
+  var hiddenWorkspaces = [];   // Workspace-dropdown option values hidden (Settings); never "notes"
   var selectedCred = null;     // {user, secret} from the Creds vault → $USER/$PASS
   var tabs = [];
   var activeIndex = -1;
@@ -1131,11 +1142,27 @@
     var f = document.getElementById("treeSearchInput");
     renderTree(f ? f.value : "");
   }
+  /* Hide/show Workspace-dropdown options (from Settings). Global so settings.js
+     can push a new list after a save. "notes" is always kept visible, and if the
+     currently-active workspace just got hidden we fall back to Notes. Hiding only
+     affects the dropdown — each workspace's data/state is untouched. */
+  function applyHiddenWorkspaces(list){
+    hiddenWorkspaces = (Array.isArray(list) ? list : []).filter(function(v){ return v !== "notes"; });
+    var sel = document.getElementById("modeSelect");
+    if (!sel) return;
+    Array.prototype.forEach.call(sel.options, function(opt){
+      var hide = hiddenWorkspaces.indexOf(opt.value) !== -1;
+      opt.hidden = hide;
+      opt.disabled = hide;   // also block keyboard selection of a hidden option
+    });
+    if (hiddenWorkspaces.indexOf(viewMode) !== -1) setMode("notes");
+  }
   function loadAppSettings(){
     apiFetch("/api/settings").then(function(res){
       var s = res.settings || {};
       applyWordlistPath(s.wordlists_path || "");
       applyHiddenModules(s.hidden_modules || []);
+      applyHiddenWorkspaces(s.hidden_workspaces || []);
     }).catch(function(){ /* backend offline — defaults stay */ });
   }
 

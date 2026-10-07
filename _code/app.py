@@ -98,13 +98,36 @@ def settings_get():
 @app.route("/api/settings", methods=["POST"])
 def settings_save():
     body = request.get_json(force=True) or {}
-    return jsonify({"settings": settings.save_settings(body)})
+    saved = settings.save_settings(body)
+    # The projects base path may have changed — point the projects module at the
+    # new location (and make sure it exists) so later calls use it immediately.
+    projects.refresh_root()
+    os.makedirs(projects.PROJECTS_ROOT, exist_ok=True)
+    return jsonify({"settings": saved})
 
 
 @app.route("/api/verify-path", methods=["POST"])
 def settings_verify_path():
     body = request.get_json(force=True) or {}
     return jsonify(settings.verify_path(body.get("path", "")))
+
+
+@app.route("/api/list-dirs")
+def list_dirs():
+    """List sub-directories of a path, for the Settings 'Browse' folder picker.
+    Localhost-only tool, so this just lists directories the user can already see
+    on their own machine. Hidden dirs are skipped."""
+    raw = request.args.get("path") or "~"
+    base = os.path.realpath(os.path.expanduser(raw))
+    if not os.path.isdir(base):
+        return jsonify({"error": "not a directory", "path": base}), 400
+    try:
+        dirs = sorted(e.name for e in os.scandir(base)
+                      if e.is_dir() and not e.name.startswith("."))
+    except OSError as e:
+        return jsonify({"error": str(e), "path": base}), 400
+    parent = None if os.path.dirname(base) == base else os.path.dirname(base)
+    return jsonify({"path": base, "parent": parent, "dirs": dirs})
 
 
 # ---------------------------------------------------------------------------
@@ -586,6 +609,12 @@ def system_kill():
 
 if __name__ == "__main__":
     os.makedirs(projects.PROJECTS_ROOT, exist_ok=True)
+    # Development mode (APP_ENV=development/dev) turns on Flask's auto-reloader
+    # so Python edits apply without a manual restart. Any other value — or an
+    # unset APP_ENV — runs with the reloader and debugger OFF. HOST stays pinned
+    # to 127.0.0.1 in every case, so dev mode is never exposed off-localhost.
+    dev_mode = os.environ.get("APP_ENV", "").strip().lower() in ("development", "dev")
     print("Projects root: {}".format(projects.PROJECTS_ROOT))
-    print("Binding to {}:{} (localhost only)".format(HOST, PORT))
-    app.run(host=HOST, port=PORT, debug=False)
+    print("Binding to {}:{} (localhost only){}".format(
+        HOST, PORT, "  [dev: auto-reload ON]" if dev_mode else ""))
+    app.run(host=HOST, port=PORT, debug=dev_mode)

@@ -7,8 +7,24 @@ import re
 import shutil
 from datetime import datetime, timezone
 
-PROJECTS_ROOT = os.path.expanduser(os.environ.get("HTB_ROOT", "~/htb"))
+from core import settings
+
+# PROJECTS_ROOT / ACTIVE_FILE are resolved from settings (projects_base_path),
+# so they can change at runtime when the user edits the base path in Settings.
+# They stay module globals (functions read them late-bound) and are recomputed
+# by refresh_root(), which the settings-save route calls after a change.
+PROJECTS_ROOT = settings.resolve_projects_root()
 ACTIVE_FILE = os.path.join(PROJECTS_ROOT, ".active_project")
+
+
+def refresh_root():
+    """Recompute PROJECTS_ROOT/ACTIVE_FILE from the current settings. Call after
+    the projects base path changes so later calls use the new location."""
+    global PROJECTS_ROOT, ACTIVE_FILE
+    PROJECTS_ROOT = settings.resolve_projects_root()
+    ACTIVE_FILE = os.path.join(PROJECTS_ROOT, ".active_project")
+    return PROJECTS_ROOT
+
 
 NAME_RE = re.compile(r"^[A-Za-z0-9_-]+$")
 

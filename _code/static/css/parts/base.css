@@ -1,0 +1,850 @@
+/* base.css — theme tokens, shared card, top bar, body/sidebar layout, main content, tabs, syntax highlighting.
+   Part of the split theme.css (maintainability only). These parts load
+   in this order: base -> components -> panels -> views, which reproduces
+   the original single-file cascade exactly. Do not reorder. */
+
+  /* ---------- Theme tokens ----------
+     Dark is the default look (bare :root). Light is the same terminal/CTF
+     aesthetic on a pale background, not a generic light UI. Three layers,
+     same pattern in both directions:
+       1. bare :root                                   → dark, always the fallback
+       2. @media (prefers-color-scheme:light) + :not([data-theme="dark"])  → system light, unless pinned to dark
+       3. :root[data-theme="light"] / [data-theme="dark"]                  → explicit toggle (themeToggle in the topbar) wins outright
+  */
+  :root{
+    --bg:#050806;
+    --surface:#0a120b;
+    --surface-2:#0f1c11;
+    --border:#1c3322;
+    --ink:#b9f2c0;
+    --bright:#49ff7e;
+    --dim:#4f7a5a;
+    --danger:#ff5f5f;
+    --code-bg:#071009;
+    --code-ink:#c9ffd2;
+    --focus:#49ff7e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px -12px rgba(0,0,0,.75);
+    --selection-ink:#01120a;
+
+    --hljs-comment:#6b8577;
+    --hljs-string:#e3b341;
+    --hljs-number:#ffb86c;
+    --hljs-keyword:#7ee7d8;
+    --hljs-title:#7bf1a8;
+    --hljs-variable:#c9a7f0;
+    --hljs-deletion:#ff5f5f;
+    --hljs-addition:#7bf1a8;
+  }
+
+  @media (prefers-color-scheme:light){
+    :root:not([data-theme="dark"]){
+      --bg:#f4f8f3;
+      --surface:#ffffff;
+      --surface-2:#eaf3e8;
+      --border:#c9dcc4;
+      --ink:#16321c;
+      --bright:#1f8a3b;
+      --dim:#5c7a60;
+      --danger:#c9312b;
+      --code-bg:#eef5ec;
+      --code-ink:#184423;
+      --focus:#1f8a3b;
+      --shadow:0 1px 2px rgba(20,40,20,.08),0 12px 34px -14px rgba(20,40,20,.25);
+      --selection-ink:#ffffff;
+
+      --hljs-comment:#7d8a83;
+      --hljs-string:#a86a00;
+      --hljs-number:#b35900;
+      --hljs-keyword:#0a6b8f;
+      --hljs-title:#1f8a3b;
+      --hljs-variable:#6b3fa0;
+      --hljs-deletion:#c9312b;
+      --hljs-addition:#1f8a3b;
+    }
+  }
+
+  :root[data-theme="light"]{
+    --bg:#f4f8f3;
+    --surface:#ffffff;
+    --surface-2:#eaf3e8;
+    --border:#c9dcc4;
+    --ink:#16321c;
+    --bright:#1f8a3b;
+    --dim:#5c7a60;
+    --danger:#c9312b;
+    --code-bg:#eef5ec;
+    --code-ink:#184423;
+    --focus:#1f8a3b;
+    --shadow:0 1px 2px rgba(20,40,20,.08),0 12px 34px -14px rgba(20,40,20,.25);
+    --selection-ink:#ffffff;
+
+    --hljs-comment:#7d8a83;
+    --hljs-string:#a86a00;
+    --hljs-number:#b35900;
+    --hljs-keyword:#0a6b8f;
+    --hljs-title:#1f8a3b;
+    --hljs-variable:#6b3fa0;
+    --hljs-deletion:#c9312b;
+    --hljs-addition:#1f8a3b;
+  }
+
+  :root[data-theme="dark"]{
+    --bg:#050806;
+    --surface:#0a120b;
+    --surface-2:#0f1c11;
+    --border:#1c3322;
+    --ink:#b9f2c0;
+    --bright:#49ff7e;
+    --dim:#4f7a5a;
+    --danger:#ff5f5f;
+    --code-bg:#071009;
+    --code-ink:#c9ffd2;
+    --focus:#49ff7e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px -12px rgba(0,0,0,.75);
+    --selection-ink:#01120a;
+
+    --hljs-comment:#6b8577;
+    --hljs-string:#e3b341;
+    --hljs-number:#ffb86c;
+    --hljs-keyword:#7ee7d8;
+    --hljs-title:#7bf1a8;
+    --hljs-variable:#c9a7f0;
+    --hljs-deletion:#ff5f5f;
+    --hljs-addition:#7bf1a8;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{ height:100%; overflow:hidden; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+    -webkit-font-smoothing:antialiased;
+    transition:background-color .15s ease,color .15s ease;
+  }
+  ::selection{ background:var(--bright); color:var(--selection-ink); }
+
+  .app{
+    height:100dvh;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    overflow:hidden;
+    background:var(--bg);
+  }
+
+  /* Shared card surface — every panel (sidebar sections + main sections) uses this */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:var(--shadow);
+  }
+
+  /* ---------- Top bar (2 cards: brand | attacker+victim config) ---------- */
+  .topbar{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:20px;
+    position:sticky;
+    top:0;
+    z-index:30;
+  }
+  .topbar-left{
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    min-width:0;
+  }
+  .topbar-right{
+    padding:5px 18px 12px 18px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:.6rem 1rem;
+    min-width:0;
+  }
+
+  .brand{ display:flex; flex-direction:column; gap:.3rem; min-width:0; }
+  .brand-lockup{
+    position:relative;
+    display:inline-flex;
+    align-items:baseline;
+    padding-bottom:.3rem;
+    max-width:100%;
+  }
+  .brand-bracket{ color:var(--dim); font-weight:700; font-size:1.05rem; }
+  .brand-mark{
+    font-weight:800;
+    font-size:1.05rem;
+    letter-spacing:.02em;
+    color:var(--ink);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .brand-mark-alt{ color:var(--bright); }
+  .brand-skull{ color:var(--bright); flex:none; margin:0 .2em; }
+  .brand-name-neon{
+    display:block;
+    font-size:.72rem;
+    font-weight:800;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--bright);
+    text-shadow:
+      0 0 4px var(--bright),
+      0 0 10px var(--bright),
+      0 0 18px color-mix(in srgb,var(--bright) 75%,transparent),
+      0 0 32px color-mix(in srgb,var(--bright) 45%,transparent);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+  }
+  /* The neon glow above reads as "glowing" on the dark theme's near-black
+     background; the same blurred layers on a light background just look
+     like a smudge behind the text. Light keeps a hint of color instead. */
+  :root[data-theme="light"] .brand-name-neon{
+    text-shadow:0 0 1px color-mix(in srgb,var(--bright) 55%,transparent);
+  }
+  @media (prefers-color-scheme:light){
+    :root:not([data-theme="dark"]) .brand-name-neon{
+      text-shadow:0 0 1px color-mix(in srgb,var(--bright) 55%,transparent);
+    }
+  }
+  .brand-lockup::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    width:2.6rem;
+    height:2px;
+    background:var(--bright);
+  }
+  .brand-stats{
+    font-size:.64rem;
+    letter-spacing:.02em;
+    color:var(--dim);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+    cursor:default;
+  }
+
+  .menu-toggle{
+    display:none;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:2px;
+    width:2.1rem;
+    height:2.1rem;
+    cursor:pointer;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+  }
+  .menu-toggle .bars{ position:relative; display:block; width:1rem; height:2px; background:var(--ink); }
+  .menu-toggle .bars::before,.menu-toggle .bars::after{
+    content:""; position:absolute; left:0; width:100%; height:2px; background:var(--ink);
+  }
+  .menu-toggle .bars::before{ top:-6px; }
+  .menu-toggle .bars::after{ top:6px; }
+  .menu-toggle:hover{ border-color:var(--bright); }
+  .menu-toggle:hover .bars,.menu-toggle:hover .bars::before,.menu-toggle:hover .bars::after{ background:var(--bright); }
+  .menu-toggle:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  .theme-toggle{
+    flex:none;
+    margin-left:auto;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    color:var(--dim);
+    border-radius:2px;
+    padding:.4rem .7rem;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.72rem;
+    font-weight:600;
+    letter-spacing:.02em;
+  }
+  .theme-toggle:hover{ color:var(--bright); border-color:var(--bright); }
+  .theme-toggle:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  .cfg-groups{ display:flex; gap:.7rem; flex:1 1 auto; min-width:0; }
+  /* Equal thirds would give Victim's 3 free-width fields (IP/domain/dc_ip)
+     the same total space as Attacker's 1 (port has its own fixed basis
+     below) — every Victim field ends up a third as wide as Attacker's,
+     truncating text. Each group's flex-basis is a floor sized to what it
+     actually needs (an IP address; a project name + IP + a button), and
+     grow-weighting favors Victim 3:1 for whatever room is left beyond
+     those floors — the combination is what keeps every individual field a
+     readable width regardless of which group it's in, without any of them
+     wrapping to a second line. */
+  fieldset.cfg-group{
+    flex:1 1 234px;
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:flex-end;
+    gap:.5rem .6rem;
+    min-width:0;
+    margin:0;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius: 10px;
+    padding:.55rem .7rem .5rem;
+  }
+  fieldset.cfg-group.victim{ flex:3 1 460px; }
+  /* Project's floor is bigger than Attacker's despite both having one
+     free-width field: the project <select> shares its row with the
+     [+ new] button (Attacker's PORT field is fixed-width and tiny by
+     comparison), so it needs more of its group's own width just to show
+     the active project's name before the button and gap even come out. */
+  fieldset.cfg-group.project{
+    flex:1 1 230px;
+    flex-wrap:wrap;
+  }
+  fieldset.cfg-group legend{
+    padding:0 .35rem;
+    font-size:.66rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--bright);
+    font-weight:700;
+  }
+
+  .cfg-field{ display:flex; flex-direction:column; gap:.15rem; flex:1 1 0; min-width:0; }
+  .cfg-field label{
+    font-size:.62rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--dim);
+    display:flex;
+    align-items:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .status-dot{ font-weight:700; color:var(--dim); white-space:pre; }
+  .status-dot.on{ color:var(--bright); }
+  .cfg-field input{
+    font-family:inherit;
+    font-variant-numeric:tabular-nums;
+    font-size:.82rem;
+    width:100%;
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.4rem .55rem;
+  }
+  .cfg-field input::placeholder{ color:var(--dim); opacity:.7; }
+  .cfg-field input:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  /* Fields share their fieldset's row evenly and shrink together — width
+     used to be a fixed rem per field, which is exactly what forced the
+     Attacker/Victim/Project row to wrap onto multiple lines once Victim
+     grew past 3 fields. min-width:0 is what lets a flex item shrink below
+     its content size instead of forcing the row wider than its column. */
+  .cfg-input-wrap{ position:relative; width:100%; min-width:0; }
+  .cfg-field.port{ flex:0 1 5.5rem; }
+  .cfg-field.scheme{ flex:0 1 5rem; }
+  .cfg-field.scheme select{
+    width:100%;
+    font-family:inherit;
+    font-size:.82rem;
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.4rem .5rem;
+  }
+  .cfg-input-wrap input{ padding-right:2.1rem; }
+  .cfg-copy{
+    position:absolute;
+    top:50%; right:.3rem; transform:translateY(-50%);
+    background:none;
+    border:none;
+    color:var(--dim);
+    font:inherit;
+    font-size:.62rem;
+    cursor:pointer;
+    padding:.1rem .2rem;
+  }
+  .cfg-copy:hover:not(:disabled){ color:var(--bright); }
+  .cfg-copy.copied{ color:var(--bright); }
+  .cfg-copy:disabled{ opacity:.3; cursor:default; }
+  .cfg-copy:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .cfg-note{ font-size:.68rem; color:var(--dim); width:100%; order:99; }
+  /* Project's ACTIVE label + its status text share one row instead of the
+     status text dropping to a line of its own — status is right-aligned
+     and truncates if the project name + path don't both fit. */
+  .proj-label-row{ display:flex; align-items:baseline; justify-content:space-between; gap:.5rem; min-width:0; }
+  .proj-label-row label{ flex:0 0 auto; }
+  .proj-label-row .cfg-note{
+    width:auto;
+    order:0;
+    flex:1 1 auto;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    text-align:right;
+  }
+
+  /* ---------- Attacker IP dropdown (detected local interfaces) ----------
+     A native <input list=datalist> can't be restyled in Chromium at all,
+     which is why this is a plain positioned panel instead — same pattern
+     as .search-dropdown, just anchored to .ip-detect instead of
+     .content-search. The input underneath stays a normal free-text field;
+     this is purely a themed set of suggestions on top of it. */
+  .ip-detect{ position:relative; }
+  .ip-dropdown{
+    position:absolute;
+    left:0;
+    top:calc(100% + .35rem);
+    /* The Attacker IP field itself is deliberately narrow (it shares a
+       compact one-line topbar row with Victim/Project), but an IP plus its
+       interface name needs real room — stretching to match the field's own
+       width just wraps/clips everything, so this floats wider than its
+       trigger and overlaps whatever's next to it, like any other dropdown
+       overlay would. */
+    width:max(100%, 15.5rem);
+    max-width:calc(100vw - 2rem);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:2px;
+    box-shadow:var(--shadow);
+    z-index:30;
+    overflow:hidden;
+  }
+  .ip-dropdown-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.6rem;
+    padding:.4rem .6rem;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--border);
+    font-size:.64rem;
+    white-space:nowrap;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--dim);
+  }
+  .ip-dropdown-refresh{
+    flex:none;
+    background:none;
+    border:none;
+    color:var(--dim);
+    font:inherit;
+    font-size:.64rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    cursor:pointer;
+    padding:0;
+  }
+  .ip-dropdown-refresh:hover{ color:var(--bright); }
+  .ip-dropdown-refresh.busy{ color:var(--bright); }
+  .ip-dropdown-refresh:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .ip-dropdown-list{ max-height:12rem; overflow-y:auto; overflow-x:hidden; }
+  .ip-option{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.6rem;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    border-bottom:1px solid var(--border);
+    color:var(--ink);
+    padding:.5rem .6rem;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.8rem;
+  }
+  .ip-option:last-child{ border-bottom:none; }
+  .ip-option:hover,.ip-option:focus-visible{ background:var(--surface-2); outline:none; }
+  .ip-option-ip{
+    color:var(--bright);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .ip-option-iface{
+    flex:none;
+    color:var(--dim);
+    font-size:.72rem;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.1rem .4rem;
+  }
+  .ip-dropdown-status{ padding:.6rem; color:var(--dim); font-size:.78rem; }
+  .ip-dropdown-status.err{ color:var(--danger); }
+
+  /* ---------- Body (sidebar column + main column, side by side) ---------- */
+  .body{
+    flex:1;
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:20px;
+    min-height:0;
+    overflow:hidden;
+  }
+  /* Sidebar column: mode-switch card + nav card, stacked (mirrors .content-outer) */
+  .sidebar-outer{
+    min-height:0; min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    overflow:hidden;
+  }
+  .sidebar-mode{
+    flex:none;
+    padding:12px 14px;
+    display:flex;
+  }
+  fieldset.cfg-group.workspace-group{ width:100%; }
+  .cfg-field.workspace-field{ width:100%; }
+  .cfg-field.workspace-field select{ width:100%; }
+  .sidebar{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+    overflow:hidden;
+  }
+  .sidebar-head{ padding:.9rem .9rem .5rem; }
+  .search-wrap{ position:relative; }
+  .search-wrap input{
+    width:100%;
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--ink);
+    border-radius:2px;
+    padding:.45rem .6rem .45rem 1.5rem;
+    font-size:.85rem;
+    font-family:inherit;
+  }
+  .search-wrap input::placeholder{ color:var(--dim); }
+  .search-wrap input:focus-visible{ outline:2px solid var(--focus); }
+  .search-wrap::before{
+    content:"$";
+    position:absolute;
+    left:.55rem; top:50%; transform:translateY(-50%);
+    color:var(--dim);
+    font-weight:700;
+    pointer-events:none;
+  }
+  .tree{ overflow-y:auto; padding:.25rem .55rem 1.25rem; flex:1; }
+  details.tree-folder{ margin:.05rem 0; }
+  details.tree-folder > summary{
+    list-style:none;
+    cursor:pointer;
+    padding:.4rem .5rem;
+    border-radius:2px;
+    font-size:.86rem;
+    display:flex;
+    align-items:center;
+    gap:.35rem;
+    color:var(--ink);
+    min-width:0;
+  }
+  .tree-label{
+    flex:1 1 auto;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  details.tree-folder > summary::-webkit-details-marker{ display:none; }
+  details.tree-folder > summary::before{
+    content:"+"; color:var(--dim); font-weight:700; flex:none; width:.8em;
+  }
+  details.tree-folder[open] > summary::before{ content:"-"; }
+  details.tree-folder > summary:hover{ background:var(--surface-2); }
+  .tree > .tree-folder > summary{ font-weight:700; font-size:.85rem; letter-spacing:.02em; color:var(--bright); }
+  .tree-children{ margin-left:.85rem; padding-left:.5rem; border-left:1px solid var(--border); }
+  button.tree-file{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:transparent;
+    border:none;
+    color:var(--dim);
+    padding:.36rem .5rem;
+    border-radius:2px;
+    font-size:.83rem;
+    cursor:pointer;
+    font-family:inherit;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  button.tree-file:hover{ background:var(--surface-2); color:var(--ink); }
+  button.tree-file.active{ background:var(--surface-2); color:var(--bright); font-weight:600; }
+  button.tree-file:focus-visible,.search-wrap input:focus-visible{
+    outline:2px solid var(--focus); outline-offset:1px;
+  }
+  .no-results{ color:var(--dim); font-size:.82rem; padding:.6rem .5rem; }
+
+  /* ---------- Main content: 2 stacked cards — search card + viewer card ---------- */
+  .content-outer{
+    min-height:0; min-width:0;
+    display:flex; flex-direction:column;
+    gap:20px;
+    overflow:hidden;
+  }
+  /* The tabbar/breadcrumb/note-viewer live together in one card */
+  .viewer-card{
+    flex:1;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+
+  /* content (whole-vault) search */
+  .content-search{ position:relative; padding:18px 1.5rem; flex:none; display:flex; align-items:center; gap:1rem; }
+  .content-search .search-wrap{ flex:1 1 auto; }
+  #contentSearchWrap .search-wrap input{ padding-right:2.4rem; }
+  .search-clear{
+    position:absolute;
+    top:50%; right:.5rem; transform:translateY(-50%);
+    background:none;
+    border:none;
+    color:var(--dim);
+    font:inherit;
+    font-size:.72rem;
+    cursor:pointer;
+    padding:.1rem .3rem;
+  }
+  .search-clear:hover{ color:var(--danger); }
+  .search-clear:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .search-dropdown{
+    position:absolute;
+    left:1.5rem;
+    width:calc(100% - 3rem);
+    margin-top:.3rem;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:2px;
+    max-height:60vh;
+    overflow-y:auto;
+    z-index:25;
+    box-shadow:var(--shadow);
+  }
+  .search-hit{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    border-bottom:1px solid var(--border);
+    color:var(--ink);
+    padding:.5rem .7rem;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .search-hit:last-child{ border-bottom:none; }
+  .search-hit:hover,.search-hit:focus-visible{ background:var(--surface-2); outline:none; }
+  .hit-name{ color:var(--bright); font-weight:700; font-size:.85rem; }
+  .hit-path{ color:var(--dim); font-size:.7rem; margin-top:.1rem; }
+  .hit-snippet{
+    color:var(--code-ink);
+    font-size:.74rem;
+    margin-top:.3rem;
+    background:var(--code-bg);
+    padding:.2rem .45rem;
+    border-radius:2px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .search-empty,.search-more{ padding:.55rem .7rem; color:var(--dim); font-size:.78rem; }
+  .search-more{ font-style:italic; }
+
+  /* open-tab bar */
+  .tabbar{ display:none; align-items:stretch; gap:.4rem; padding:.6rem 1.5rem 0; border-bottom:1px solid var(--border); }
+  .tabbar.has-tabs{ display:flex; }
+  .tabs-scroll{ display:flex; align-items:stretch; gap:.25rem; overflow-x:auto; min-width:0; flex:1 1 auto; }
+  .tab{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-bottom:none;
+    border-radius:2px 2px 0 0;
+    padding:.35rem .45rem .35rem .6rem;
+    white-space:nowrap;
+    flex:none;
+    color:var(--dim);
+  }
+  .tab.active{ background:var(--bg); border-color:var(--bright); color:var(--bright); }
+  .tab-label{
+    background:none; border:none; color:inherit; font:inherit; font-size:.78rem;
+    cursor:pointer; padding:0; max-width:14rem; overflow:hidden; text-overflow:ellipsis;
+  }
+  .tab-close{
+    background:none; border:none; color:var(--dim); font:inherit; font-size:.8rem;
+    line-height:1; cursor:pointer; padding:0 .1rem;
+  }
+  .tab-close:hover{ color:var(--danger); }
+  .tab-label:focus-visible,.tab-close:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .tabs-close-all{
+    flex:none;
+    display:flex;
+    align-items:center;
+    align-self:stretch;
+    margin-left:.5rem;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-bottom:none;
+    border-radius:2px 2px 0 0;
+    color:var(--dim);
+    font:inherit;
+    font-size:.78rem;
+    padding:.35rem .6rem;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tabs-close-all:hover{ color:var(--danger); border-color:var(--danger); }
+  .tabs-close-all:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  .breadcrumb{ padding:.85rem 1.5rem 0; font-size:.74rem; color:var(--dim); letter-spacing:.01em; }
+  .content{ flex:1; overflow-y:auto; padding:.4rem 1.5rem 4rem; min-width:0; }
+  .note{ max-width:62rem; margin:0 auto; }
+  .note h1,.note h2,.note h3,.note h4,.note h5{ text-wrap:balance; line-height:1.3; }
+  .note h1{ font-size:1.4rem; margin:1.3rem 0 .7rem; padding-bottom:.4rem; border-bottom:1px solid var(--border); }
+  .note h2{ font-size:1.15rem; margin:1.5rem 0 .6rem; }
+  .note h3{ font-size:1rem; margin:1.2rem 0 .5rem; }
+  .note h4,.note h5{ font-size:.92rem; margin:1rem 0 .4rem; }
+  .note p,.note li{ font-size:.9rem; line-height:1.65; max-width:70ch; }
+  .note ul,.note ol{ padding-left:1.4rem; }
+  .note a{ color:var(--bright); }
+  .note a.tag-link{
+    display:inline-block;
+    color:var(--bright);
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.05em .45em;
+    font-size:.82em;
+    text-decoration:none;
+    cursor:pointer;
+  }
+  .note a.tag-link:hover,.note a.tag-link:focus-visible{
+    color:var(--bg);
+    background:var(--bright);
+    border-color:var(--bright);
+    outline:none;
+  }
+  .note blockquote{
+    margin:.8rem 0;
+    padding:.55rem .9rem;
+    background:var(--surface-2);
+    border-left:3px solid var(--bright);
+    border-radius:0 2px 2px 0;
+    color:var(--ink);
+  }
+  .note blockquote p{ margin:.25rem 0; max-width:none; }
+  .note table{ border-collapse:collapse; width:100%; font-size:.83rem; }
+  .note thead{ display:table-header-group; }
+  .note th,.note td{ border:1px solid var(--border); padding:.4rem .6rem; text-align:left; vertical-align:top; }
+  .note th{ background:var(--surface-2); color:var(--bright); }
+  .table-scroll{ overflow-x:auto; margin:.8rem 0; }
+  .note code{
+    font-size:.85em;
+    background:var(--code-bg);
+    color:var(--code-ink);
+    padding:.1em .35em;
+    border-radius:2px;
+  }
+  .code-wrap{ position:relative; margin:.9rem 0; }
+  .note pre{
+    font-size:.82rem;
+    line-height:1.55;
+    background:var(--code-bg);
+    color:var(--code-ink);
+    border:1px solid var(--border);
+    border-radius:3px;
+    padding:1.9rem 1rem 1rem;
+    overflow-x:auto;
+  }
+  .note pre code{ background:none; padding:0; border-radius:0; font-size:1em; }
+  .code-line{
+    position:relative;
+    display:block;
+    cursor:pointer;
+    border-radius:2px;
+    margin:0 -1rem;
+    padding:0 1rem;
+  }
+  .code-line:hover{ background:color-mix(in srgb,var(--bright) 13%,transparent); }
+  .code-line.copied{ background:color-mix(in srgb,var(--bright) 32%,transparent); }
+  .line-copied-badge{
+    position:absolute;
+    top:50%; right:.5rem;
+    transform:translateY(-50%);
+    background:var(--bright);
+    color:var(--bg);
+    font-size:.62rem;
+    font-weight:700;
+    letter-spacing:.02em;
+    padding:.05rem .45rem;
+    border-radius:2px;
+    pointer-events:none;
+    opacity:0;
+    white-space:nowrap;
+  }
+  .line-copied-badge.visible{ opacity:1; }
+  @media (prefers-reduced-motion:no-preference){
+    .code-line{ transition:background-color .15s ease; }
+    .line-copied-badge{ transition:opacity .18s ease; }
+  }
+  .code-toolbar{ position:absolute; top:.4rem; right:.5rem; display:flex; align-items:center; gap:.4rem; }
+  .lang-tag{
+    font-size:.62rem; letter-spacing:.04em; color:var(--dim);
+    background:var(--surface); border:1px solid var(--border); border-radius:2px; padding:.1rem .4rem;
+  }
+  .copy-btn{
+    font-size:.68rem;
+    background:var(--surface);
+    color:var(--dim);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.22rem .55rem;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .copy-btn:hover{ color:var(--bright); border-color:var(--bright); }
+  .copy-btn.copied{ color:var(--bright); border-color:var(--bright); }
+  .copy-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  .var-filled{ color:var(--bright); font-weight:700; }
+  .var-unset{ color:var(--danger); border-bottom:1px dashed var(--danger); cursor:help; }
+
+  /* ---------- Syntax highlighting (highlight.js token classes) ---------- */
+  .hljs-comment,.hljs-quote{ color:var(--hljs-comment); font-style:italic; }
+  .hljs-string,.hljs-regexp{ color:var(--hljs-string); }
+  .hljs-number,.hljs-literal{ color:var(--hljs-number); }
+  .hljs-keyword,.hljs-selector-tag,.hljs-type,.hljs-built_in{ color:var(--hljs-keyword); }
+  .hljs-title,.hljs-title.function_,.hljs-section{ color:var(--hljs-title); font-weight:600; }
+  .hljs-variable,.hljs-template-variable,.hljs-attr,.hljs-attribute{ color:var(--hljs-variable); }
+  .hljs-name,.hljs-tag,.hljs-symbol,.hljs-bullet,.hljs-link{ color:var(--hljs-keyword); }
+  .hljs-meta,.hljs-meta .hljs-keyword{ color:var(--hljs-comment); }
+  .hljs-params{ color:var(--code-ink); }
+  .hljs-deletion{ color:var(--hljs-deletion); }
+  .hljs-addition{ color:var(--hljs-addition); }
+  .hljs-emphasis{ font-style:italic; }
+  .hljs-strong{ font-weight:700; }
+
+  .empty-state{ max-width:32rem; margin:3rem auto; text-align:center; color:var(--dim); font-size:.9rem; }
+

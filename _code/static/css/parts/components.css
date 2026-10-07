@@ -1,0 +1,594 @@
+/* components.css — engagement workspace, settings + settings modal, mode toggle, port scanning, credential checking.
+   Part of the split theme.css (maintainability only). These parts load
+   in this order: base -> components -> panels -> views, which reproduces
+   the original single-file cascade exactly. Do not reorder. */
+
+  /* ---------- Engagement workspace additions ---------- */
+  .proj-select{
+    font-family:inherit;
+    font-size:.82rem;
+    width:100%;
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.4rem .55rem;
+  }
+  .proj-select:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .cfg-field.project{ position:relative; }
+  .proj-btn{
+    flex:none;
+    white-space:nowrap;
+    font-size:.68rem;
+    background:var(--surface);
+    color:var(--dim);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.4rem .55rem;
+    cursor:pointer;
+    font-family:inherit;
+    align-self:flex-end;
+  }
+  .proj-btn:hover{ color:var(--bright); border-color:var(--bright); }
+  .proj-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .proj-btn-row{ display:flex; gap:.3rem; align-self:flex-end; }
+  .proj-btn-row .proj-btn{ align-self:auto; }
+  .proj-btn-del[hidden]{ display:none; }
+  .proj-btn-del:hover{ color:var(--danger); border-color:var(--danger); }
+  .delete-project-dialog{ max-width:34rem; }
+  .delete-project-dialog .modal-body code{ background:var(--code-bg); color:var(--code-ink); padding:.05em .35em; border-radius:3px; }
+  #projectStatus{ color:var(--dim); }
+  #projectStatus.err{ color:var(--danger); }
+  #projectStatus.copyable{ cursor:pointer; }
+  #projectStatus.copyable:hover{ color:var(--bright); text-decoration:underline; }
+  #projectStatus.copied{ color:var(--bright); }
+  .req{ color:var(--danger); font-weight:bold; }
+
+  .new-project-panel{
+    position:absolute;
+    top:calc(100% + .5rem);
+    right:0;
+    z-index:35;
+    width:19rem;
+    max-width:calc(100vw - 2.5rem);
+    padding:.9rem;
+    flex-direction:column;
+    gap:.6rem;
+  }
+  /* `hidden` only works if no author rule sets `display` on the element —
+     otherwise it silently overrides the UA [hidden]{display:none} rule and
+     the panel never actually disappears. Scope display:flex to the
+     not-hidden case instead of setting it unconditionally above. */
+  .new-project-panel:not([hidden]){ display:flex; }
+  .new-project-head{ display:flex; align-items:center; justify-content:space-between; gap:.5rem; }
+  .new-project-panel h4{ margin:0; font-size:.8rem; color:var(--bright); letter-spacing:.04em; text-transform:uppercase; }
+  .new-project-close{
+    background:none; border:none; color:var(--dim); font:inherit; font-size:.9rem;
+    line-height:1; cursor:pointer; padding:0 .15rem; flex:none;
+  }
+  .new-project-close:hover{ color:var(--danger); }
+  .new-project-close:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .new-project-panel .cfg-field{ width:100%; }
+  .new-project-panel .cfg-field input{ width:100%; }
+  .new-project-actions{ display:flex; gap:.5rem; justify-content:flex-end; }
+  .new-project-actions button{
+    font-family:inherit; font-size:.75rem; cursor:pointer;
+    border-radius:2px; padding:.4rem .7rem;
+  }
+  #createProjectBtn{ background:var(--bright); color:var(--bg); border:1px solid var(--bright); font-weight:700; }
+  #cancelProjectBtn{ background:var(--surface-2); color:var(--dim); border:1px solid var(--border); }
+  .new-project-err{ color:var(--danger); font-size:.72rem; }
+
+  /* ---------- Settings (bottom of sidebar) ---------- */
+  .sidebar-foot{
+    flex:none; position:relative;
+    display:flex; gap:.4rem;
+    padding:.55rem .7rem;
+    border-top:1px solid var(--border);
+  }
+  .sidebar-foot-btn{
+    flex:1 1 0; min-width:0;
+    background:var(--surface-2); color:var(--dim);
+    border:1px solid var(--border); border-radius:2px;
+    padding:.45rem .6rem;
+    cursor:pointer; font-family:inherit; font-size:.75rem;
+    font-weight:600; letter-spacing:.02em; text-align:left;
+  }
+  .sidebar-foot-btn:hover{ color:var(--bright); border-color:var(--bright); }
+  .sidebar-foot-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  /* ---------- Modal (settings) ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0; z-index:100;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:rgba(0,0,0,.6);
+    backdrop-filter:blur(2px);
+  }
+  /* This display:flex overrides the browser's [hidden] default, so a
+     .modal-backdrop that uses the `hidden` attribute (the Username Generator
+     rules modal) would otherwise be stuck visible. Keep hidden meaning hidden. */
+  .modal-backdrop[hidden]{ display:none; }
+  .modal-dialog{
+    width:100%; max-width:40rem;
+    max-height:calc(100dvh - 48px);
+    display:flex; flex-direction:column;
+    padding:1.5rem 1.6rem;
+  }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .modal-title{ margin:0; color:var(--bright); font-size:1.15rem; }
+  .modal-close{
+    background:none; border:none; color:var(--dim); font:inherit; font-size:1.1rem;
+    line-height:1; cursor:pointer; padding:0 .2rem; flex:none;
+  }
+  .modal-close:hover{ color:var(--danger); }
+  .modal-close:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .modal-body{ overflow-y:auto; margin-top:.4rem; }
+  .modal-foot{
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    margin-top:1.4rem; padding-top:1rem; border-top:1px solid var(--border);
+  }
+
+  /* Larger two-pane settings dialog: left nav + right content */
+  .settings-modal{
+    width:70vw; height:70vh;
+    max-width:1500px; min-width:min(40rem, 92vw);
+    min-height:min(28rem, 80vh);
+  }
+  .settings-layout{
+    flex:1; min-height:0;
+    display:flex; gap:1.1rem;
+    margin-top:.9rem;
+  }
+  .settings-nav{
+    flex:none; width:12rem; min-width:9rem;
+    display:flex; flex-direction:column; gap:.25rem;
+    padding-right:1rem; border-right:1px solid var(--border);
+    overflow-y:auto;
+  }
+  .settings-nav-btn{
+    text-align:left; font-family:inherit; font-size:.85rem; cursor:pointer;
+    background:none; color:var(--dim);
+    border:1px solid transparent; border-radius:4px; padding:.5rem .7rem;
+  }
+  .settings-nav-btn:hover{ color:var(--ink); background:var(--surface-2); }
+  .settings-nav-btn.active{ color:var(--bg); background:var(--bright); border-color:var(--bright); font-weight:700; }
+  .settings-nav-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .settings-content{ flex:1; min-width:0; overflow-y:auto; padding-right:.3rem; }
+  .settings-section{ display:none; }
+  .settings-section.active{ display:block; }
+
+  @media (max-width:820px){
+    .settings-modal{ width:94vw; height:88vh; max-width:none; min-width:0; }
+    .settings-layout{ flex-direction:column; gap:.6rem; }
+    .settings-nav{
+      width:auto; flex-direction:row; flex-wrap:wrap;
+      padding-right:0; padding-bottom:.6rem;
+      border-right:none; border-bottom:1px solid var(--border);
+    }
+  }
+  .modal-actions{ display:flex; gap:.6rem; margin-left:auto; }
+  .modal-btn{
+    font-family:inherit; font-size:.8rem; cursor:pointer;
+    border-radius:2px; padding:.5rem .9rem;
+    background:var(--surface-2); color:var(--dim); border:1px solid var(--border);
+  }
+  .modal-btn:hover{ color:var(--bright); border-color:var(--bright); }
+  .modal-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .modal-btn.primary{ background:var(--bright); color:var(--bg); border-color:var(--bright); font-weight:700; }
+
+  .settings-sub{ margin:.2rem 0 1rem; color:var(--dim); font-size:.85rem; }
+  .settings-info{
+    display:flex; gap:.55rem; align-items:flex-start;
+    margin:0 0 1.3rem; padding:.7rem .8rem;
+    border:1px solid var(--border); border-left:3px solid var(--bright);
+    border-radius:2px; background:var(--surface-2);
+    font-size:.8rem; line-height:1.5; color:var(--ink);
+  }
+  .settings-info-tag{ color:var(--bright); font-weight:700; flex:none; }
+  .settings-info code{
+    background:var(--code-bg); color:var(--code-ink);
+    padding:.05rem .3rem; border-radius:2px; font-size:.92em; word-break:break-all;
+  }
+  .settings-field{ margin-bottom:1.2rem; }
+  .settings-field > label{ display:block; margin-bottom:.35rem; color:var(--ink); font-size:.85rem; font-weight:600; }
+  .setting-row{ display:flex; gap:.5rem; align-items:center; }
+  .setting-row input{
+    flex:1 1 auto; min-width:0;
+    background:var(--bg); color:var(--ink);
+    border:1px solid var(--border); border-radius:2px;
+    padding:.5rem .6rem; font-family:inherit; font-size:.85rem;
+  }
+  .setting-row input:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .verify-btn{
+    flex:none; font-family:inherit; font-size:.75rem; cursor:pointer;
+    background:var(--surface-2); color:var(--dim);
+    border:1px solid var(--border); border-radius:2px; padding:.5rem .7rem;
+  }
+  .verify-btn:hover{ color:var(--bright); border-color:var(--bright); }
+  .verify-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .module-list{ display:flex; flex-direction:column; gap:.4rem; }
+  .module-check{ display:flex; align-items:center; gap:.5rem; cursor:pointer; font-size:.85rem; color:var(--ink); }
+  .module-check input{ accent-color:var(--bright); width:1rem; height:1rem; cursor:pointer; }
+  /* Locked workspace option (Notes) — shown but read-only. */
+  .module-check.locked{ cursor:not-allowed; color:var(--dim); }
+  .module-check.locked input{ cursor:not-allowed; }
+  .ws-locked-note{ font-style:normal; font-size:.72rem; color:var(--dim); opacity:.8; }
+  /* Folder picker (Settings path 'browse') */
+  .dir-browser{ width:min(90vw, 40rem); }
+  .dir-browser-cur{ padding:.4rem .6rem; background:var(--bg-soft, rgba(127,127,127,.08)); border-radius:.3rem; margin:.3rem 0 .5rem; overflow:auto; }
+  .dir-browser-cur code{ font-size:.8rem; color:var(--bright); white-space:nowrap; }
+  .dir-browser-list{ display:flex; flex-direction:column; gap:.15rem; max-height:45vh; overflow:auto; border:1px solid var(--line, rgba(127,127,127,.2)); border-radius:.3rem; padding:.3rem; }
+  .dir-browser-item{ text-align:left; background:transparent; border:0; color:var(--ink); font-size:.85rem; padding:.35rem .5rem; border-radius:.25rem; cursor:pointer; }
+  .dir-browser-item:hover{ background:var(--bg-soft, rgba(127,127,127,.12)); }
+  .dir-browser-item.up{ color:var(--dim); }
+  .dir-browser-empty{ color:var(--dim); font-size:.8rem; padding:.4rem .5rem; }
+  .setting-status{ font-size:.78rem; margin-top:.3rem; }
+  .setting-status.ok{ color:var(--bright); }
+  .setting-status.err{ color:var(--danger); }
+  .setting-status.checking{ color:var(--dim); }
+
+  /* mode toggle (Notes / Engagement) — the dropdown itself lives in .sidebar-mode */
+  .mode-hidden{ display:none !important; }
+
+  /* engagement view */
+  .engagement{ max-width:none; padding-top:.75rem; }
+
+  /* "save output (tee)" toggle in the content search bar */
+  .tee-toggle{
+    display:inline-flex; align-items:center; gap:.35rem; flex:none;
+    font-size:.78rem; color:var(--dim); cursor:pointer; white-space:nowrap; user-select:none;
+  }
+  .tee-toggle input{ accent-color:var(--bright); width:.95rem; height:.95rem; cursor:pointer; }
+  .tee-toggle:hover{ color:var(--ink); }
+  .eng-section{ margin-bottom:1.6rem; }
+  .eng-head-row{ display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; margin-bottom:.6rem; }
+  .eng-head-row h3{ margin:0; }
+  .eng-meta{ color:var(--dim); font-size:.8rem; }
+  .eng-meta b{ color:var(--ink); font-weight:600; }
+  .eng-status{ color:var(--dim); font-size:.85rem; padding:.5rem 0; }
+  .eng-status.err{ color:var(--danger); }
+
+  .preset-list{ display:flex; flex-wrap:wrap; gap:.6rem; }
+  .preset-pair{ display:flex; align-items:stretch; gap:.3rem; }
+  .preset-pair .run-btn{ align-self:center; }
+  .preset-btn{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    color:var(--ink);
+    padding:.5rem .8rem;
+    border-radius:2px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.8rem;
+  }
+  .preset-btn:hover{ border-color:var(--bright); color:var(--bright); }
+  .preset-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .preset-btn.busy{ color:var(--bright); border-color:var(--bright); }
+
+  .eng-subhead{
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:var(--dim);
+    margin:1.1rem 0 .5rem;
+  }
+  .eng-subhead:first-of-type{ margin-top:.2rem; }
+
+  /* Port Scanning: tool tabs (nmap / rustscan / …). Scoped to :not([hidden])
+     for the same reason as .new-project-panel above — some tool-tabs rows
+     (e.g. the Username Generator's "more rules" pills) toggle via the
+     `hidden` attribute, which an unconditional display:flex would override. */
+  .tool-tabs:not([hidden]){ display:flex; gap:.4rem; margin-bottom:.8rem; flex-wrap:wrap; }
+  .tool-tab{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    color:var(--dim);
+    padding:.4rem .9rem;
+    border-radius:2px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.8rem;
+    font-weight:600;
+  }
+  .tool-tab:hover{ color:var(--ink); border-color:var(--bright); }
+  .tool-tab.active{ background:var(--bg); border-color:var(--bright); color:var(--bright); }
+  .tool-tab:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  /* Port Scanning: "build a command" bar */
+  .cmd-builder{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.7rem .8rem;
+  }
+  .builder-flags{ display:flex; flex-wrap:wrap; gap:.4rem 1.2rem; margin-bottom:.6rem; }
+  .builder-flag{
+    display:flex;
+    align-items:center;
+    gap:.4rem;
+    font-size:.8rem;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .builder-flag input[type="checkbox"]{ accent-color:var(--bright); width:1rem; height:1rem; }
+  .builder-preview-cmd{
+    display:block;
+    font-size:.76rem;
+    background:var(--code-bg);
+    color:var(--code-ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.45rem .6rem;
+    margin-bottom:.6rem;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  /* Credential Checking builder — free-text username/password field(s),
+     shape depends on the active mode (single/spray/bruteforce). */
+  .cred-fields{ display:flex; flex-direction:column; gap:.7rem; margin-bottom:.6rem; }
+  .cred-field{ display:flex; flex-direction:column; gap:.3rem; }
+  .cred-field label{
+    font-size:.66rem;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    color:var(--dim);
+  }
+  .cred-field input,.cred-field textarea{
+    font-family:inherit;
+    font-size:.82rem;
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.45rem .6rem;
+    resize:vertical;
+  }
+  .cred-field textarea{ min-height:4.5rem; line-height:1.4; }
+  .cred-field input::placeholder,.cred-field textarea::placeholder{ color:var(--dim); opacity:.7; }
+  .cred-field input:focus-visible,.cred-field textarea:focus-visible{
+    outline:2px solid var(--focus); outline-offset:1px;
+  }
+
+  /* Port Scanning / any tool: saved-scan file tabs */
+  .scan-tabs{ display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.8rem; }
+  .scan-tab{
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--dim);
+    padding:.3rem .7rem;
+    border-radius:12px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.74rem;
+  }
+  .scan-tab:hover{ color:var(--ink); border-color:var(--bright); }
+  .scan-tab.active{ background:var(--surface-2); border-color:var(--bright); color:var(--bright); font-weight:600; }
+  .scan-tab:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  /* Port results toolbar — state filter buttons + [copy ports], shared by
+     nmap's and rustscan's results tables. */
+  .port-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:.6rem;
+    margin-bottom:.7rem;
+  }
+  .port-filter-group{ display:flex; flex-wrap:wrap; gap:.35rem; }
+  .port-filter-btn{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    color:var(--dim);
+    padding:.3rem .65rem;
+    border-radius:12px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.74rem;
+    font-weight:600;
+  }
+  .port-filter-btn:hover{ color:var(--ink); border-color:var(--bright); }
+  .port-filter-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .port-filter-btn.active{ background:var(--bg); border-color:var(--bright); color:var(--bright); }
+  .port-filter-btn.open.active{ color:var(--bright); border-color:var(--bright); }
+  .port-filter-btn.closed.active,.port-filter-btn.filtered.active{ color:var(--ink); }
+
+  /* Port Scanning builder: free-text ports field ({PORTS} -> "-p <value>") */
+  .builder-ports{ display:flex; align-items:center; gap:.6rem; margin-bottom:.6rem; }
+  .builder-ports label{
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--dim);
+    flex:none;
+  }
+  .builder-ports input{
+    flex:1;
+    min-width:0;
+    font-family:inherit;
+    font-size:.8rem;
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:.4rem .55rem;
+  }
+  .builder-ports input::placeholder{ color:var(--dim); opacity:.7; }
+  .builder-ports input:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  .nmap-table td,.nmap-table th{ vertical-align:middle; }
+  .port-state{ font-weight:700; }
+  .port-state.open{ color:var(--bright); }
+  .port-state.closed,.port-state.filtered{ color:var(--dim); }
+  /* Credential Checking results reuse this same state-badge look for
+     valid/failed/pwned instead of open/closed/filtered. */
+  .port-state.valid{ color:var(--bright); }
+  .port-state.failed{ color:var(--dim); }
+  .port-state.pwned{ color:var(--danger); }
+  .port-filter-btn.valid.active{ color:var(--bright); border-color:var(--bright); }
+  .port-filter-btn.failed.active{ color:var(--ink); }
+  .port-filter-btn.pwned.active{ color:var(--danger); border-color:var(--danger); }
+
+  /* ---------- Credential Checking: badges, row tints, valid summary ---------- */
+  /* Status badge (pill) */
+  .cred-badge{
+    display:inline-block; font-size:.66rem; font-weight:800;
+    text-transform:uppercase; letter-spacing:.04em;
+    padding:.15rem .5rem; border-radius:999px; color:var(--bg);
+  }
+  .cred-badge.valid{ background:var(--bright); }
+  .cred-badge.failed{ background:var(--danger); }
+  .cred-badge.pwned{ background:var(--hljs-string); }   /* gold — admin/pwned */
+  .cred-badge.checking{ background:var(--dim); }
+
+  /* Reload icon in the panel header (replaces the old [reload data] text) */
+  .reload-icon{
+    flex:none; cursor:pointer;
+    background:var(--surface-2); color:var(--dim);
+    border:1px solid var(--border); border-radius:5px;
+    width:1.9rem; height:1.9rem; font-size:1rem; line-height:1;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .reload-icon[hidden]{ display:none; }
+  .reload-icon:hover{ color:var(--bright); border-color:var(--bright); transform:rotate(90deg); }
+  .reload-icon:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .reload-icon{ transition:transform .2s ease, color .15s ease, border-color .15s ease; }
+
+  /* Build ⇄ Results segmented control (one view at a time) */
+  .cred-view-switch{
+    display:inline-flex; margin-left:auto; gap:0;
+    border:1px solid var(--border); border-radius:6px; overflow:hidden;
+  }
+  .cred-view-btn{
+    font-family:inherit; font-size:.78rem; font-weight:600; cursor:pointer;
+    background:transparent; color:var(--dim);
+    border:none; padding:.4rem .9rem;
+  }
+  .cred-view-btn + .cred-view-btn{ border-left:1px solid var(--border); }
+  .cred-view-btn:hover{ color:var(--ink); background:var(--surface-2); }
+  .cred-view-btn.active{ background:var(--bright); color:var(--bg); }
+  .cred-view-btn:focus-visible{ outline:2px solid var(--focus); outline-offset:-2px; }
+  .cred-view-badge{
+    display:inline-block; min-width:1.1rem; text-align:center;
+    font-size:.7rem; font-weight:800; line-height:1.1;
+    padding:.05rem .3rem; border-radius:999px;
+    background:var(--hljs-string); color:var(--bg); margin-left:.15rem;
+  }
+  /* keep the reload button hugging the right edge, after the switch */
+  .cred-view-switch + .checklist-toggle{ margin-left:.6rem; }
+
+  /* Results toolbar: filters left, copy + service dropdown right */
+  .cred-toolbar-right{ display:flex; align-items:center; gap:.5rem; margin-left:auto; }
+  .cred-service-select{
+    font-family:inherit; font-size:.78rem; cursor:pointer;
+    background:var(--bg); color:var(--ink);
+    border:1px solid var(--border); border-radius:3px; padding:.35rem .5rem;
+  }
+  .cred-service-select:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  /* Row tints: green success, red fail, gold pwned, with a left accent bar */
+  .nmap-table tr.cred-row.valid  td{ background:color-mix(in srgb, var(--bright) 12%, transparent); }
+  .nmap-table tr.cred-row.failed td{ background:color-mix(in srgb, var(--danger) 10%, transparent); }
+  .nmap-table tr.cred-row.pwned  td{ background:color-mix(in srgb, var(--hljs-string) 15%, transparent); }
+  .nmap-table tr.cred-row.valid  td:first-child{ box-shadow:inset 3px 0 var(--bright); }
+  .nmap-table tr.cred-row.failed td:first-child{ box-shadow:inset 3px 0 var(--danger); }
+  .nmap-table tr.cred-row.pwned  td:first-child{ box-shadow:inset 3px 0 var(--hljs-string); }
+
+  /* Valid-credentials summary box (always shown above the results table) */
+  .cred-summary{ margin:.2rem 0 .8rem; padding:.65rem .8rem; border-radius:8px; border:1px solid var(--border); }
+  .cred-summary.none{ background:var(--surface-2); color:var(--dim); font-size:.8rem; }
+  .cred-summary.has-valid{
+    background:color-mix(in srgb, var(--bright) 10%, transparent);
+    border-color:color-mix(in srgb, var(--bright) 55%, transparent);
+  }
+  .cred-summary-head{ display:flex; align-items:center; gap:.7rem; margin-bottom:.6rem; flex-wrap:wrap; }
+  .cred-summary-count{ color:var(--bright); font-weight:800; font-size:.9rem; }
+  .cred-summary-hint{ color:var(--dim); font-size:.75rem; }
+  .cred-summary-head .copy-cmd-btn{ margin-left:auto; }
+
+  /* Editable + re-verifiable valid-credential rows */
+  /* Valid creds as full-width boarding-pass tickets (one per row) */
+  .cred-verify-list{ display:flex; flex-direction:column; gap:.7rem; }
+  .cred-ticket{
+    display:flex; align-items:stretch; width:100%; overflow:hidden;
+    border:1px solid color-mix(in srgb, var(--bright) 45%, transparent);
+    border-radius:10px; background:var(--surface);
+    box-shadow:0 1px 3px rgba(0,0,0,.18);
+  }
+  .cred-ticket.pwned{ border-color:var(--hljs-string); }
+  /* colored spine on the far left */
+  .cred-ticket-main{
+    flex:1; min-width:0; position:relative;
+    padding:.6rem .8rem .6rem 1.05rem;
+    display:flex; flex-direction:column; gap:.55rem;
+    background:color-mix(in srgb, var(--bright) 7%, transparent);
+  }
+  .cred-ticket-main::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--bright);
+  }
+  .cred-ticket.pwned .cred-ticket-main{ background:color-mix(in srgb, var(--hljs-string) 9%, transparent); }
+  .cred-ticket.pwned .cred-ticket-main::before{ background:var(--hljs-string); }
+
+  .cred-ticket-top{ display:flex; align-items:center; gap:.6rem; }
+  .cred-ticket-svcs{ display:flex; flex-wrap:wrap; gap:.35rem; min-width:0; }
+  .cred-ticket-top .cv-service{ font-size:.78rem; padding:.2rem .55rem; }
+  .cv-service.pwned{
+    color:var(--hljs-string);
+    background:color-mix(in srgb, var(--hljs-string) 16%, transparent);
+    border-color:color-mix(in srgb, var(--hljs-string) 55%, transparent);
+  }
+  .cred-ticket-flag{
+    font-size:.72rem; font-weight:800; letter-spacing:.06em;
+    color:var(--bright); margin-left:auto; flex:none;
+  }
+  .cred-ticket.pwned .cred-ticket-flag{ color:var(--hljs-string); }
+
+  .cred-ticket-fields{ display:flex; gap:1rem; flex-wrap:wrap; }
+  .cv-group{ display:flex; flex-direction:column; gap:.2rem; min-width:0; }
+  .cv-group:first-child{ flex:0 1 14rem; }
+  .cv-group:last-child{ flex:1 1 20rem; }
+  .cv-label{ font-size:.6rem; font-weight:700; letter-spacing:.09em; color:var(--dim); }
+  /* click-to-copy value text (was an input) */
+  .cv-value{
+    display:block; width:100%; text-align:left; cursor:pointer;
+    font-family:inherit; font-size:.85rem; color:var(--ink);
+    background:var(--bg); border:1px solid var(--border); border-radius:4px;
+    padding:.4rem .55rem; word-break:break-all; white-space:normal;
+  }
+  .cv-value:hover{ border-color:var(--bright); color:var(--bright); }
+  .cv-value:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .cv-value.copied{ background:var(--bright); color:var(--bg); border-color:var(--bright); }
+  .cred-ticket.pwned .cv-value:hover{ border-color:var(--hljs-string); color:var(--hljs-string); }
+  .cred-ticket.pwned .cv-value.copied{ background:var(--hljs-string); color:var(--bg); border-color:var(--hljs-string); }
+
+  /* Protocol tag (uppercase pill) — verify rows + the All view's SERVICE column */
+  .cv-service{
+    display:inline-block; font-size:.68rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:.03em;
+    padding:.15rem .45rem; border-radius:4px; flex:none;
+    color:var(--bright);
+    background:color-mix(in srgb, var(--bright) 12%, transparent);
+    border:1px solid color-mix(in srgb, var(--bright) 40%, transparent);
+  }
+  /* service tag + info icon grouped together */
+  .cv-service-wrap{ display:inline-flex; align-items:stretch; }
+  .cv-service-wrap .cv-service{ border-top-right-radius:0; border-bottom-right-radius:0; }
+  .cv-info{
+    cursor:pointer; font-family:inherit; font-size:.78rem; line-height:1;
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:0 .4rem; border-radius:0 4px 4px 0;
+    color:var(--bright);
+    background:color-mix(in srgb, var(--bright) 12%, transparent);
+    border:1px solid color-mix(in srgb, var(--bright) 40%, transparent);
+    border-left:none;
+  }
+  .cv-info.pwned{
+    color:var(--hljs-string);
+    background:color-mix(in srgb, var(--hljs-string) 16%, transparent);
+    border-color:color-mix(in srgb, var(--hljs-string) 55%, transparent);
+  }
+  .cv-info:hover{ filter:brightness(1.25); }
+  .cv-info:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+

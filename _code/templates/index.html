@@ -11,7 +11,10 @@
   })();
 </script>
 <title>Cheatsheet</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/parts/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/parts/components.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/parts/panels.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/parts/views.css') }}">
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
@@ -50,7 +53,10 @@
 <script src="{{ url_for('static', filename='js/copy-history.js') }}"></script>
 <script src="{{ url_for('static', filename='js/vpn.js') }}"></script>
 <script src="{{ url_for('static', filename='js/runner.js') }}"></script>
-<script src="{{ url_for('static', filename='js/nmap.js') }}"></script>
+<script src="{{ url_for('static', filename='js/nmap/engagement.js') }}"></script>
+<script src="{{ url_for('static', filename='js/nmap/port-scan.js') }}"></script>
+<script src="{{ url_for('static', filename='js/nmap/port-tables.js') }}"></script>
+<script src="{{ url_for('static', filename='js/nmap/cred-checker.js') }}"></script>
 <script src="{{ url_for('static', filename='js/outputs.js') }}"></script>
 <script src="{{ url_for('static', filename='js/checklist.js') }}"></script>
 <script src="{{ url_for('static', filename='js/tools.js') }}"></script>

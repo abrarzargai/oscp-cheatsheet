@@ -297,8 +297,18 @@ def summarize(project_dir):
                 if r.get("status") not in ("valid", "pwned"):
                     continue
                 key = (r.get("user", ""), r.get("secret", ""))
-                if key not in creds or r["status"] == "pwned":
-                    creds[key] = {"status": r["status"], "user": key[0], "secret": key[1], "source": f["rel"]}
+                entry = creds.get(key)
+                if entry is None:
+                    entry = {"status": r["status"], "user": key[0], "secret": key[1],
+                             "source": f["rel"], "services": {}}
+                    creds[key] = entry
+                if r["status"] == "pwned":
+                    entry["status"] = "pwned"
+                # Collect every protocol this cred worked on (pwned beats valid),
+                # so one Findings ticket can list all of them like the Cred tool.
+                svc = (r.get("service") or "").lower()
+                if svc and entry["services"].get(svc) != "pwned":
+                    entry["services"][svc] = "pwned" if r["status"] == "pwned" else "valid"
 
     categories = {}
     for f in files:
@@ -401,6 +411,7 @@ def parse_feroxbuster(text):
 
 # hydra:  [80][http-post-form] host: 10.10.10.5   login: admin   password: pass
 _HYDRA_RE = re.compile(r"login:\s*(\S+)\s+password:\s*(\S+)")
+_HYDRA_SVC_RE = re.compile(r"\[\d+\]\[([A-Za-z0-9_-]+)\]")
 
 
 def parse_hydra(text):
@@ -408,7 +419,10 @@ def parse_hydra(text):
     for line in text.splitlines():
         m = _HYDRA_RE.search(line)
         if m:
-            results.append({"status": "valid", "user": m.group(1), "secret": m.group(2), "raw": line.strip()})
+            sm = _HYDRA_SVC_RE.search(line)
+            svc = sm.group(1).split("-")[0].lower() if sm else ""
+            results.append({"status": "valid", "user": m.group(1), "secret": m.group(2),
+                            "service": svc, "raw": line.strip()})
     return {"type": "creds", "results": results}
 
 

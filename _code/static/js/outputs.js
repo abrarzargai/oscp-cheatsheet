@@ -41,6 +41,7 @@ function renderOutputView(){
   var crumb = document.getElementById("breadcrumb");
   if (crumb) crumb.textContent = "";
   if (!content) return;
+  pendingCredMounts = [];
 
   if (typeof activeProject === "undefined" || !activeProject){
     document.getElementById("outputTree").innerHTML = "";
@@ -265,21 +266,13 @@ function showOutputOverview(){
   }
 
   if (creds.length){
-    html += outSection("Credentials", creds.length + " valid");
-    html += '<div class="out-cred-list">';
-    creds.forEach(function(r){
-      html += '<div class="out-cred-row ' + r.status + '">' +
-        '<span class="cred-badge ' + r.status + '">' + r.status + '</span>' +
-        '<span class="out-cred-user">' + escapeHtml(r.user || "") + '</span>' +
-        (r.secret ? '<span class="out-cred-sep">:</span><span class="out-cred-secret">' + escapeHtml(r.secret) + '</span>' : '') +
-        '<a href="#" class="out-src-link out-cred-src" data-rel="' + escapeHtml(r.source) + '">' + escapeHtml(r.source.split("/").pop()) + '</a>' +
-        '</div>';
-    });
-    html += '</div>';
+    html += outSection("Valid credentials", creds.length + " valid");
+    html += credTicketMount(creds);
   }
 
   html += '</div>';
   content.innerHTML = html;
+  flushCredMounts();
   wireOutputHeader();
 
   content.querySelectorAll(".out-src-link").forEach(function(a){
@@ -294,6 +287,60 @@ function showOutputOverview(){
       if (first) openOutputFile(first.rel);
     });
   });
+}
+
+/* ---------- Valid-credential tickets (shared UI with Credential Checking) ----------
+   The Findings view renders valid/pwned creds with the SAME interactive ticket
+   as the Cred tool: makeCredVerifyRow() (cred-checker.js) builds a card whose
+   service tags open the right-side connect drawer (Verify / Connect / per-service
+   commands). Because that returns a DOM node but renderOutputView/renderParsed
+   build HTML strings, we leave a placeholder <div> and fill it after innerHTML. */
+var pendingCredMounts = [];
+var credMountSeq = 0;
+
+/* Flat cred records [{user,secret,status,service?,services?}] -> one group per
+   user:secret with a {service: "valid"|"pwned"} map, matching the shape
+   makeCredVerifyRow expects. */
+function groupCredsForTickets(creds){
+  var groups = {}, order = [];
+  (creds || []).forEach(function(r){
+    if (r.status !== "valid" && r.status !== "pwned") return;
+    var key = (r.user || "") + ":" + (r.secret || "");
+    if (!groups[key]){ groups[key] = { user: r.user || "", secret: r.secret || "", services: {} }; order.push(key); }
+    var g = groups[key];
+    if (r.services && typeof r.services === "object"){
+      Object.keys(r.services).forEach(function(s){
+        if (g.services[s] !== "pwned") g.services[s] = (r.services[s] === "pwned") ? "pwned" : "valid";
+      });
+    } else {
+      var svc = (r.service || "").toLowerCase();
+      if (svc && g.services[svc] !== "pwned") g.services[svc] = (r.status === "pwned") ? "pwned" : "valid";
+    }
+  });
+  // A cred with no recorded protocol still needs one interactive tag; smb is the
+  // sensible default (the drawer lets you switch tools from there anyway).
+  order.forEach(function(k){ if (!Object.keys(groups[k].services).length) groups[k].services.smb = "valid"; });
+  return order.map(function(k){ return groups[k]; });
+}
+
+/* Returns a placeholder div (to inject into an HTML string) and queues its
+   ticket groups for flushCredMounts() to fill once the DOM exists. */
+function credTicketMount(creds){
+  var groups = groupCredsForTickets(creds);
+  if (!groups.length) return "";
+  var id = "cred-mount-" + (credMountSeq++);
+  pendingCredMounts.push({ id: id, groups: groups });
+  return '<div class="out-cred-list" id="' + id + '"></div>';
+}
+
+/* Build the queued tickets into their placeholders (call after innerHTML set). */
+function flushCredMounts(){
+  pendingCredMounts.forEach(function(m){
+    var el = document.getElementById(m.id);
+    if (!el || typeof makeCredVerifyRow !== "function") return;
+    m.groups.forEach(function(g){ el.appendChild(makeCredVerifyRow(g)); });
+  });
+  pendingCredMounts = [];
 }
 
 function outStat(n, label){
@@ -324,11 +371,13 @@ function showOutputFile(rel){
   wireOutputHeader();
 
   apiFetch("/api/outputs/file?path=" + encodeURIComponent(rel)).then(function(res){
+    pendingCredMounts = [];
     var body = renderParsed(res);
     var sub = [res.category, res.tool].filter(Boolean).join(" › ");
     sub = (sub ? sub + " · " : "") + fmtBytes(res.size) + (res.truncated ? " · truncated" : "") +
       (res.parser ? "" : " · no parser (raw)");
     content.innerHTML = '<div class="out-view">' + outputHeader(rel, sub) + body + '</div>';
+    flushCredMounts();
     wireOutputHeader();
   }).catch(function(err){
     content.innerHTML = '<div class="out-view">' + outputHeader(rel, "") +
@@ -388,17 +437,28 @@ function renderParsed(res){
   if (p.type === "creds"){
     var results = p.results || [];
     if (!results.length) return rawBlock(res);
-    var order = { pwned: 0, valid: 1, failed: 2 };
-    results.sort(function(a,b){ return (order[a.status] || 3) - (order[b.status] || 3); });
-    html += '<div class="out-cred-list">';
-    results.forEach(function(r){
-      html += '<div class="out-cred-row ' + r.status + '">' +
-        '<span class="cred-badge ' + r.status + '">' + r.status + '</span>' +
-        '<span class="out-cred-user">' + escapeHtml(r.user || "") + '</span>' +
-        (r.secret ? '<span class="out-cred-sep">:</span><span class="out-cred-secret">' + escapeHtml(r.secret) + '</span>' : '') +
-        '</div>';
-    });
-    html += '</div>';
+    // Valid/pwned creds get the interactive ticket (same as Credential Checking);
+    // failed attempts stay as a compact list below so nothing is lost.
+    var valid = results.filter(function(r){ return r.status === "valid" || r.status === "pwned"; });
+    var failed = results.filter(function(r){ return r.status === "failed"; });
+    if (valid.length){
+      html += '<div class="out-section"><span class="out-section-title">Valid credentials</span>' +
+        '<span class="out-section-sub">' + valid.length + ' valid</span></div>';
+      html += credTicketMount(valid);
+    }
+    if (failed.length){
+      html += '<div class="out-section"><span class="out-section-title">Failed attempts</span>' +
+        '<span class="out-section-sub">' + failed.length + '</span></div>';
+      html += '<div class="out-cred-list">';
+      failed.forEach(function(r){
+        html += '<div class="out-cred-row ' + r.status + '">' +
+          '<span class="cred-badge ' + r.status + '">' + r.status + '</span>' +
+          '<span class="out-cred-user">' + escapeHtml(r.user || "") + '</span>' +
+          (r.secret ? '<span class="out-cred-sep">:</span><span class="out-cred-secret">' + escapeHtml(r.secret) + '</span>' : '') +
+          '</div>';
+      });
+      html += '</div>';
+    }
     return html + collapsibleRaw(res);
   }
 
